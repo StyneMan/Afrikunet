@@ -113,7 +113,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           children: [
             Container(
               padding: const EdgeInsets.only(
-                top: 42.0,
+                top: 42,
                 left: 18,
                 right: 18,
                 bottom: 16,
@@ -153,161 +153,173 @@ class _CustomDrawerState extends State<CustomDrawer> {
               ),
             ),
             Expanded(
-              child: ListView(
-                padding: const EdgeInsets.all(0.0),
-                shrinkWrap: true,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    color: Colors.white,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListView.separated(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, i) {
-                            return ListTile(
-                              dense: true,
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 2.0),
-                              title: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    drawerList[i].icon,
-                                    width: 18,
-                                    color: Constants.secondaryColor,
-                                  ),
-                                  const SizedBox(
-                                    width: 21.0,
-                                  ),
-                                  TextSmall(
-                                    text: drawerList[i].title,
-                                    fontWeight: FontWeight.w400,
-                                    color: Constants.secondaryColor,
-                                  ),
-                                ],
-                              ),
-                              onTap: () async {
-                                if (i == 0) {
-                                  Get.back();
-                                  _controller.selectedIndex.value = 2;
-                                } else if (i == 1) {
-                                  Get.back();
-                                  Get.to(
-                                    drawerList[i].widget,
-                                    transition: Transition.cupertino,
-                                  );
-                                } else if (i == 2) {
-                                  Get.back();
-                                  Get.to(
-                                    drawerList[i].widget,
-                                    transition: Transition.cupertino,
-                                  );
-                                } else if (i == 3) {
-                                  Get.back();
-                                  _controller.selectedIndex.value = 1;
-                                } else if (i == 4) {
-                                  Get.back();
-                                  Get.to(
-                                    drawerList[i].widget,
-                                    transition: Transition.cupertino,
-                                  );
-                                }
+                  Expanded(
+                    child: Container(
+                      color: Colors.white,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListView.separated(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            shrinkWrap: true,
+                            itemBuilder: (context, i) {
+                              return ListTile(
+                                dense: true,
+                                contentPadding:
+                                    const EdgeInsets.symmetric(horizontal: 2.0),
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      drawerList[i].icon,
+                                      width: 18,
+                                      color: Constants.secondaryColor,
+                                    ),
+                                    const SizedBox(
+                                      width: 21.0,
+                                    ),
+                                    TextSmall(
+                                      text: drawerList[i].title,
+                                      fontWeight: FontWeight.w400,
+                                      color: Constants.secondaryColor,
+                                    ),
+                                  ],
+                                ),
+                                onTap: () async {
+                                  if (i == 0) {
+                                    Get.back();
+                                    _controller.selectedIndex.value = 2;
+                                  } else if (i == 1) {
+                                    Get.back();
+                                    Get.to(
+                                      drawerList[i].widget,
+                                      transition: Transition.cupertino,
+                                    );
+                                  } else if (i == 2) {
+                                    Get.back();
+                                    Get.to(
+                                      drawerList[i].widget,
+                                      transition: Transition.cupertino,
+                                    );
+                                  } else if (i == 3) {
+                                    Get.back();
+                                    _controller.selectedIndex.value = 1;
+                                  } else if (i == 4) {
+                                    Get.back();
+                                    Get.to(
+                                      drawerList[i].widget,
+                                      transition: Transition.cupertino,
+                                    );
+                                  }
 
-                                // else {
-                                //   if (drawerList[i].isAction) {
-                                //     Navigator.of(context).pop();
-                                //     _launchInBrowser("${drawerList[i].url}");
-                                //   } else {
-                                //     Navigator.of(context).pop();
-                                //     Navigator.of(context).push(
-                                //       PageTransition(
-                                //         type: PageTransitionType.size,
-                                //         alignment: Alignment.bottomCenter,
-                                //         child: drawerList[i].widget!,
-                                //       ),
-                                //     );
-                                //   }
-                                // }
-                              },
-                            );
-                          },
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const Divider(),
-                          itemCount: drawerList.length,
+                                  // else {
+                                  //   if (drawerList[i].isAction) {
+                                  //     Navigator.of(context).pop();
+                                  //     _launchInBrowser("${drawerList[i].url}");
+                                  //   } else {
+                                  //     Navigator.of(context).pop();
+                                  //     Navigator.of(context).push(
+                                  //       PageTransition(
+                                  //         type: PageTransitionType.size,
+                                  //         alignment: Alignment.bottomCenter,
+                                  //         child: drawerList[i].widget!,
+                                  //       ),
+                                  //     );
+                                  //   }
+                                  // }
+                                },
+                              );
+                            },
+                            separatorBuilder:
+                                (BuildContext context, int index) =>
+                                    const Divider(),
+                            itemCount: drawerList.length,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 21.0,
+                          vertical: 6.0,
                         ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 21.0,
-                      vertical: 10.0,
-                    ),
-                    child: DottedDivider(),
-                  ),
-                  const SizedBox(
-                    height: 36,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 13.0),
-                    child: ListTile(
-                      dense: true,
-                      contentPadding: const EdgeInsets.all(2.0),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            CupertinoIcons.settings,
-                            size: 23,
-                            color: Constants.secondaryColor,
-                          ),
-                          const SizedBox(
-                            width: 21.0,
-                          ),
-                          TextSmall(
-                            text: "Account Settings",
-                            fontWeight: FontWeight.w400,
-                            color: Constants.secondaryColor,
-                          ),
-                        ],
+                        child: DottedDivider(),
                       ),
-                      onTap: () {
-                        Get.back();
-                        _controller.selectedIndex.value = 3;
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 13.0),
-                    child: ListTile(
-                      dense: true,
-                      contentPadding: const EdgeInsets.all(2.0),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            CupertinoIcons.square_arrow_left,
-                            color: Constants.secondaryColor,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                        child: ListTile(
+                          dense: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 2.0,
+                            vertical: 0.0,
                           ),
-                          const SizedBox(
-                            width: 21.0,
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                CupertinoIcons.settings,
+                                size: 23,
+                                color: Constants.secondaryColor,
+                              ),
+                              const SizedBox(
+                                width: 21.0,
+                              ),
+                              TextSmall(
+                                text: "Account Settings",
+                                fontWeight: FontWeight.w400,
+                                color: Constants.secondaryColor,
+                              ),
+                            ],
                           ),
-                          TextSmall(
-                            text: "Logout",
-                            fontWeight: FontWeight.w600,
-                            color: Constants.secondaryColor,
-                          ),
-                        ],
+                          onTap: () {
+                            Get.back();
+                            _controller.selectedIndex.value = 3;
+                          },
+                        ),
                       ),
-                      onTap: () async {},
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                        child: ListTile(
+                          dense: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 2.0,
+                            vertical: 0.0,
+                          ),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                CupertinoIcons.square_arrow_left,
+                                color: Constants.secondaryColor,
+                              ),
+                              const SizedBox(
+                                width: 21.0,
+                              ),
+                              TextSmall(
+                                text: "Logout",
+                                fontWeight: FontWeight.w600,
+                                color: Constants.secondaryColor,
+                              ),
+                            ],
+                          ),
+                          onTap: () async {},
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(
                     height: 16,

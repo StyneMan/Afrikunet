@@ -10,8 +10,13 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class Constants {
   static const Color primaryColor = Color(0xFF015AB1);
-  static const Color accentColor = Color(0xFF0583FF);
+  static const Color accentColor = Color(0xFF6ABB02);
   static const Color secondaryColor = Color(0xFF06396A);
+
+  static const Color primaryColor2 =Color(0xFF111111);
+  static const Color accentColor2 = Color(0xFF6ABB02);
+  static const Color secondaryColor2 = Color(0xFF000000);
+
   static const Color golden = Color(0xFFF1A038);
   static const Color strokeColor = Color.fromRGBO(191, 191, 191, 0.7);
 

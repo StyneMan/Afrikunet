@@ -48,7 +48,6 @@ dependencies:
   shared_preferences: ^2.0.15
   persistent_bottom_nav_bar: ^4.0.2
   http_interceptor: ^1.0.2
-  modal_bottom_sheet: ^2.1.2
   country_code_picker: ^2.0.2
   sms_autofill: ^2.2.0
   pin_code_fields: ^7.4.0
@@ -60,18 +59,17 @@ dependencies:
   cached_network_image: ^3.2.0
   flutter_datetime_picker: ^1.5.1
   top_snackbar_flutter: ^3.0.0+1
-  flutter_cupertino_date_picker_fork: ^1.0.7
-  flutter_rating_bar: ^4.0.1
   timeago: ^3.2.2
   file_picker: ^5.2.8
   http: ^0.13.5
-  substring_highlight: ^1.0.33
   socket_io_client: ^2.0.2
   flutter_downloader: ^1.10.4
   currency_text_input_formatter: ^2.1.7
-  pay_with_paystack: ^1.0.3
   carousel_slider: ^4.2.1
   share_plus: ^7.2.1
+  flutter_contacts: ^1.1.7+1
+  mobile_scanner: ^3.5.6
+  avatars: ^3.0.2
   # flutter_localization: ^0.17.0
 
   firebase_core_platform_interface: 4.8.0

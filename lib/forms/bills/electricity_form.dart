@@ -121,9 +121,9 @@ class _ElectricityFormState extends State<ElectricityForm> {
             strokeColor: Constants.strokeColor,
             onChanged: (value) {
               if (value.toString().contains("-")) {
-                // setState(() {
-                //   _amountController.text = value.toString().replaceAll("-", "");
-                // });
+                setState(() {
+                  _amountController.text = value.toString().replaceAll("-", "");
+                });
               }
             },
             controller: _amountController,
@@ -163,12 +163,7 @@ class _ElectricityFormState extends State<ElectricityForm> {
               buttonText: "Proceed",
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  Get.to(
-                    const PayNow(
-                      title: 'Electricity Bill',
-                    ),
-                    transition: Transition.cupertino,
-                  );
+                  Get.bottomSheet(_confirmBottomSheetContent);
                 }
               },
               fontSize: 15,
@@ -294,4 +289,102 @@ class _ElectricityFormState extends State<ElectricityForm> {
           ),
         ),
       );
+
+  Container get _confirmBottomSheetContent => Container(
+        padding: const EdgeInsets.all(10.0),
+        height: MediaQuery.of(context).size.height * 0.70,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(21),
+            topRight: Radius.circular(21),
+          ),
+          color: Colors.white,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(
+                      CupertinoIcons.xmark_circle,
+                      size: 18,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8.0),
+              DottedDivider(),
+              const SizedBox(height: 16.0),
+              Center(
+                child: TextHeading(
+                  text: "Customer Details",
+                  align: TextAlign.center,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 16.0),
+                    _itemRow(title: "Customer Name", value: "Precious Wen"),
+                    const SizedBox(height: 6.0),
+                    const Divider(),
+                    const SizedBox(height: 6.0),
+                    _itemRow(title: "Meter Number", value: "58135805387"),
+                    const SizedBox(height: 6.0),
+                    const Divider(),
+                    const SizedBox(height: 6.0),
+                    _itemRow(title: "Address", value: "30 Ray Avenue, Ph"),
+                    const SizedBox(height: 36.0),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: PrimaryButton(
+                    buttonText: "Confirm",
+                    fontSize: 15,
+                    onPressed: () {
+                      Get.to(
+                        const PayNow(
+                          title: 'Electricity Bill',
+                        ),
+                        transition: Transition.cupertino,
+                      );
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 21.0),
+            ],
+          ),
+        ),
+      );
+
+  Widget _itemRow({required String title, required String value}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        TextBody1(
+          text: title,
+        ),
+        TextBody1(
+          text: value,
+        ),
+      ],
+    );
+  }
 }

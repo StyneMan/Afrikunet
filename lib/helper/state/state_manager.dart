@@ -28,10 +28,10 @@ class StateController extends GetxController {
   var cableTvPackageName = "".obs;
   var electricityDistributorName = "".obs;
 
-  var currentUser = FirebaseAuth.instance.currentUser;
   var croppedPic = "".obs;
   var customSearchBar = [].obs;
-
+  var usersVoucherSplit = [].obs;
+  var selectedContact = {}.obs;
   var productsData = "".obs;
 
   var userData = {}.obs;

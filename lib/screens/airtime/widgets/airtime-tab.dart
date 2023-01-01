@@ -7,7 +7,7 @@ import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/data/networks.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/screens/success_screen.dart';
-import 'package:afrikunet/screens/vouchers/widgets/payment_method.dart';
+import 'package:afrikunet/screens/payment/payment_method.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -130,6 +130,7 @@ class _SelectSplitVoucherState extends State<SelectSplitVoucher> {
             width: double.infinity,
             child: PrimaryButton(
               buttonText: "Continue",
+              fontSize: 15,
               onPressed: () {
                 Get.to(
                   VoucherSplittingScreen(type: _type),

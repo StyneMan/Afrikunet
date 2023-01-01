@@ -54,3 +54,54 @@ ThemeData appTheme = ThemeData(
         secondary: const Color(0xFF64EE85),
       ),
 );
+
+ThemeData darkTheme = ThemeData(
+  primaryColor: Constants.primaryColor2,
+  primaryColorBrightness: Brightness.dark,
+  appBarTheme: const AppBarTheme(
+    systemOverlayStyle:
+        SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
+  ),
+  textTheme: const TextTheme(
+    bodyText2: TextStyle(),
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(elevation: 0.0),
+  ),
+  checkboxTheme: CheckboxThemeData(
+    checkColor: MaterialStateProperty.all<Color?>(Colors.white),
+    fillColor: MaterialStateProperty.all<Color?>(Constants.primaryColor2),
+    splashRadius: 1.0,
+  ),
+  visualDensity: VisualDensity.adaptivePlatformDensity,
+  inputDecorationTheme: const InputDecorationTheme(
+    focusColor: Constants.primaryColor2,
+    filled: true,
+    // fillColor: Color(0xFFEDF8F9),
+    // labelStyle: TextStyle(
+    //   color: Constants.primaryColor,
+    // ),
+    hintStyle: TextStyle(color: Color(0x5F6F6C6C)),
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(
+        color: Constants.primaryColor2,
+      ),
+    ),
+  ),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    backgroundColor: Constants.primaryColor2,
+    foregroundColor: Constants.primaryColor2,
+  ),
+  progressIndicatorTheme:
+      const ProgressIndicatorThemeData(circularTrackColor: Colors.white),
+  colorScheme: ThemeData()
+      .colorScheme
+      .copyWith(
+        primary: Constants.primaryColor2,
+        secondary: const Color(0xFF64EE85),
+        brightness: Brightness.light,
+      )
+      .copyWith(
+        secondary: const Color(0xFF64EE85),
+      ),
+);

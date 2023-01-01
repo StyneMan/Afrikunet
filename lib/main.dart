@@ -22,6 +22,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 import 'helper/socket/socket_manager.dart';
+import 'helper/state/theme_manager.dart';
 
 Future initFirebase() async {
   await Firebase.initializeApp();
@@ -38,6 +39,7 @@ class GlobalBindings extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<StateController>(() => StateController(), fenix: true);
+    Get.lazyPut<ThemeController>(() => ThemeController(), fenix: true);
     // Get.put<StateController>(StateController(), permanent: true);
     // Get.put<LocalDataProvider>(_localDataProvider, permanent: true);
     // Get.put<LocalDataSource>(LocalDataSource(_localDataProvider),
@@ -52,6 +54,10 @@ class AwaitBindings extends Bindings {
     await Get.putAsync<StateController>(() async {
       Dao _dao = await Dao.createAsync();
       return StateController(myDao: _dao);
+    });
+
+    await Get.putAsync<ThemeController>(() async {
+      return ThemeController();
     });
   }
 }
@@ -143,102 +149,8 @@ class _MyAppState extends State<MyApp> {
       );
 
       socket.on(
-        "new-chat",
-        (data) => debugPrint("DATA FROM CHAT >> $data"),
-      );
-
-      socket.on(
-        "new-review",
-        (data) {
-          debugPrint("DATA FROM  REVIEW NOW !!! >> ${jsonEncode(data)}");
-          // debugPrint("USER ID >> ${data['userId']}");
-          if (data['data']['email'] == _userMap['email']) {
-            //For me
-            debugPrint("FOR ME !! ");
-            _prefs.setString('user', data['data']);
-            _controller.userData.value = data['data'];
-          } else {
-            // Not for me
-            debugPrint("NOT FOR ME !! ");
-          }
-        },
-      );
-
-      socket.on(
-        "review-updated",
-        (data) {
-          debugPrint("DATA FROM  REVIEW NOW !!! >> ${jsonEncode(data)}");
-          // debugPrint("USER ID >> ${data['userId']}");
-          if (data['data']['email'] == _userMap['email']) {
-            //For me
-            debugPrint("FOR ME !! ");
-            _prefs.setString('user', data['data']);
-            _controller.userData.value = data['data'];
-          } else {
-            // Not for me
-            debugPrint("NOT FOR ME !! ");
-          }
-        },
-      );
-
-      socket.on(
-        "review-reply",
-        (data) {
-          debugPrint("DATA FROM REVIEW REPLY !!! >> ${jsonEncode(data)}");
-          // debugPrint("USER ID >> ${data['userId']}");
-          if (data['data']['email'] == _userMap['email']) {
-            //For me
-            debugPrint("FOR ME !! ");
-            _prefs.setString('user', data['data']);
-            _controller.userData.value = data['data'];
-          } else {
-            // Not for me
-            debugPrint("NOT FOR ME !! ");
-          }
-        },
-      );
-
-      socket.on(
         "isOnline",
         (data) => debugPrint("DATA FROM  >> $data"),
-      );
-
-      socket.on(
-        "job-posted",
-        (data) {
-          debugPrint("JOB POSTED NOW!! >> $data");
-          _controller.onInit();
-        },
-      );
-
-      socket.on(
-        "job-application-accepted",
-        (data) {
-          debugPrint("DATA FROM APPLICATION ACCEPTANCE !!! >> ${data}");
-          // debugPrint("USER ID >> ${data['userId']}");
-          if (data['applicant']['email'] == _userMap['email']) {
-            //For me
-            debugPrint("FOR ME !! ");
-            // fetchDataStream();
-            // _prefs.setString('user', data['data']);
-            // _controller.userData.value = data['data'];
-          } else {
-            // Not for me
-            debugPrint("NOT FOR ME !! ");
-          }
-        },
-      );
-
-      socket.on(
-        "job-application",
-        (data) {
-          // debugPrint("DATA FROM JOB APPLICATION >> $data");
-          if (data['job']['recruiter']['id'] == _userMap['id']) {
-            //UPDate here
-            // debugPrint("TIRGGER HERE -->>");
-            _controller.onInit();
-          }
-        },
       );
     } catch (e) {
       debugPrint(e.toString());
@@ -277,6 +189,7 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             title: 'AfriKunet',
             theme: appTheme,
+            darkTheme: darkTheme,
             home: _controller.hasInternetAccess.value
                 ? !_authenticated
                     ? const Onboarding()

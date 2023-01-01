@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'confirm_purchase.dart';
-import 'widgets/payment_method.dart';
+import '../payment/payment_method.dart';
 import 'widgets/voucher_type.dart';
 
 class BuyVoucher extends StatefulWidget {

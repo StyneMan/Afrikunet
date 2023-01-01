@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
-import 'package:substring_highlight/substring_highlight.dart';
 
 typedef void InitCallback(String value);
 
@@ -39,17 +38,18 @@ class CustomAutoComplete extends StatelessWidget {
             padding: EdgeInsets.zero,
             itemBuilder: (context, index) {
               final String option = options.elementAt(index);
-              return ListTile(
-                title: SubstringHighlight(
-                  text: option.toString(),
-                  term: _tcontroller.text,
-                  textStyleHighlight:
-                      const TextStyle(fontWeight: FontWeight.w700),
-                ),
-                onTap: () {
-                  onItemSelected(option);
-                },
-              );
+              return const SizedBox();
+              // ListTile(
+              //   title: SubstringHighlight(
+              //     text: option.toString(),
+              //     term: _tcontroller.text,
+              //     textStyleHighlight:
+              //         const TextStyle(fontWeight: FontWeight.w700),
+              //   ),
+              //   onTap: () {
+              //     onItemSelected(option);
+              //   },
+              // );
             },
             separatorBuilder: (context, index) => const Divider(),
             itemCount: options.length,

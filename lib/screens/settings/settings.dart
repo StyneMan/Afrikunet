@@ -82,7 +82,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         value: "light",
                         groupValue: _currentMode,
                         onChanged: (value) {
-                          _controller.cableTvAmount.value = (value as double?)!;
+                          setState(() {
+                            _currentMode = "light";
+                          });
                         },
                       ),
                     ],
@@ -106,7 +108,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         value: "dark",
                         groupValue: _currentMode,
                         onChanged: (value) {
-                          _controller.cableTvAmount.value = (value as double?)!;
+                          setState(() {
+                            _currentMode = "dark";
+                          });
                         },
                       ),
                     ],
@@ -115,7 +119,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 InkWell(
                   onTap: () {
                     setState(() {
-                      _currentMode = "light";
+                      _currentMode = "dark";
                     });
                   },
                   child: Row(
@@ -130,7 +134,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         value: "system default",
                         groupValue: _currentMode,
                         onChanged: (value) {
-                          _controller.cableTvAmount.value = (value as double?)!;
+                          setState(() {
+                            _currentMode = "system default";
+                          });
                         },
                       ),
                     ],

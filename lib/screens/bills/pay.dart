@@ -2,8 +2,9 @@ import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/dividers/dotted_divider.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/screens/payment/payment_method_full.dart';
 import 'package:afrikunet/screens/success_screen.dart';
-import 'package:afrikunet/screens/vouchers/widgets/payment_method.dart';
+import 'package:afrikunet/screens/payment/payment_method.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,7 +42,7 @@ class PayNow extends StatelessWidget {
               const Expanded(
                 child: Column(
                   children: [
-                    PaymentMethod(),
+                    FullPaymentMethod(),
                   ],
                 ),
               ),
