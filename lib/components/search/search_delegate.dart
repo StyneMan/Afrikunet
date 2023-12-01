@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:prohelp_app/components/shimmer/banner_shimmer.dart';
-import 'package:prohelp_app/components/text_components.dart';
-import 'package:prohelp_app/helper/preference/preference_manager.dart';
-import 'package:prohelp_app/helper/service/api_service.dart';
-import 'package:prohelp_app/helper/state/state_manager.dart';
-import 'package:prohelp_app/screens/user/my_profile.dart';
-import 'package:prohelp_app/screens/user/profile.dart';
+import 'package:afrikunet/components/shimmer/banner_shimmer.dart';
+import 'package:afrikunet/components/text_components.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   final PreferenceManager manager;
@@ -120,19 +118,19 @@ class CustomSearchDelegate extends SearchDelegate {
                   // var result = matchQuery[index];
                   return ListTile(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => map['data'][index]['email'] ==
-                                  manager.getUser()['email']
-                              ? MyProfile(manager: manager)
-                              : UserProfile(
-                                  manager: manager,
-                                  data: map['data'][index],
-                                  triggerHire: false,
-                                ),
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => map['data'][index]['email'] ==
+                      //             manager.getUser()['email']
+                      //         ? MyProfile(manager: manager)
+                      //         : UserProfile(
+                      //             manager: manager,
+                      //             data: map['data'][index],
+                      //             triggerHire: false,
+                      //           ),
+                      //   ),
+                      // );
                     },
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.start,

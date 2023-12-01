@@ -5,17 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:prohelp_app/components/text_components.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
-import 'package:prohelp_app/helper/preference/preference_manager.dart';
-import 'package:prohelp_app/helper/service/api_service.dart';
-import 'package:prohelp_app/helper/state/state_manager.dart';
-import 'package:prohelp_app/model/drawer/drawermodel.dart';
-import 'package:prohelp_app/screens/jobs/jobs.dart';
-import 'package:prohelp_app/screens/messages/messages.dart';
-import 'package:prohelp_app/screens/pros/pros.dart';
-import 'package:prohelp_app/screens/user/my_profile.dart';
-import 'package:prohelp_app/screens/welcome/welcome.dart';
+import 'package:afrikunet/components/text_components.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
+import 'package:afrikunet/model/drawer/drawermodel.dart';
+import 'package:afrikunet/screens/welcome/welcome.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -39,59 +35,59 @@ class _CustomDrawerState extends State<CustomDrawer> {
     // final prefs = await SharedPreferences.getInstance();
     // _isLoggedIn = prefs.getBool('loggedIn') ?? false;
 
-    setState(() {
-      drawerList = [
-        DrawerModel(
-          icon: 'assets/images/pros_icon.svg',
-          title: 'Pros',
-          isAction: false,
-          widget: Pros(
-            manager: widget.manager,
-          ),
-        ),
-        DrawerModel(
-          icon: 'assets/images/jobs_icon.svg',
-          title: 'Jobs',
-          isAction: false,
-          widget: Jobs(
-            manager: widget.manager,
-          ),
-        ),
-        DrawerModel(
-          icon: 'assets/images/messages_icon.svg',
-          title: 'Messages',
-          isAction: false,
-          widget: Messages(
-            manager: widget.manager,
-          ),
-        ),
-        DrawerModel(
-          icon: Icons.account_circle_outlined,
-          title: 'My Profile',
-          isAction: false,
-          widget: MyProfile(
-            manager: widget.manager,
-          ),
-        ),
-        DrawerModel(
-            icon: Icons.info_outline,
-            title: 'About us',
-            isAction: true,
-            url: "https://google.com"
-            // widget: Categories(
-            //   manager: widget.manager,
-            // ),
-            ),
-        // DrawerModel(
-        //   icon: CupertinoIcons.money_dollar_circle,
-        //   title: 'Earnings',
-        //   isAction: false,
-        //   widget: Earnings(
-        //     manager: widget.manager,
-        //   ),
-        // ),
-      ];
-    });
+    // setState(() {
+    //   drawerList = [
+    //     DrawerModel(
+    //       icon: 'assets/images/pros_icon.svg',
+    //       title: 'Pros',
+    //       isAction: false,
+    //       widget: Pros(
+    //         manager: widget.manager,
+    //       ),
+    //     ),
+    //     DrawerModel(
+    //       icon: 'assets/images/jobs_icon.svg',
+    //       title: 'Jobs',
+    //       isAction: false,
+    //       widget: Jobs(
+    //         manager: widget.manager,
+    //       ),
+    //     ),
+    //     DrawerModel(
+    //       icon: 'assets/images/messages_icon.svg',
+    //       title: 'Messages',
+    //       isAction: false,
+    //       widget: Messages(
+    //         manager: widget.manager,
+    //       ),
+    //     ),
+    //     DrawerModel(
+    //       icon: Icons.account_circle_outlined,
+    //       title: 'My Profile',
+    //       isAction: false,
+    //       widget: MyProfile(
+    //         manager: widget.manager,
+    //       ),
+    //     ),
+    //     DrawerModel(
+    //         icon: Icons.info_outline,
+    //         title: 'About us',
+    //         isAction: true,
+    //         url: "https://google.com"
+    //         // widget: Categories(
+    //         //   manager: widget.manager,
+    //         // ),
+    //         ),
+    //     // DrawerModel(
+    //     //   icon: CupertinoIcons.money_dollar_circle,
+    //     //   title: 'Earnings',
+    //     //   isAction: false,
+    //     //   widget: Earnings(
+    //     //     manager: widget.manager,
+    //     //   ),
+    //     // ),
+    //   ];
+    // });
   }
 
   @override

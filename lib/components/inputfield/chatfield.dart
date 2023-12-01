@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
 
 class ChatInputField extends StatelessWidget {
   final String hintText;

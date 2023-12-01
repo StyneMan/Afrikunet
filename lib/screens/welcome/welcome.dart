@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:prohelp_app/components/button/roundedbutton.dart';
-import 'package:prohelp_app/components/text_components.dart';
-import 'package:prohelp_app/screens/auth/account_type/account_type.dart';
+import 'package:afrikunet/components/button/roundedbutton.dart';
+import 'package:afrikunet/components/text_components.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../auth/login/login.dart';
@@ -59,13 +58,13 @@ class _WelcomeState extends State<Welcome> {
                   borderColor: Colors.white,
                   foreColor: Colors.black,
                   onPressed: () {
-                    Navigator.of(context).push(
-                      PageTransition(
-                        type: PageTransitionType.size,
-                        alignment: Alignment.bottomCenter,
-                        child: const  AccountType(),
-                      ),
-                    );
+                    // Navigator.of(context).push(
+                    //   PageTransition(
+                    //     type: PageTransitionType.size,
+                    //     alignment: Alignment.bottomCenter,
+                    //     child: const AccountType(),
+                    //   ),
+                    // );
                   },
                   variant: "Filled",
                 ),

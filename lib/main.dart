@@ -4,27 +4,25 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:audioplayers/audioplayers.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:afrikunet/screens/onboarding/onboarding.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:prohelp_app/components/dashboard/dashboard.dart';
-import 'package:prohelp_app/firebase_options.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
-import 'package:prohelp_app/helper/preference/preference_manager.dart';
-import 'package:prohelp_app/helper/state/state_manager.dart';
-import 'package:prohelp_app/helper/theme/app_theme.dart';
-import 'package:prohelp_app/screens/jobs/applications.dart';
-import 'package:prohelp_app/screens/network/no_internet.dart';
+import 'package:afrikunet/components/dashboard/dashboard.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
+import 'package:afrikunet/helper/theme/app_theme.dart';
+import 'package:afrikunet/screens/network/no_internet.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prohelp_app/screens/welcome/welcome.dart';
+import 'package:afrikunet/screens/welcome/welcome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
-import 'helper/service/api_service.dart';
 import 'helper/socket/socket_manager.dart';
 
 Future initFirebase() async {
@@ -63,12 +61,6 @@ class AwaitBindings extends Bindings {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // await initFirebase();
-
-  // FirebaseApp app = await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
-  // print('Initialized default app $app');
 
   await FlutterDownloader.initialize(
       debug:
@@ -76,20 +68,6 @@ Future<void> main() async {
       ignoreSsl:
           true // option: set to false to disable working with http links (default: false)
       );
-
-  // await FirebaseAppCheck.instance.activate(
-  //   webRecaptchaSiteKey: 'recaptcha-v3-site-key',
-  //   // Default provider for Android is the Play Integrity provider. You can use the "AndroidProvider" enum to choose
-  //   // your preferred provider. Choose from:
-  //   // 1. debug provider
-  //   // 2. safety net provider
-  //   // 3. play integrity provider
-  //   androidDebugProvider:true ,
-  //   // androidProvider: AndroidProvider.debug,
-  // );
-
-  // Pass all uncaught "fatal" errors from the framework to Crashlytics
-  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
   FlutterError.onError = (errorDetails) {
     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
@@ -100,26 +78,8 @@ Future<void> main() async {
     return true;
   };
 
-  // GlobalBindings().dependencies();
-  // Get.put(StateController());
-
-  //WidgetsFlutterBinding.ensureInitialized(); // if needed for resources
-  // if (running == Version.lazy) {
-  // print('running LAZY version');
-  // GlobalBindings().dependencies();
-  // }
-
-  // if (running == Version.wait) {
-  //   print('running AWAIT version');
-  //   await AwaitBindings().dependencies(); // await is key here
-  // }
-
-  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-  //     overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
-
-  // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-  //   systemNavigationBarColor: Constants.accentColor, // navigation bar color
-  // ));
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom]);
 
   runApp(
     MyApp(),
@@ -133,13 +93,6 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-// List _socketEvents = [
-//   "-notification-created",
-//   "-booking-updated",
-//   "-chat-alert",
-//   "-profile-updated",
-// ];
-
 class _MyAppState extends State<MyApp> {
   final _controller = Get.put(StateController());
   Widget? component;
@@ -152,29 +105,6 @@ class _MyAppState extends State<MyApp> {
       final _prefs = await SharedPreferences.getInstance();
       _authenticated = _prefs.getBool("loggedIn") ?? false;
     } catch (e) {}
-  }
-
-  _refreshChatList() async {
-    try {
-      final _prefs = await SharedPreferences.getInstance();
-      final _token = _prefs.getString("accessToken") ?? "";
-      final _user = _prefs.getString("user") ?? "";
-      Map<String, dynamic> userMap = jsonDecode(_user);
-
-      final chatResp = await APIService().getUsersChats(
-        accessToken: _token,
-        email: userMap['email'],
-        // userId: userMap['id'],
-      );
-      debugPrint("MY CHATS RESPONSE >> ${chatResp.body}");
-      if (chatResp.statusCode == 200) {
-        Map<String, dynamic> chatMap = jsonDecode(chatResp.body);
-        _controller.myChats.value = chatMap['data'];
-        ;
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    }
   }
 
   void _connectSocket() async {
@@ -312,9 +242,9 @@ class _MyAppState extends State<MyApp> {
             _controller.currentConversation.add(map['message']);
           }
 
-          _refreshChatList();
+          // _refreshChatList();
           //Now play sound here
-          AudioPlayer().play(AssetSource('assets/audio/sound2.mp3'));
+          // AudioPlayer().play(AssetSource('assets/audio/sound2.mp3'));
         },
       );
     } catch (e) {}
@@ -338,19 +268,23 @@ class _MyAppState extends State<MyApp> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
-            home: Splash(
-              controller: _controller,
+            title: 'AfriKunet',
+            theme: appTheme,
+            home: Scaffold(
+              body: Splash(
+                controller: _controller,
+              ),
             ),
           );
         } else {
           // Loading is done, return the app:
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'ProHelp',
+            title: 'AfriKunet',
             theme: appTheme,
             home: _controller.hasInternetAccess.value
                 ? !_authenticated
-                    ? const Welcome()
+                    ? const Onboarding()
                     : Dashboard(manager: _manager!)
                 : const NoInternet(),
           );

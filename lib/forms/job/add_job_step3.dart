@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prohelp_app/components/button/roundedbutton.dart';
-import 'package:prohelp_app/components/inputfield/textfield.dart';
-import 'package:prohelp_app/components/text_components.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
-import 'package:prohelp_app/helper/preference/preference_manager.dart';
-import 'package:prohelp_app/helper/state/state_manager.dart';
+import 'package:afrikunet/components/button/roundedbutton.dart';
+import 'package:afrikunet/components/inputfield/textfield.dart';
+import 'package:afrikunet/components/text_components.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
 
 typedef void InitCallback(Map data);
 
@@ -35,7 +35,6 @@ class _AddJobFormStep3State extends State<AddJobFormStep3> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -56,14 +55,12 @@ class _AddJobFormStep3State extends State<AddJobFormStep3> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TextPoppins(
-              text: !_isClicked
-                  ? "Add requirements"
-                  : "Job requirements",
+              text: !_isClicked ? "Add requirements" : "Job requirements",
               fontSize: 20,
               fontWeight: FontWeight.w500,
             ),
             _isClicked
-                ?const Text("5 max")
+                ? const Text("5 max")
                 : IconButton(
                     onPressed: () {
                       setState(() {

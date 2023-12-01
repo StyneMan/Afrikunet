@@ -9,10 +9,11 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 // import 'package:logger/logger.dart';
 
 class Constants {
-  static const Color primaryColor = Color(0xFF0066F5);
-  static const Color accentColor = Color(0xFF8A95BF);
-  static const Color secondaryColor = Colors.white;
+  static const Color primaryColor = Color(0xFF015AB1);
+  static const Color accentColor = Color(0xFF0583FF);
+  static const Color secondaryColor = Color(0xFF06396A);
   static const Color golden = Color(0xFFF1A038);
+  static const Color strokeColor = Color.fromRGBO(191, 191, 191, 0.7);
 
   static const double padding = 20;
   static const double avatarRadius = 60;

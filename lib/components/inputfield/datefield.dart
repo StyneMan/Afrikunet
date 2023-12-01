@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
 
 typedef void InitCallback(String rawDate, String date);
 

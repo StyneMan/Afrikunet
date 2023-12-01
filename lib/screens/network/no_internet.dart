@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:get/get.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
-import 'package:prohelp_app/helper/state/state_manager.dart';
-import 'package:prohelp_app/main.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
+import 'package:afrikunet/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';

@@ -1,4 +1,4 @@
-import 'package:prohelp_app/helper/constants/constants.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -16,7 +16,7 @@ ThemeData appTheme = ThemeData(
     style: ElevatedButton.styleFrom(elevation: 0.0),
   ),
   checkboxTheme: CheckboxThemeData(
-    checkColor:MaterialStateProperty.all<Color?>(Colors.white),
+    checkColor: MaterialStateProperty.all<Color?>(Colors.white),
     fillColor: MaterialStateProperty.all<Color?>(Constants.primaryColor),
     splashRadius: 1.0,
   ),

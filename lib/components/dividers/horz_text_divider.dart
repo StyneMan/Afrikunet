@@ -1,6 +1,7 @@
+import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:flutter/material.dart';
-import 'package:prohelp_app/components/text_components.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
+import 'package:afrikunet/components/text_components.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
 
 class HorzTextDivider extends StatelessWidget {
   final String text;
@@ -20,10 +21,9 @@ class HorzTextDivider extends StatelessWidget {
           buildDivider(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: TextPoppins(
+            child: TextBody2(
               text: text,
-              fontSize: 20,
-              color: Constants.primaryColor,
+              color: Colors.black54,
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -36,7 +36,7 @@ class HorzTextDivider extends StatelessWidget {
   Expanded buildDivider() {
     return const Expanded(
       child: Divider(
-        color: Constants.primaryColor,
+        color: Colors.grey,
         height: 1.2,
       ),
     );

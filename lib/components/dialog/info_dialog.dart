@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
 
 class InfoDialog extends StatelessWidget {
   final Widget body;
@@ -50,7 +50,6 @@ class InfoDialog extends StatelessWidget {
         //   top: Constants.avatarRadius,
         //   child: ripple,
         // ),
-        
       ],
     );
   }

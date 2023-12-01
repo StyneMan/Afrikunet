@@ -1,17 +1,13 @@
-import 'dart:convert';
-
-import 'package:prohelp_app/components/button/roundedbutton.dart';
-import 'package:prohelp_app/components/inputfield/textfield.dart';
-import 'package:prohelp_app/components/text_components.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
-import 'package:prohelp_app/helper/preference/preference_manager.dart';
-import 'package:prohelp_app/helper/service/api_service.dart';
-import 'package:prohelp_app/helper/state/state_manager.dart';
-import 'package:prohelp_app/screens/auth/otp/verifyotp.dart';
+import 'package:afrikunet/components/button/roundedbutton.dart';
+import 'package:afrikunet/components/buttons/primary.dart';
+import 'package:afrikunet/components/inputfield/textfield.dart';
+import 'package:afrikunet/components/text_components.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
-import 'package:page_transition/page_transition.dart';
 
 class PasswordForm extends StatefulWidget {
   // final PreferenceManager manager;
@@ -39,31 +35,30 @@ class _PasswordFormState extends State<PasswordForm> {
   _forgotPass() async {
     _controller.setLoading(true);
     try {
-      final resp =
-          await APIService().forgotPass({"email": _emailController.text});
-      debugPrint("PASS RESET EMAIL : RESPONSE ${resp.body}");
-      _controller.setLoading(false);
+      // final resp =
+      //     await APIService().forgotPass({"email": _emailController.text});
+      // debugPrint("PASS RESET EMAIL : RESPONSE ${resp.body}");
+      // _controller.setLoading(false);
 
-      if (resp.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(resp.body);
-        Constants.toast(map['message']);
+      // if (resp.statusCode == 200) {
+      //   Map<String, dynamic> map = jsonDecode(resp.body);
+      //   Constants.toast(map['message']);
 
-        Navigator.of(context).push(
-          PageTransition(
-            type: PageTransitionType.size,
-            alignment: Alignment.bottomCenter,
-            child: VerifyOTP(
-              caller: "Password",
-              manager: _manager!,
-              email: _emailController.text,
-            ),
-          ),
-        );
-        
-      } else {
-        Map<String, dynamic> map = jsonDecode(resp.body);
-        Constants.toast(map['message']);
-      }
+      //   Navigator.of(context).push(
+      //     PageTransition(
+      //       type: PageTransitionType.size,
+      //       alignment: Alignment.bottomCenter,
+      //       child: VerifyOTP(
+      //         caller: "Password",
+      //         manager: _manager!,
+      //         email: _emailController.text,
+      //       ),
+      //     ),
+      //   );
+      // } else {
+      //   Map<String, dynamic> map = jsonDecode(resp.body);
+      //   Constants.toast(map['message']);
+      // }
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "user-not-found":
@@ -104,19 +99,19 @@ class _PasswordFormState extends State<PasswordForm> {
             inputType: TextInputType.emailAddress,
           ),
           const SizedBox(
-            height: 16.0,
+            height: 21.0,
           ),
-          RoundedButton(
-            bgColor: Constants.primaryColor,
-            child: TextPoppins(text: "RESET PASSWORD", fontSize: 18),
-            borderColor: Colors.transparent,
-            foreColor: Colors.white,
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                _forgotPass();
-              }
-            },
-            variant: "Filled",
+          SizedBox(
+            width: double.infinity,
+            child: PrimaryButton(
+              foreColor: Colors.white,
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _forgotPass();
+                }
+              },
+              buttonText: "Send Reset Link",
+            ),
           )
         ],
       ),

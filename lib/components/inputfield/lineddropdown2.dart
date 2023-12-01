@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prohelp_app/components/text_components.dart';
+import 'package:afrikunet/components/text_components.dart';
 
 typedef void InitCallback(String value);
 

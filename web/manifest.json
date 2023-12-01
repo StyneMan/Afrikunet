@@ -1,6 +1,6 @@
 {
-    "name": "prohelp_app",
-    "short_name": "prohelp_app",
+    "name": "afrikunet",
+    "short_name": "afrikunet",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

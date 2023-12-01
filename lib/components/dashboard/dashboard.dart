@@ -2,23 +2,17 @@ import 'dart:convert';
 import 'dart:io';
 
 // import 'package:shared_preferences/shared_preferences.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
-import 'package:prohelp_app/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
-import 'package:prohelp_app/helper/service/api_service.dart';
-import 'package:prohelp_app/helper/state/state_manager.dart';
-import 'package:prohelp_app/screens/account/account.dart';
-import 'package:prohelp_app/screens/alerts/alerts.dart';
-import 'package:prohelp_app/screens/jobs/jobs.dart';
-import 'package:prohelp_app/screens/messages/messages.dart';
-import 'package:prohelp_app/screens/network/no_internet.dart';
-import 'package:prohelp_app/screens/pros/pros.dart';
-import 'package:prohelp_app/screens/user/my_profile.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
+import 'package:afrikunet/screens/network/no_internet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
@@ -48,135 +42,6 @@ class _DashboardState extends State<Dashboard> {
       final _isShown = _prefs.getBool("dialogShown") ?? false;
       Map<String, dynamic> userMap = jsonDecode(_user);
 
-      // if (!_isShown) {
-      //   Future.delayed(const Duration(seconds: 1), () {
-      //     showDialog(
-      //       context: context,
-      //       // barrierDismissible: false,
-      //       builder: (BuildContext context) => SizedBox(
-      //         height: MediaQuery.of(context).size.height * 0.4,
-      //         width: MediaQuery.of(context).size.width * 0.98,
-      //         child: CustomDialog(
-      //           ripple: SvgPicture.asset(
-      //             "assets/images/feature_effect.svg",
-      //             width: (Constants.avatarRadius + 20),
-      //             height: (Constants.avatarRadius + 20),
-      //           ),
-      //           avtrBg: Colors.transparent,
-      //           avtrChild: Image.asset(
-      //             "assets/images/feature.png",
-      //           ), //const Icon(CupertinoIcons.check_mark, size: 50,),
-      //           body: Padding(
-      //             padding: const EdgeInsets.symmetric(
-      //               vertical: 16.0,
-      //               horizontal: 36.0,
-      //             ),
-      //             child: Column(
-      //               mainAxisSize: MainAxisSize.min,
-      //               mainAxisAlignment: MainAxisAlignment.end,
-      //               crossAxisAlignment: CrossAxisAlignment.center,
-      //               children: [
-      //                 TextPoppins(
-      //                   text: "GET FEATURED",
-      //                   fontSize: 21,
-      //                   fontWeight: FontWeight.w600,
-      //                 ),
-      //                 const SizedBox(
-      //                   height: 5.0,
-      //                 ),
-      //                 Row(
-      //                   mainAxisAlignment: MainAxisAlignment.center,
-      //                   crossAxisAlignment: CrossAxisAlignment.center,
-      //                   children: [
-      //                     Text(
-      //                       "${Constants.nairaSign(context).currencySymbol}",
-      //                       style: const TextStyle(
-      //                         fontSize: 18,
-      //                         color: Constants.primaryColor,
-      //                       ),
-      //                     ),
-      //                     const Text(
-      //                       "1,000",
-      //                       style: TextStyle(
-      //                         fontSize: 36,
-      //                         color: Constants.primaryColor,
-      //                         fontWeight: FontWeight.w600,
-      //                       ),
-      //                     )
-      //                   ],
-      //                 ),
-      //                 TextPoppins(
-      //                   text: "MONTHLY",
-      //                   fontSize: 14,
-      //                   fontWeight: FontWeight.w400,
-      //                 ),
-      //                 const SizedBox(
-      //                   height: 18,
-      //                 ),
-      //                 SizedBox(
-      //                   width: MediaQuery.of(context).size.width * 0.75,
-      //                   child: TextPoppins(
-      //                     text:
-      //                         "Get more visibility and profile sent to potential employers.",
-      //                     fontSize: 13,
-      //                     align: TextAlign.center,
-      //                   ),
-      //                 ),
-      //                 const SizedBox(
-      //                   height: 18,
-      //                 ),
-      //                 SizedBox(
-      //                   width: MediaQuery.of(context).size.width * 0.60,
-      //                   child: Column(
-      //                     children: [
-      //                       RoundedButton(
-      //                         bgColor: Constants.primaryColor,
-      //                         child: TextPoppins(
-      //                           text: "FEATURE ME",
-      //                           fontSize: 14,
-      //                           fontWeight: FontWeight.w300,
-      //                         ),
-      //                         borderColor: Colors.transparent,
-      //                         foreColor: Colors.white,
-      //                         onPressed: () {
-      //                           // widget.manager.setShown(true);
-      //                           Navigator.pop(context);
-      //                         },
-      //                         variant: "Filled",
-      //                       ),
-      //                       const SizedBox(
-      //                         height: 16.0,
-      //                       ),
-      //                       RoundedButton(
-      //                         bgColor: Colors.transparent,
-      //                         child: TextPoppins(
-      //                           text: "CONTINUE",
-      //                           fontSize: 14,
-      //                           fontWeight: FontWeight.w300,
-      //                         ),
-      //                         borderColor: Constants.primaryColor,
-      //                         foreColor: Constants.primaryColor,
-      //                         onPressed: () {
-      //                           widget.manager.setShown(true);
-      //                           Navigator.pop(context);
-      //                         },
-      //                         variant: "Outlined",
-      //                       ),
-      //                     ],
-      //                   ),
-      //                 ),
-      //               ],
-      //             ),
-      //           ),
-      //         ),
-      //       ),
-      //     );
-      //   });
-      // }
-
-      // _controller.userData.value = widget.manager.getUser();
-
-      // if (widget.manager.getUser()['accountType'] != "freelancer") {
       APIService().getFreelancers().then((value) {
         debugPrint("STATE GET FREELANCERS >>> ${value.body}");
         Map<String, dynamic> data = jsonDecode(value.body);
@@ -203,21 +68,6 @@ class _DashboardState extends State<Dashboard> {
           }
         });
       }
-
-      // }
-
-      // _controller.myChats.value = [];
-
-      // final chatResp = await APIService().getUsersChats(
-      //   accessToken: _token,
-      //   email: userMap['email'],
-      //   // userId: userMap['id'],
-      // );
-      // // debugPrint("MY CHATS RESPONSE >> ${chatResp.body}");
-      // if (chatResp.statusCode == 200) {
-      //   Map<String, dynamic> chatMap = jsonDecode(chatResp.body);
-      //   _controller.myChats.value = chatResp.body as List;
-      // }
     } catch (e) {
       debugPrint(e.toString());
       if (e.toString().contains("rk is unreachable")) {
@@ -239,12 +89,12 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     super.initState();
     _initDialog();
-    if (widget.showProfile) {
-      Future.delayed(const Duration(milliseconds: 1200), () {
-        Get.to(MyProfile(manager: widget.manager),
-            transition: Transition.cupertino);
-      });
-    }
+    // if (widget.showProfile) {
+    //   Future.delayed(const Duration(milliseconds: 1200), () {
+    //     Get.to(MyProfile(manager: widget.manager),
+    //         transition: Transition.cupertino);
+    //   });
+    // }
     // debugPrint("CURR USER STATE >> ${_controller.userData.value}");
   }
 
@@ -294,7 +144,8 @@ class _DashboardState extends State<Dashboard> {
               ? const NoInternet()
               : Scaffold(
                   key: _scaffoldKey,
-                  body: _buildScreens()[_controller.selectedIndex.value],
+                  body:
+                      const SizedBox(), // _buildScreens()[_controller.selectedIndex.value],
                   bottomNavigationBar: BottomNavigationBar(
                     currentIndex: _controller.selectedIndex.value,
                     onTap: _onItemTapped,
@@ -367,15 +218,15 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  List<Widget> _buildScreens() {
-    return [
-      Pros(
-        manager: widget.manager,
-      ),
-      Jobs(manager: widget.manager),
-      Messages(manager: widget.manager),
-      Alerts(manager: widget.manager),
-      Account(manager: widget.manager)
-    ];
-  }
+  // List<Widget> _buildScreens() {
+  //   return [
+  //     Pros(
+  //       manager: widget.manager,
+  //     ),
+  //     Jobs(manager: widget.manager),
+  //     Messages(manager: widget.manager),
+  //     Alerts(manager: widget.manager),
+  //     Account(manager: widget.manager)
+  //   ];
+  // }
 }

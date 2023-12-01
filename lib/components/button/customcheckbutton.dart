@@ -1,5 +1,5 @@
-import 'package:prohelp_app/components/text_components.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
+import 'package:afrikunet/components/text_components.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 typedef InitCallback(bool isActive);
@@ -46,7 +46,8 @@ class CheckButton extends StatelessWidget {
           ),
         ),
         style: TextButton.styleFrom(
-          foregroundColor: (isActive || _isActive) ? Constants.primaryColor : Colors.black54,
+          foregroundColor:
+              (isActive || _isActive) ? Constants.primaryColor : Colors.black54,
         ),
       ),
     );

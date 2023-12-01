@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
-import 'package:prohelp_app/components/button/roundedbutton.dart';
-import 'package:prohelp_app/components/dialog/custom_dialog.dart';
-import 'package:prohelp_app/components/inputfield/customdropdown.dart';
-import 'package:prohelp_app/components/inputfield/textarea.dart';
-import 'package:prohelp_app/components/text_components.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
-import 'package:prohelp_app/helper/preference/preference_manager.dart';
-import 'package:prohelp_app/helper/service/api_service.dart';
-import 'package:prohelp_app/helper/state/state_manager.dart';
+import 'package:afrikunet/components/button/roundedbutton.dart';
+import 'package:afrikunet/components/dialog/custom_dialog.dart';
+import 'package:afrikunet/components/inputfield/customdropdown.dart';
+import 'package:afrikunet/components/inputfield/textarea.dart';
+import 'package:afrikunet/components/text_components.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
 
 class SupportForm extends StatefulWidget {
   final PreferenceManager manager;
@@ -108,7 +108,8 @@ class _SupportFormState extends State<SupportForm> {
       "message": _messageController.text,
       "user": {
         "fullname":
-            "${widget.manager.getUser()['bio']['firstname']} ${widget.manager.getUser()['bio']['lastname']}".capitalize,
+            "${widget.manager.getUser()['bio']['firstname']} ${widget.manager.getUser()['bio']['lastname']}"
+                .capitalize,
         "email": widget.manager.getUser()['email'],
         "image": widget.manager.getUser()['bio']['image'],
         "id": widget.manager.getUser()['id'],

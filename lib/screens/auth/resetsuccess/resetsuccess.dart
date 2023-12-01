@@ -1,8 +1,8 @@
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:prohelp_app/components/button/roundedbutton.dart';
-import 'package:prohelp_app/components/text_components.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
-import 'package:prohelp_app/screens/auth/login/login.dart';
+import 'package:afrikunet/components/button/roundedbutton.dart';
+import 'package:afrikunet/components/text_components.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/screens/auth/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 

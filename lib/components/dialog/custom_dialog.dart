@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
 
 class CustomDialog extends StatelessWidget {
   final Widget avtrChild;
@@ -46,15 +46,12 @@ class CustomDialog extends StatelessWidget {
               //       color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
               // ],
             ),
-            child: body
-            
-            ),
+            child: body),
         Positioned(
           left: Constants.padding,
           right: Constants.padding,
           top: Constants.avatarRadius,
           child: ripple,
-         
         ),
         Positioned(
           left: Constants.padding,
@@ -70,7 +67,6 @@ class CustomDialog extends StatelessWidget {
             ),
           ),
         ),
-       
       ],
     );
   }

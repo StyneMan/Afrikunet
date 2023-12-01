@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
-import 'package:prohelp_app/components/button/roundedbutton.dart';
-import 'package:prohelp_app/components/inputfield/customautocomplete.dart';
-import 'package:prohelp_app/components/text_components.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
-import 'package:prohelp_app/helper/preference/preference_manager.dart';
-import 'package:prohelp_app/helper/service/api_service.dart';
-import 'package:prohelp_app/helper/state/state_manager.dart';
+import 'package:afrikunet/components/button/roundedbutton.dart';
+import 'package:afrikunet/components/inputfield/customautocomplete.dart';
+import 'package:afrikunet/components/text_components.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class SkillsForm extends StatefulWidget {
@@ -284,7 +284,6 @@ class _SkillsFormState extends State<SkillsForm> {
         String userData = jsonEncode(map['data']);
         widget.manager.setUserData(userData);
         _controller.userData.value = map['data'];
-
       } else {
         Map<String, dynamic> map = jsonDecode(resp.body);
         Constants.toast(map['message']);

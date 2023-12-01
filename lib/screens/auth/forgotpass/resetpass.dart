@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:prohelp_app/components/text_components.dart';
-import 'package:prohelp_app/forms/forgotpassword/newpasswordform.dart';
-// import 'package:prohelp_app/forms/resetpassword/resetpassform.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
-import 'package:prohelp_app/helper/preference/preference_manager.dart';
-import 'package:prohelp_app/helper/state/state_manager.dart';
+import 'package:afrikunet/components/text_components.dart';
+import 'package:afrikunet/forms/forgotpassword/newpasswordform.dart';
+// import 'package:afrikunet/forms/resetpassword/resetpassform.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:substring_highlight/substring_highlight.dart';
 
 typedef void InitCallback(String value);

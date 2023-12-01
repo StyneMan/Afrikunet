@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:prohelp_app/helper/constants/constants.dart';
-import 'package:prohelp_app/screens/welcome/welcome.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/screens/welcome/welcome.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';

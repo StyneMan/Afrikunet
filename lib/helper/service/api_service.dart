@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http/http.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
-import 'package:prohelp_app/helper/interceptors/api_interceptors.dart';
-import 'package:prohelp_app/helper/interceptors/token_retry.dart';
-import 'package:prohelp_app/helper/state/state_manager.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/interceptors/api_interceptors.dart';
+import 'package:afrikunet/helper/interceptors/token_retry.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
 
 class APIService {
   final _controller = Get.find<StateController>();

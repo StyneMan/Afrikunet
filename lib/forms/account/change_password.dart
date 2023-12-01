@@ -1,12 +1,12 @@
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/instance_manager.dart';
-import 'package:prohelp_app/components/button/roundedbutton.dart';
-import 'package:prohelp_app/components/dialog/custom_dialog.dart';
-import 'package:prohelp_app/components/inputfield/passwordfield.dart';
-import 'package:prohelp_app/components/text_components.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
+import 'package:afrikunet/components/button/roundedbutton.dart';
+import 'package:afrikunet/components/dialog/custom_dialog.dart';
+import 'package:afrikunet/components/inputfield/passwordfield.dart';
+import 'package:afrikunet/components/text_components.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:prohelp_app/helper/state/state_manager.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
 
 class ChangePasswordForm extends StatefulWidget {
   const ChangePasswordForm({Key? key}) : super(key: key);
@@ -113,7 +113,8 @@ class _ChangePasswordFormFormState extends State<ChangePasswordForm> {
             ),
             avtrBg: Colors.transparent,
             avtrChild: Image.asset(
-                "assets/images/checked.png",), //const Icon(CupertinoIcons.check_mark, size: 50,),
+              "assets/images/checked.png",
+            ), //const Icon(CupertinoIcons.check_mark, size: 50,),
             body: Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 16.0,

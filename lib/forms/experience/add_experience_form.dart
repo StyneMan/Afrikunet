@@ -8,18 +8,18 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
-import 'package:prohelp_app/components/button/roundedbutton.dart';
-import 'package:prohelp_app/components/inputfield/customautocomplete.dart';
-import 'package:prohelp_app/components/inputfield/datefield.dart';
-import 'package:prohelp_app/components/inputfield/textfield.dart';
-import 'package:prohelp_app/components/picker/img_picker.dart';
-import 'package:prohelp_app/components/text_components.dart';
-import 'package:prohelp_app/data/countries/countries.dart';
-import 'package:prohelp_app/data/state/nigerian_states.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
-import 'package:prohelp_app/helper/preference/preference_manager.dart';
-import 'package:prohelp_app/helper/service/api_service.dart';
-import 'package:prohelp_app/helper/state/state_manager.dart';
+import 'package:afrikunet/components/button/roundedbutton.dart';
+import 'package:afrikunet/components/inputfield/customautocomplete.dart';
+import 'package:afrikunet/components/inputfield/datefield.dart';
+import 'package:afrikunet/components/inputfield/textfield.dart';
+import 'package:afrikunet/components/picker/img_picker.dart';
+import 'package:afrikunet/components/text_components.dart';
+import 'package:afrikunet/data/countries/countries.dart';
+import 'package:afrikunet/data/state/nigerian_states.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
 
 class NewExperienceForm extends StatefulWidget {
   final PreferenceManager manager;
@@ -443,9 +443,8 @@ class _NewExperienceFormState extends State<NewExperienceForm> {
       if (_controller.croppedPic.value.isNotEmpty) {
         //Now upload to Firebase Storage first
         final storageRef = FirebaseStorage.instance.ref();
-        final fileRef = storageRef
-            .child("experience")
-            .child("${widget.manager.getUser()['email']}_${_companyController.text.toLowerCase()}");
+        final fileRef = storageRef.child("experience").child(
+            "${widget.manager.getUser()['email']}_${_companyController.text.toLowerCase()}");
         final _resp = await fileRef.putFile(File(_controller.croppedPic.value));
         final url = await _resp.ref.getDownloadURL();
 

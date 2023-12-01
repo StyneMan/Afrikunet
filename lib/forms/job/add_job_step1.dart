@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
-import 'package:prohelp_app/components/inputfield/city_dropdown.dart';
-import 'package:prohelp_app/components/inputfield/customdropdown.dart';
-import 'package:prohelp_app/components/inputfield/state_dropdown.dart';
-import 'package:prohelp_app/components/inputfield/textfield.dart';
-import 'package:prohelp_app/components/text_components.dart';
-import 'package:prohelp_app/data/state/statesAndCities.dart';
-import 'package:prohelp_app/helper/preference/preference_manager.dart';
-import 'package:prohelp_app/helper/state/state_manager.dart';
+import 'package:afrikunet/components/inputfield/city_dropdown.dart';
+import 'package:afrikunet/components/inputfield/customdropdown.dart';
+import 'package:afrikunet/components/inputfield/state_dropdown.dart';
+import 'package:afrikunet/components/inputfield/textfield.dart';
+import 'package:afrikunet/components/text_components.dart';
+import 'package:afrikunet/data/state/statesAndCities.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
 
 typedef void InitCallback(Map data);
 
@@ -269,7 +269,6 @@ class _AddJobFormStep1State extends State<AddJobFormStep1> {
           const SizedBox(
             height: 16.0,
           ),
-          
         ],
       ),
     );

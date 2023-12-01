@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:prohelp_app/components/button/roundedbutton.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
+import 'package:afrikunet/components/button/roundedbutton.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
 
 import '../../../components/dashboard/dashboard.dart';
 import '../../../components/text_components.dart';

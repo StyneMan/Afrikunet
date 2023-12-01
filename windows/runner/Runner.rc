@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "prohelp_app" "\0"
+            VALUE "FileDescription", "afrikunet" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "prohelp_app" "\0"
+            VALUE "InternalName", "afrikunet" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "prohelp_app.exe" "\0"
-            VALUE "ProductName", "prohelp_app" "\0"
+            VALUE "OriginalFilename", "afrikunet.exe" "\0"
+            VALUE "ProductName", "afrikunet" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

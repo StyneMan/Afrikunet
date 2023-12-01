@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prohelp_app/components/text_components.dart';
+import 'package:afrikunet/components/text_components.dart';
 
 typedef void InitCallback(String value);
 
@@ -7,7 +7,7 @@ class LinedDropdownCity extends StatefulWidget {
   final String label, title;
   final InitCallback onSelected;
   final List<String> items;
-  
+
   const LinedDropdownCity({
     Key? key,
     required this.label,
@@ -36,13 +36,13 @@ class _LinedDropdownState extends State<LinedDropdownCity> {
             color: const Color(0xFF9CA5C5),
           ),
           Expanded(
-              child: Container(
-                width: 100,
-                color: Colors.transparent,
-              ),
+            child: Container(
+              width: 100,
+              color: Colors.transparent,
             ),
+          ),
           SizedBox(
-           width: MediaQuery.of(context).size.width * 0.56,
+            width: MediaQuery.of(context).size.width * 0.56,
             child: DropdownButton(
               hint: TextInter(
                 text: widget.label,

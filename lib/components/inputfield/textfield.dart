@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
 
 class CustomTextField extends StatelessWidget {
   final String hintText;
@@ -25,7 +25,7 @@ class CustomTextField extends StatelessWidget {
     required this.controller,
     required this.validator,
     required this.inputType,
-    this.borderRadius = 36.0,
+    this.borderRadius = 6.0,
     this.endIcon = const SizedBox(),
     this.placeholder = "",
     this.focusNode,
@@ -35,7 +35,7 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       onChanged: onChanged,
-      cursorColor: Constants.primaryColor,
+      cursorColor: Constants.secondaryColor,
       controller: controller,
       validator: validator,
       maxLength: hintText == "Phone" ? 11 : null,
@@ -47,18 +47,24 @@ class CustomTextField extends StatelessWidget {
           vertical: 12.0,
         ),
         border: OutlineInputBorder(
+          borderSide:
+              const BorderSide(color: Constants.strokeColor, width: 1.0),
           borderRadius: BorderRadius.all(
             Radius.circular(borderRadius),
           ),
           gapPadding: 4.0,
         ),
         enabledBorder: OutlineInputBorder(
+          borderSide:
+              const BorderSide(color: Constants.strokeColor, width: 1.0),
           borderRadius: BorderRadius.all(
             Radius.circular(borderRadius),
           ),
           gapPadding: 4.0,
         ),
         focusedBorder: OutlineInputBorder(
+          borderSide:
+              const BorderSide(color: Constants.strokeColor, width: 1.0),
           borderRadius: BorderRadius.all(
             Radius.circular(borderRadius),
           ),
@@ -67,17 +73,12 @@ class CustomTextField extends StatelessWidget {
         filled: false,
         hintText: placeholder ?? hintText,
         labelText: hintText,
-        focusColor: Constants.accentColor,
+        focusColor: Constants.strokeColor,
         hintStyle: const TextStyle(
-          fontFamily: "Poppins",
-          color: Colors.black38,
+          fontFamily: "OpenSans",
+          color: Colors.grey,
           fontSize: 14,
           fontWeight: FontWeight.w400,
-        ),
-        labelStyle: const TextStyle(
-          fontFamily: "Poppins",
-          fontWeight: FontWeight.w500,
-          fontSize: 18,
         ),
         suffixIcon: endIcon,
       ),

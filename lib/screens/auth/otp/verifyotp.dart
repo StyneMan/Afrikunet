@@ -10,12 +10,10 @@ import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:prohelp_app/components/button/roundedbutton.dart';
-import 'package:prohelp_app/helper/constants/constants.dart';
-import 'package:prohelp_app/helper/service/api_service.dart';
-import 'package:prohelp_app/screens/account/setup_profile.dart';
-import 'package:prohelp_app/screens/account/setup_profile_employer.dart';
-import 'package:prohelp_app/screens/auth/forgotpass/resetpass.dart';
+import 'package:afrikunet/components/button/roundedbutton.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
+import 'package:afrikunet/screens/auth/forgotpass/resetpass.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../../../components/text_components.dart';
@@ -96,21 +94,21 @@ class _State extends State<VerifyOTP> {
         Constants.toast(map['message']);
 
         if (widget.caller != "Password") {
-          Navigator.of(context).pushReplacement(
-            PageTransition(
-              type: PageTransitionType.size,
-              alignment: Alignment.bottomCenter,
-              child: _controller.accountType.value == "professional"
-                  ? SetupProfile(
-                      manager: _manager!,
-                      email: "${widget.email}",
-                    )
-                  : SetupProfileEmployer(
-                      manager: _manager!,
-                      email: "${widget.email}",
-                    ),
-            ),
-          );
+          // Navigator.of(context).pushReplacement(
+          //   PageTransition(
+          //     type: PageTransitionType.size,
+          //     alignment: Alignment.bottomCenter,
+          //     child: _controller.accountType.value == "professional"
+          //         ? SetupProfile(
+          //             manager: _manager!,
+          //             email: "${widget.email}",
+          //           )
+          //         : SetupProfileEmployer(
+          //             manager: _manager!,
+          //             email: "${widget.email}",
+          //           ),
+          //   ),
+          // );
         } else {
           Navigator.of(context).pushReplacement(
             PageTransition(

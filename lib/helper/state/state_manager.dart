@@ -4,7 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prohelp_app/helper/service/api_service.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
@@ -23,6 +23,8 @@ class StateController extends GetxController {
   var hideNavbar = false.obs;
   var showPlan = false.obs;
   var hasInternetAccess = true.obs;
+
+  var onboardingIndex = 0.obs;
 
   var allProfessions = [].obs;
 
@@ -173,61 +175,59 @@ class StateController extends GetxController {
         }
       });
 
-      if (_token.isNotEmpty) {
-        //Get User Profile
-        APIService()
-            .getUsersChats(accessToken: _token, email: map['email'])
-            .then((value) {
-          debugPrint("STATE GET CHATS >>> ${value.body}");
-          Map<String, dynamic> data = jsonDecode(value.body);
-          myChats.value = data['data'];
-          // _prefs.setString("user", jsonEncode(data['data']));
+      //Get User Chats
+      APIService()
+          .getUsersChats(accessToken: _token, email: map['email'])
+          .then((value) {
+        debugPrint("STATE GET CHATS >>> ${value.body}");
+        Map<String, dynamic> data = jsonDecode(value.body);
+        myChats.value = data['data'];
+        // _prefs.setString("user", jsonEncode(data['data']));
 
-          //Update preference here
-        }).catchError((onError) {
-          debugPrint("STATE GET MYCHATS ERROR>>> $onError");
-          if (onError.toString().contains("rk is unreachable")) {
-            hasInternetAccess.value = false;
-          }
-        });
-
-        // if (map['accountType'] != "freelancer") {
-        APIService().getFreelancers().then((value) {
-          debugPrint("STATE GET FREELANCERS >>> ${value.body}");
-          Map<String, dynamic> data = jsonDecode(value.body);
-          freelancers.value = data['docs'];
-        }).catchError((onError) {
-          if (onError.toString().contains("rk is unreachable")) {
-            hasInternetAccess.value = false;
-          }
-          debugPrint("STATE GET freelancer ERROR >>> $onError");
-        });
-
-        APIService().getAllJobs().then((value) {
-          debugPrint("STATE GET JOBS >>> ${value.body}");
-          Map<String, dynamic> data = jsonDecode(value.body);
-          allJobs.value = data['docs'];
-        }).catchError((onError) {
-          debugPrint("STATE GET jobs ERROR >>> $onError");
-          if (onError.toString().contains("rk is unreachable")) {
-            hasInternetAccess.value = false;
-          }
-        });
-
-        // myJobs.value = [];
-
-        final myJobsResp = await APIService().getUserJobs(
-          accessToken: _token,
-          email: map['email'],
-          userId: map['id'],
-        );
-
-        debugPrint("MY JOBS RESPONSE >> ${myJobsResp.body}");
-
-        if (myJobsResp.statusCode == 200) {
-          Map<String, dynamic> jobMap = jsonDecode(myJobsResp.body);
-          myJobs.value = jobMap['docs'];
+        //Update preference here
+      }).catchError((onError) {
+        debugPrint("STATE GET MYCHATS ERROR>>> $onError");
+        if (onError.toString().contains("rk is unreachable")) {
+          hasInternetAccess.value = false;
         }
+      });
+
+      // if (map['accountType'] != "freelancer") {
+      APIService().getFreelancers().then((value) {
+        debugPrint("STATE GET FREELANCERS >>> ${value.body}");
+        Map<String, dynamic> data = jsonDecode(value.body);
+        freelancers.value = data['docs'];
+      }).catchError((onError) {
+        if (onError.toString().contains("rk is unreachable")) {
+          hasInternetAccess.value = false;
+        }
+        debugPrint("STATE GET freelancer ERROR >>> $onError");
+      });
+
+      APIService().getAllJobs().then((value) {
+        debugPrint("STATE GET JOBS >>> ${value.body}");
+        Map<String, dynamic> data = jsonDecode(value.body);
+        allJobs.value = data['docs'];
+      }).catchError((onError) {
+        debugPrint("STATE GET jobs ERROR >>> $onError");
+        if (onError.toString().contains("rk is unreachable")) {
+          hasInternetAccess.value = false;
+        }
+      });
+
+      // myJobs.value = [];
+
+      final myJobsResp = await APIService().getUserJobs(
+        accessToken: _token,
+        email: map['email'],
+        userId: map['id'],
+      );
+
+      debugPrint("MY JOBS RESPONSE >> ${myJobsResp.body}");
+
+      if (myJobsResp.statusCode == 200) {
+        Map<String, dynamic> jobMap = jsonDecode(myJobsResp.body);
+        myJobs.value = jobMap['docs'];
       }
     }
   }
