@@ -67,6 +67,6 @@ class DefaultFirebaseOptions {
         '964741321159-utj0quhj8o5otmd3gptfbohk7r6lr3t3.apps.googleusercontent.com',
     iosClientId:
         '964741321159-28qcackd3m76obnp0srfo7oebc1cke6r.apps.googleusercontent.com',
-    iosBundleId: 'com.prohelp.app',
+    iosBundleId: 'com.afrikunet.app',
   );
 }
