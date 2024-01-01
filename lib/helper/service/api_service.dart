@@ -91,25 +91,6 @@ class APIService {
     );
   }
 
-  Future<http.Response> getFreelancers() async {
-    return await client.get(
-      Uri.parse('${Constants.baseURL}/api/freelancers/'),
-      headers: {
-        "Content-type": "application/json",
-      },
-    );
-  }
-
-  Future<http.Response> getRecruiters(String accessToken, String email) async {
-    return await client.get(
-      Uri.parse('${Constants.baseURL}/api/recruiters/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-    );
-  }
-
   Future<http.Response> logout(String accessToken, String email) async {
     return await client.get(
       Uri.parse('${Constants.baseURL}/api/logout/$email'),
@@ -155,64 +136,12 @@ class APIService {
     );
   }
 
-  Future<http.Response> likeUser(
-      Map body, String accessToken, String email) async {
-    return await client.put(
-      Uri.parse('${Constants.baseURL}/api/likeUser/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-      body: jsonEncode(body),
-    );
-  }
-
-  Future<http.Response> saveConnection(
-      Map body, String accessToken, String email) async {
-    return await client.put(
-      Uri.parse('${Constants.baseURL}/api/connection/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-      body: jsonEncode(body),
-    );
-  }
-
-  Future<http.Response> getSavedPros(String accessToken, String email) async {
-    return await client.get(
-      Uri.parse('${Constants.baseURL}/api/users/savedPros/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-    );
-  }
-
   Future<http.Response> getConnections(String accessToken, String email) async {
     return await client.get(
       Uri.parse('${Constants.baseURL}/api/users/connections/$email'),
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-      },
-    );
-  }
-
-  Future<http.Response> getProfessions() async {
-    return await client.get(
-      Uri.parse('${Constants.baseURL}/api/profession/all'),
-      headers: {
-        "Content-type": "application/json",
-      },
-    );
-  }
-
-  Future<http.Response> getSearchResults(String accessToken, String key) async {
-    return await client.get(
-      Uri.parse('${Constants.baseURL}/api/search/$key'),
-      headers: {
-        "Content-type": "application/json",
       },
     );
   }
@@ -224,111 +153,6 @@ class APIService {
         "Content-type": "application/json",
       },
       body: jsonEncode({"token": idToken}),
-    );
-  }
-
-  Future<http.Response> initiateChat(
-      {var accessToken, var email, var payload}) async {
-    return await client.post(
-      Uri.parse('${Constants.baseURL}/api/chat/initiate/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-      body: jsonEncode(payload),
-    );
-  }
-
-  Future<http.Response> initChat(
-      {var accessToken, var email, var payload}) async {
-    return await client.put(
-      Uri.parse('${Constants.baseURL}/api/chat/init/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-      body: jsonEncode(payload),
-    );
-  }
-
-  Future<http.Response> getUsersChats({var accessToken, var email}) async {
-    return await client.get(
-      Uri.parse('${Constants.baseURL}/api/chat/allChats/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-    );
-  }
-
-  Future<http.Response> postMessage(
-      {var accessToken, var email, var payload}) async {
-    return await client.post(
-      Uri.parse('${Constants.baseURL}/api/chat/message/post/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-      body: jsonEncode(payload),
-    );
-  }
-
-  Future<http.Response> markasRead(
-      {var accessToken, var email, var payload}) async {
-    return await client.put(
-      Uri.parse('${Constants.baseURL}/api/chat/message/read/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-      body: jsonEncode(payload),
-    );
-  }
-
-  Future<http.Response> getConversationsByChatId(
-      {var accessToken, var email, var chatId}) async {
-    return await client.get(
-      Uri.parse('${Constants.baseURL}/api/chat/messages/$email/$chatId'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-    );
-  }
-
-  Future<http.Response> postReview(
-      {var accessToken, var email, var payload}) async {
-    return await client.post(
-      Uri.parse('${Constants.baseURL}/api/review/create/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-      body: jsonEncode(payload),
-    );
-  }
-
-  Future<http.Response> deleteReview(
-      {var accessToken, var email, var payload}) async {
-    return await client.put(
-      Uri.parse('${Constants.baseURL}/api/review/delete/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-      body: jsonEncode(payload),
-    );
-  }
-
-  Future<http.Response> replyReview(
-      {var accessToken, var email, var payload}) async {
-    return await client.put(
-      Uri.parse('${Constants.baseURL}/api/review/reply/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-      body: jsonEncode(payload),
     );
   }
 
@@ -350,38 +174,6 @@ class APIService {
     }
   }
 
-  Future<http.Response> postJob(
-      {var accessToken, var email, var payload}) async {
-    return await client.post(
-      Uri.parse('${Constants.baseURL}/api/job/post/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-      body: jsonEncode(payload),
-    );
-  }
-
-  Future<http.Response> getAllJobs() async {
-    return await client.get(
-      Uri.parse('${Constants.baseURL}/api/job/all/'),
-      headers: {
-        "Content-type": "application/json",
-      },
-    );
-  }
-
-  Future<http.Response> getUserJobs(
-      {var accessToken, var email, var userId}) async {
-    return await client.get(
-      Uri.parse('${Constants.baseURL}/api/job/byUser/$email?userId=$userId'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-    );
-  }
-
   Future<List<dynamic>> getJobsByUserIdStreamed(
       {var accessToken, var email, var userId}) async {
     final response = await client.get(
@@ -398,148 +190,6 @@ class APIService {
     } else {
       throw Exception('Failed to fetch data from the backend');
     }
-  }
-
-  Future<http.Response> deleteJob(
-      {var accessToken, var email, var jobId}) async {
-    return await client.put(
-      Uri.parse('${Constants.baseURL}/api/job/delete/$email?jobId=$jobId'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-    );
-  }
-
-  Future<http.Response> updateJob(
-      {var accessToken, var email, var jobId, var payload}) async {
-    return await client.put(
-      Uri.parse('${Constants.baseURL}/api/job/update/$email?jobId=$jobId'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-      body: jsonEncode(payload),
-    );
-  }
-
-  Future<http.Response> saveJob(
-      Map body, String accessToken, String email) async {
-    return await client.put(
-      Uri.parse('${Constants.baseURL}/api/job/save/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-      body: jsonEncode(body),
-    );
-  }
-
-  Future<http.Response> applyJob(
-    Map body,
-    String accessToken,
-    String email,
-    var jobId,
-  ) async {
-    return await client.post(
-      Uri.parse('${Constants.baseURL}/api/job/apply/$email?jobId=$jobId'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-      body: jsonEncode(body),
-    );
-  }
-
-  Future<http.Response> getSavedJobs(
-      {var accessToken, var email, var userId}) async {
-    return await client.get(
-      Uri.parse('${Constants.baseURL}/api/job/savedJobs/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-    );
-  }
-
-  Future<http.Response> getJobApplicationsByUser(
-      {var accessToken, var email}) async {
-    return await client.get(
-      Uri.parse('${Constants.baseURL}/api/job/applications/byUser/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-    );
-  }
-
-  Future<http.Response> getJobApplications(
-      {var accessToken, var email, var jobId}) async {
-    return await client.get(
-      Uri.parse(
-          '${Constants.baseURL}/api/job/applications/$email?jobId=$jobId'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-    );
-  }
-
-  Future<List<dynamic>> getJobApplicationsStreamed(
-      {var accessToken, var email, var jobId}) async {
-    final response = await client.get(
-      Uri.parse(
-          '${Constants.baseURL}/api/job/applications/$email?jobId=$jobId'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-    );
-    if (response.statusCode == 200) {
-      debugPrint("MY JOB APPLICATIONS DATA >> ${response.body}");
-      Map<String, dynamic> map = jsonDecode(response.body);
-      return map['docs'] as List<dynamic>;
-    } else {
-      throw Exception('Failed to fetch data from the backend');
-    }
-  }
-
-  Future<http.Response> getCurrentJobApplications(
-      {var email, var jobId}) async {
-    return await client.get(
-      Uri.parse(
-          '${Constants.baseURL}/api/job/applications/$email?jobId=$jobId'),
-      headers: {
-        "Content-type": "application/json",
-      },
-    );
-  }
-
-  Future<http.Response> getRecommendedJobs(
-      {var accessToken, var email, var profession}) async {
-    return await client.get(
-      Uri.parse(
-          '${Constants.baseURL}/api/job/recommended/$email?profession=$profession'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-    );
-  }
-
-  Future<http.Response> acceptJobApplication(
-    Map body,
-    String accessToken,
-    String email,
-  ) async {
-    return await client.put(
-      Uri.parse('${Constants.baseURL}/api/job/applications/accept/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-      body: jsonEncode(body),
-    );
   }
 
   Future<http.Response> topupWallet(

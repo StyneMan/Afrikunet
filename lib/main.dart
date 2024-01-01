@@ -19,7 +19,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:afrikunet/screens/welcome/welcome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -78,8 +77,19 @@ Future<void> main() async {
     return true;
   };
 
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-      overlays: [SystemUiOverlay.bottom]);
+  // Set the status bar color
+  // SystemChrome.setSystemUIOverlayStyle(
+  //   const SystemUiOverlayStyle(
+  //     statusBarColor: Colors.white, // Set your desired color here
+  //     statusBarIconBrightness:
+  //         Brightness.dark, // Set the status bar icons' color
+  //   ),
+  // );
+
+  // SystemChrome.setEnabledSystemUIMode(
+  //   SystemUiMode.manual,
+  //   overlays: [SystemUiOverlay.bottom],
+  // );
 
   runApp(
     MyApp(),
@@ -285,7 +295,7 @@ class _MyAppState extends State<MyApp> {
             home: _controller.hasInternetAccess.value
                 ? !_authenticated
                     ? const Onboarding()
-                    : Dashboard(manager: _manager!)
+                    : Dashboard()
                 : const NoInternet(),
           );
         }

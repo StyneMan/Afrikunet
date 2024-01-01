@@ -6,11 +6,13 @@ class PrimaryButton extends StatelessWidget {
   final Color bgColor;
   final Color foreColor;
   final String buttonText;
+  final double? fontSize;
   final Function()? onPressed;
   const PrimaryButton({
     Key? key,
     this.bgColor = Constants.primaryColor,
     this.foreColor = Colors.white,
+    this.fontSize,
     required this.buttonText,
     required this.onPressed,
   }) : super(key: key);
@@ -29,11 +31,20 @@ class PrimaryButton extends StatelessWidget {
           ),
         ),
       ),
-      child: TextBody1(
-        text: buttonText,
-        color: foreColor,
-        fontWeight: FontWeight.w700,
-      ),
+      child: fontSize != null
+          ? Text(
+              buttonText,
+              style: TextStyle(
+                color: foreColor,
+                fontSize: fontSize,
+                fontWeight: FontWeight.w500,
+              ),
+            )
+          : TextBody1(
+              text: buttonText,
+              color: foreColor,
+              fontWeight: FontWeight.w700,
+            ),
     );
   }
 }

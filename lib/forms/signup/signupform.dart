@@ -1,12 +1,13 @@
 import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/screens/auth/login/login.dart';
+import 'package:afrikunet/screens/auth/otp/verifyotp.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
 import 'package:afrikunet/components/inputfield/passwordfield.dart';
 import 'package:afrikunet/components/inputfield/textfield.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../helper/constants/constants.dart';
 import '../../helper/state/state_manager.dart';
@@ -28,10 +29,15 @@ class _SignupFormState extends State<SignupForm> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _passwordConfirmController = TextEditingController();
+  final _phoneController = TextEditingController();
 
   String _countryCode = "+234";
   bool _obscureText = true, _loading = false, _isChecked = false;
+
+  bool _isNumberOk = false,
+      _isLowercaseOk = false,
+      _isCapitalOk = false,
+      _isSpecialCharOk = false;
 
   final _formKey = GlobalKey<FormState>();
   final _controller = Get.find<StateController>();
@@ -39,7 +45,7 @@ class _SignupFormState extends State<SignupForm> {
 
   _register() async {
     FocusManager.instance.primaryFocus?.unfocus();
-    // _controller.setLoading(true);
+    _controller.setLoading(true);
 
     Map _payload = {
       "email": _emailController.text,
@@ -47,31 +53,16 @@ class _SignupFormState extends State<SignupForm> {
     };
 
     try {
-      //   debugPrint("DFDF  ${_payload}");
-      //   final resp = await APIService().signup(_payload);
-      //   debugPrint("DFDF  ${resp.body}");
-      //   // Constants.toast(resp.body);
-      //   _controller.setLoading(false);
-
-      //   if (resp.statusCode == 200) {
-      //     Map<String, dynamic> map = jsonDecode(resp.body);
-      //     Constants.toast(map['message']);
-      //     //Route to verification
-      //     Navigator.of(context).pushReplacement(
-      //       PageTransition(
-      //         type: PageTransitionType.size,
-      //         alignment: Alignment.bottomCenter,
-      //         child: VerifyOTP(
-      //           caller: "Signup",
-      //           manager: widget.manager,
-      //           email: _emailController.text,
-      //         ),
-      //       ),
-      //     );
-      //   } else {
-      //     Map<String, dynamic> map = jsonDecode(resp.body);
-      //     Constants.toast("${map['message']}");
-      //   }
+      Future.delayed(const Duration(seconds: 3), () {
+        _controller.setLoading(false);
+        Get.to(
+          VerifyOTP(
+            email: _emailController.text,
+            caller: "signup",
+          ),
+          transition: Transition.cupertino,
+        );
+      });
     } catch (e) {
       debugPrint("ERROR: $e");
       _controller.setLoading(false);
@@ -94,7 +85,8 @@ class _SignupFormState extends State<SignupForm> {
             height: 4.0,
           ),
           CustomTextField(
-            hintText: "Enter your fullname",
+            hintText: "",
+            placeholder: "Enter full name",
             onChanged: (val) {},
             controller: _nameController,
             validator: (value) {
@@ -114,17 +106,16 @@ class _SignupFormState extends State<SignupForm> {
             height: 4.0,
           ),
           CustomTextField(
-            hintText: "Phone ",
+            inputType: TextInputType.number,
+            placeholder: "Enter phone number",
             onChanged: (val) {},
-            controller: _emailController,
+            controller: _phoneController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your phone number';
               }
-
               return null;
             },
-            inputType: TextInputType.emailAddress,
           ),
           const SizedBox(
             height: 16.0,
@@ -134,16 +125,17 @@ class _SignupFormState extends State<SignupForm> {
             height: 4.0,
           ),
           CustomTextField(
-            hintText: "Enter email",
+            hintText: "",
+            placeholder: "Enter email address",
             onChanged: (val) {},
             controller: _emailController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your email or phone';
               }
-              if (!RegExp('^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]')
+              if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
                   .hasMatch(value)) {
-                return 'Please enter a valid email';
+                return 'Enter a valid email address';
               }
               return null;
             },
@@ -161,28 +153,140 @@ class _SignupFormState extends State<SignupForm> {
               if (value == null || value.isEmpty) {
                 return 'Please type password';
               }
+              if (value.toString().length < 8) {
+                return "Password must be at least 8 characters!";
+              }
+              if (!_isNumberOk ||
+                  !_isCapitalOk ||
+                  !_isLowercaseOk ||
+                  !_isSpecialCharOk) {
+                return 'Weak password. See hint below';
+              }
               return null;
             },
             controller: _passwordController,
-            onChanged: (value) {},
+            onChanged: (value) {
+              if (value.contains(RegExp(r'[0-9]'))) {
+                setState(() {
+                  _isNumberOk = true;
+                });
+              } else {
+                setState(() {
+                  _isNumberOk = false;
+                });
+              }
+
+              if (value.contains(RegExp(r'[A-Z]'))) {
+                setState(() {
+                  _isCapitalOk = true;
+                });
+              } else {
+                setState(() {
+                  _isCapitalOk = false;
+                });
+              }
+
+              if (value.contains(RegExp(r'[a-z]'))) {
+                setState(() {
+                  _isLowercaseOk = true;
+                });
+              } else {
+                setState(() {
+                  _isLowercaseOk = false;
+                });
+              }
+
+              if (value.contains(RegExp(r'[!@#$%^&*(),.?"_:;{}|<>/+=-]'))) {
+                setState(() {
+                  _isSpecialCharOk = true;
+                });
+              } else {
+                setState(() {
+                  _isSpecialCharOk = false;
+                });
+              }
+            },
           ),
           const SizedBox(
-            height: 32.0,
+            height: 6.0,
+          ),
+          RichText(
+            text: const TextSpan(
+              text: "Use at least one ",
+              style: TextStyle(
+                color: Color(0xFF3B3B3B),
+              ),
+              children: [
+                TextSpan(
+                  text: "uppercase",
+                  style: TextStyle(
+                    color: Constants.primaryColor,
+                  ),
+                ),
+                TextSpan(
+                  text: ", one ",
+                  style: TextStyle(
+                    color: Color(0xFF3B3B3B),
+                  ),
+                ),
+                TextSpan(
+                  text: "lowercase",
+                  style: TextStyle(
+                    color: Constants.primaryColor,
+                  ),
+                ),
+                TextSpan(
+                  text: ", one ",
+                  style: TextStyle(
+                    color: Color(0xFF3B3B3B),
+                  ),
+                ),
+                TextSpan(
+                  text: "numeric digit",
+                  style: TextStyle(
+                    color: Constants.primaryColor,
+                  ),
+                ),
+                TextSpan(
+                  text: " and one ",
+                  style: TextStyle(
+                    color: Color(0xFF3B3B3B),
+                  ),
+                ),
+                TextSpan(
+                  text: "special character",
+                  style: TextStyle(
+                    color: Constants.primaryColor,
+                  ),
+                ),
+                TextSpan(
+                  text: ". ",
+                  style: TextStyle(
+                    color: Color(0xFF3B3B3B),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 24.0,
           ),
           SizedBox(
             width: double.infinity,
             child: PrimaryButton(
               buttonText: 'Create',
               foreColor: Colors.white,
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  _register();
-                }
-              },
+              onPressed: _isChecked
+                  ? () {
+                      if (_formKey.currentState!.validate()) {
+                        _register();
+                      }
+                    }
+                  : null,
             ),
           ),
           const SizedBox(
-            height: 10.0,
+            height: 8.0,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -218,7 +322,7 @@ class _SignupFormState extends State<SignupForm> {
                             ..onTap =
                                 () => Constants.toast("Not yet implemented!"),
                         ),
-                        TextSpan(text: " and our "),
+                        const TextSpan(text: " and our "),
                         TextSpan(
                           text: "privacy policy",
                           style: const TextStyle(
@@ -238,14 +342,14 @@ class _SignupFormState extends State<SignupForm> {
             ],
           ),
           const SizedBox(
-            height: 10.0,
+            height: 2.0,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               TextSmall(
-                text: "Already have an account? ",
+                text: "Already have an account?",
                 color: Colors.black,
               ),
               TextButton(
@@ -253,7 +357,7 @@ class _SignupFormState extends State<SignupForm> {
                   Get.to(Login(), transition: Transition.cupertino);
                 },
                 child: TextSmall(
-                  text: " Log In ",
+                  text: "Log In ",
                   fontWeight: FontWeight.w600,
                   color: Constants.primaryColor,
                 ),

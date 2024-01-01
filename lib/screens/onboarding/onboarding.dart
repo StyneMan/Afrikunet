@@ -28,9 +28,7 @@ class _OnboardingState extends State<Onboarding> {
           height: double.infinity,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: CachedNetworkImageProvider(
-                'https://i.imgur.com/RwCXUQu.png',
-              ),
+              image: AssetImage('assets/images/bg.png'),
               fit: BoxFit.cover,
             ),
           ),
@@ -74,7 +72,7 @@ class _OnboardingState extends State<Onboarding> {
                               _appController.onboardingIndex.value == entry.key
                                   ? 48.0
                                   : 12.0,
-                          height: 12.0,
+                          height: 10.0,
                           margin: const EdgeInsets.symmetric(
                               vertical: 8.0, horizontal: 4.0),
                           decoration: BoxDecoration(
@@ -87,7 +85,7 @@ class _OnboardingState extends State<Onboarding> {
                                   ? 0.9
                                   : 0.4,
                             ),
-                            borderRadius: BorderRadius.all(
+                            borderRadius: const BorderRadius.all(
                               Radius.circular(6.0),
                             ),
                           ),

@@ -1,6 +1,5 @@
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class GoogleButton extends StatelessWidget {
@@ -34,12 +33,12 @@ class GoogleButton extends StatelessWidget {
           width: 1.0,
         ),
       ),
-      icon: CachedNetworkImage(
-        imageUrl: "https://pngimg.com/uploads/google/google_PNG19635.png",
+      icon: Image.asset(
+        "assets/images/google.png",
         height: 32,
         width: 32,
       ),
-      label: TextBody1(
+      label: TextSmall(
         text: buttonText,
         color: foreColor,
         fontWeight: FontWeight.w400,

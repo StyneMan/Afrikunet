@@ -17,7 +17,7 @@ class CustomTextField extends StatelessWidget {
 
   CustomTextField({
     Key? key,
-    required this.hintText,
+    this.hintText = "",
     this.icon = Icons.person,
     this.isEnabled = true,
     this.capitalization = TextCapitalization.none,
@@ -72,12 +72,11 @@ class CustomTextField extends StatelessWidget {
         ),
         filled: false,
         hintText: placeholder ?? hintText,
-        labelText: hintText,
         focusColor: Constants.strokeColor,
         hintStyle: const TextStyle(
           fontFamily: "OpenSans",
           color: Colors.grey,
-          fontSize: 14,
+          fontSize: 12,
           fontWeight: FontWeight.w400,
         ),
         suffixIcon: endIcon,

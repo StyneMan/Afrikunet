@@ -21,7 +21,7 @@ class RoundedInputMoney extends StatelessWidget {
     required this.onChanged,
     required this.controller,
     required this.validator,
-    this.borderRadius = 6.0,
+    this.borderRadius = 4.0,
   }) : super(key: key);
 
   @override
@@ -36,7 +36,7 @@ class RoundedInputMoney extends StatelessWidget {
         CurrencyTextInputFormatter(
           locale: 'en',
           decimalDigits: 0,
-          symbol: '₦ ',
+          symbol: '₦',
         ),
       ],
       keyboardType: TextInputType.number,

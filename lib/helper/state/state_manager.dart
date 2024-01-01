@@ -136,11 +136,11 @@ class StateController extends GetxController {
 
   _init() async {
     try {
-      final response = await APIService().getProfessions();
-      debugPrint("RESPONSI UOT ==>> ${response.body}");
-      Map<String, dynamic> map = jsonDecode(response.body);
-      debugPrint("RESPONS  ==>> ${map['docs']}");
-      allProfessions.value = map['docs'];
+      // final response = await APIService().getProfessions();
+      // debugPrint("RESPONSI UOT ==>> ${response.body}");
+      // Map<String, dynamic> map = jsonDecode(response.body);
+      // debugPrint("RESPONS  ==>> ${map['docs']}");
+      // allProfessions.value = map['docs'];
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -174,85 +174,30 @@ class StateController extends GetxController {
           hasInternetAccess.value = false;
         }
       });
-
-      //Get User Chats
-      APIService()
-          .getUsersChats(accessToken: _token, email: map['email'])
-          .then((value) {
-        debugPrint("STATE GET CHATS >>> ${value.body}");
-        Map<String, dynamic> data = jsonDecode(value.body);
-        myChats.value = data['data'];
-        // _prefs.setString("user", jsonEncode(data['data']));
-
-        //Update preference here
-      }).catchError((onError) {
-        debugPrint("STATE GET MYCHATS ERROR>>> $onError");
-        if (onError.toString().contains("rk is unreachable")) {
-          hasInternetAccess.value = false;
-        }
-      });
-
-      // if (map['accountType'] != "freelancer") {
-      APIService().getFreelancers().then((value) {
-        debugPrint("STATE GET FREELANCERS >>> ${value.body}");
-        Map<String, dynamic> data = jsonDecode(value.body);
-        freelancers.value = data['docs'];
-      }).catchError((onError) {
-        if (onError.toString().contains("rk is unreachable")) {
-          hasInternetAccess.value = false;
-        }
-        debugPrint("STATE GET freelancer ERROR >>> $onError");
-      });
-
-      APIService().getAllJobs().then((value) {
-        debugPrint("STATE GET JOBS >>> ${value.body}");
-        Map<String, dynamic> data = jsonDecode(value.body);
-        allJobs.value = data['docs'];
-      }).catchError((onError) {
-        debugPrint("STATE GET jobs ERROR >>> $onError");
-        if (onError.toString().contains("rk is unreachable")) {
-          hasInternetAccess.value = false;
-        }
-      });
-
-      // myJobs.value = [];
-
-      final myJobsResp = await APIService().getUserJobs(
-        accessToken: _token,
-        email: map['email'],
-        userId: map['id'],
-      );
-
-      debugPrint("MY JOBS RESPONSE >> ${myJobsResp.body}");
-
-      if (myJobsResp.statusCode == 200) {
-        Map<String, dynamic> jobMap = jsonDecode(myJobsResp.body);
-        myJobs.value = jobMap['docs'];
-      }
     }
   }
 
-  void _updateConnectionStatus(ConnectivityResult connectivityResult) {
-    if (connectivityResult == ConnectivityResult.none) {
-      Get.rawSnackbar(
-          messageText: const Text('PLEASE CONNECT TO THE INTERNET',
-              style: TextStyle(color: Colors.white, fontSize: 14)),
-          isDismissible: false,
-          duration: const Duration(days: 1),
-          backgroundColor: Colors.red[400]!,
-          icon: const Icon(
-            Icons.wifi_off,
-            color: Colors.white,
-            size: 35,
-          ),
-          margin: EdgeInsets.zero,
-          snackStyle: SnackStyle.GROUNDED);
-    } else {
-      if (Get.isSnackbarOpen) {
-        Get.closeCurrentSnackbar();
-      }
-    }
-  }
+  // void _updateConnectionStatus(ConnectivityResult connectivityResult) {
+  //   if (connectivityResult == ConnectivityResult.none) {
+  //     Get.rawSnackbar(
+  //         messageText: const Text('PLEASE CONNECT TO THE INTERNET',
+  //             style: TextStyle(color: Colors.white, fontSize: 14)),
+  //         isDismissible: false,
+  //         duration: const Duration(days: 1),
+  //         backgroundColor: Colors.red[400]!,
+  //         icon: const Icon(
+  //           Icons.wifi_off,
+  //           color: Colors.white,
+  //           size: 35,
+  //         ),
+  //         margin: EdgeInsets.zero,
+  //         snackStyle: SnackStyle.GROUNDED);
+  //   } else {
+  //     if (Get.isSnackbarOpen) {
+  //       Get.closeCurrentSnackbar();
+  //     }
+  //   }
+  // }
 
   Widget currentScreen = const SizedBox();
 

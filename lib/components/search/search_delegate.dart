@@ -1,13 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:afrikunet/components/shimmer/banner_shimmer.dart';
-import 'package:afrikunet/components/text_components.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
-import 'package:afrikunet/helper/service/api_service.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
@@ -74,108 +67,107 @@ class CustomSearchDelegate extends SearchDelegate {
 // querying process at the runtime
   @override
   Widget buildSuggestions(BuildContext context) {
-    return query.isEmpty
-        ? const SizedBox()
-        : FutureBuilder<http.Response>(
-            future: APIService().getSearchResults(
-                manager.getAccessToken(), query.toLowerCase()),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return ListView.separated(
-                  itemCount: 5,
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const SizedBox(height: 21);
-                  },
-                  itemBuilder: (BuildContext context, int index) {
-                    return const SizedBox(
-                      height: 28,
-                      child: BannerShimmer(),
-                    );
-                  },
-                );
-              }
+    return const SizedBox();
+    // query.isEmpty
+    //     ? const SizedBox()
+    //     : FutureBuilder<http.Response>(
+    // future: APIService().getSearchResults(
+    //     manager.getAccessToken(), query.toLowerCase()),
+    // builder: (context, snapshot) {
+    //   if (snapshot.connectionState == ConnectionState.waiting) {
+    //     return ListView.separated(
+    //       itemCount: 5,
+    //       separatorBuilder: (BuildContext context, int index) {
+    //         return const SizedBox(height: 21);
+    //       },
+    //       itemBuilder: (BuildContext context, int index) {
+    //         return const SizedBox(
+    //           height: 28,
+    //           child: BannerShimmer(),
+    //         );
+    //       },
+    //     );
+    //   }
 
-              if (snapshot.hasError) {
-                return const Center(
-                  child:
-                      Text("An error occured. Check your internet connection!"),
-                );
-              }
+    //   if (snapshot.hasError) {
+    //     return const Center(
+    //       child:
+    //           Text("An error occured. Check your internet connection!"),
+    //     );
+    //   }
 
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: Text("No data found!"),
-                );
-              }
+    //   if (!snapshot.hasData) {
+    //     return const Center(
+    //       child: Text("No data found!"),
+    //     );
+    //   }
 
-              final data = snapshot.data;
-              debugPrint("SEARCH DATA RESPONSE >> ${data!.body}");
-              Map<String, dynamic> map = jsonDecode(data.body);
+    //   final data = snapshot.data;
+    //   debugPrint("SEARCH DATA RESPONSE >> ${data!.body}");
+    //   Map<String, dynamic> map = jsonDecode(data.body);
 
-              return ListView.builder(
-                itemCount: map['data']?.length,
-                itemBuilder: (context, index) {
-                  // var result = matchQuery[index];
-                  return ListTile(
-                    onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => map['data'][index]['email'] ==
-                      //             manager.getUser()['email']
-                      //         ? MyProfile(manager: manager)
-                      //         : UserProfile(
-                      //             manager: manager,
-                      //             data: map['data'][index],
-                      //             triggerHire: false,
-                      //           ),
-                      //   ),
-                      // );
-                    },
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        ClipOval(
-                          child: Image.network(
-                            "${map['data'][index]['bio']['image']}",
-                            width: 48,
-                            height: 48,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                SvgPicture.asset(
-                              "assets/images/personal.svg",
-                              width: 48,
-                              height: 48,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10.0),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TextInter(
-                              text:
-                                  "${map['data'][index]['bio']['firstname']} ${map['data'][index]['bio']['middlename']} ${map['data'][index]['bio']['lastname']}"
-                                      .capitalize,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            TextInter(
-                              text:
-                                  "${map['data'][index]['accountType'].toString().toLowerCase() == "professional" ? "Professional" : "Recruiter"} - ${map['data'][index]['reviews']?.length} reviews",
-                              fontSize: 14,
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
-          );
+    //   return ListView.builder(
+    // itemCount: map['data']?.length,
+    // itemBuilder: (context, index) {
+    //   // var result = matchQuery[index];
+    //   return ListTile(
+    //     onTap: () {
+    //       // Navigator.push(
+    //       //   context,
+    //       //   MaterialPageRoute(
+    //       //     builder: (context) => map['data'][index]['email'] ==
+    //       //             manager.getUser()['email']
+    //       //         ? MyProfile(manager: manager)
+    //       //         : UserProfile(
+    //       //             manager: manager,
+    //       //             data: map['data'][index],
+    //       //             triggerHire: false,
+    //       //           ),
+    //       //   ),
+    //       // );
+    //     },
+    //     title: Row(
+    //       mainAxisAlignment: MainAxisAlignment.start,
+    //       crossAxisAlignment: CrossAxisAlignment.center,
+    //       children: [
+    //         ClipOval(
+    //           child: Image.network(
+    //             "${map['data'][index]['bio']['image']}",
+    //             width: 48,
+    //             height: 48,
+    //             fit: BoxFit.cover,
+    //             errorBuilder: (context, error, stackTrace) =>
+    //                 SvgPicture.asset(
+    //               "assets/images/personal.svg",
+    //               width: 48,
+    //               height: 48,
+    //               fit: BoxFit.cover,
+    //             ),
+    //           ),
+    //         ),
+    //         const SizedBox(width: 10.0),
+    //         Column(
+    //           mainAxisAlignment: MainAxisAlignment.start,
+    //           crossAxisAlignment: CrossAxisAlignment.start,
+    //           children: [
+    //             TextSmall(
+    //               text:
+    //                   "${map['data'][index]['bio']['firstname']} ${map['data'][index]['bio']['middlename']} ${map['data'][index]['bio']['lastname']}"
+    //                       .capitalize,
+    //               fontWeight: FontWeight.w600,
+    //             ),
+    //             TextBody1(
+    //               text:
+    //                   "${map['data'][index]['accountType'].toString().toLowerCase() == "professional" ? "Professional" : "Recruiter"} - ${map['data'][index]['reviews']?.length} reviews",
+    //             )
+    //               ],
+    //             )
+    //           ],
+    //         ),
+    //       );
+    //     },
+    //   );
+    // },
+    // );
   }
 }

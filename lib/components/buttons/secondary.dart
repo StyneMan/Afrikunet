@@ -6,6 +6,7 @@ class SecondaryButton extends StatelessWidget {
   final Color bgColor;
   final Color foreColor;
   final String buttonText;
+  final double? fontSize;
   final Function()? onPressed;
   const SecondaryButton({
     Key? key,
@@ -13,6 +14,7 @@ class SecondaryButton extends StatelessWidget {
     this.foreColor = Constants.primaryColor,
     required this.buttonText,
     required this.onPressed,
+    this.fontSize,
   }) : super(key: key);
 
   @override
@@ -33,11 +35,20 @@ class SecondaryButton extends StatelessWidget {
           width: 1.0,
         ),
       ),
-      child: TextBody1(
-        text: buttonText,
-        color: foreColor,
-        fontWeight: FontWeight.w700,
-      ),
+      child: fontSize != null
+          ? Text(
+              buttonText,
+              style: TextStyle(
+                color: foreColor,
+                fontSize: fontSize,
+                fontWeight: FontWeight.w500,
+              ),
+            )
+          : TextBody1(
+              text: buttonText,
+              color: foreColor,
+              fontWeight: FontWeight.w700,
+            ),
     );
   }
 }

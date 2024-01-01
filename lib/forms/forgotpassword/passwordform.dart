@@ -1,13 +1,9 @@
-import 'package:afrikunet/components/button/roundedbutton.dart';
 import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/inputfield/textfield.dart';
-import 'package:afrikunet/components/text_components.dart';
-import 'package:afrikunet/helper/constants/constants.dart';
-import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:afrikunet/screens/auth/otp/verifyotp.dart';
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
+import 'package:get/get.dart';
 
 class PasswordForm extends StatefulWidget {
   // final PreferenceManager manager;
@@ -24,52 +20,24 @@ class _PasswordFormState extends State<PasswordForm> {
   final TextEditingController _emailController = TextEditingController();
   final _controller = Get.find<StateController>();
   final _formKey = GlobalKey<FormState>();
-  PreferenceManager? _manager;
 
   @override
   initState() {
     super.initState();
-    _manager = PreferenceManager(context);
   }
 
   _forgotPass() async {
+    FocusManager.instance.primaryFocus?.unfocus();
     _controller.setLoading(true);
     try {
-      // final resp =
-      //     await APIService().forgotPass({"email": _emailController.text});
-      // debugPrint("PASS RESET EMAIL : RESPONSE ${resp.body}");
-      // _controller.setLoading(false);
-
-      // if (resp.statusCode == 200) {
-      //   Map<String, dynamic> map = jsonDecode(resp.body);
-      //   Constants.toast(map['message']);
-
-      //   Navigator.of(context).push(
-      //     PageTransition(
-      //       type: PageTransitionType.size,
-      //       alignment: Alignment.bottomCenter,
-      //       child: VerifyOTP(
-      //         caller: "Password",
-      //         manager: _manager!,
-      //         email: _emailController.text,
-      //       ),
-      //     ),
-      //   );
-      // } else {
-      //   Map<String, dynamic> map = jsonDecode(resp.body);
-      //   Constants.toast(map['message']);
-      // }
-    } on FirebaseAuthException catch (e) {
-      switch (e.code) {
-        case "user-not-found":
-          Constants.toast("Email not registered on the platform");
-          break;
-        case "invalid-email":
-          Constants.toast('Email is not valid. Try again');
-          break;
-        default:
-          Constants.toast('${e.message}');
-      }
+      Future.delayed(const Duration(seconds: 3), () {
+        _controller.setLoading(false);
+        Get.to(
+          VerifyOTP(email: _emailController.text, caller: "password"),
+          transition: Transition.cupertino,
+        );
+      });
+    } catch (e) {
       _controller.setLoading(false);
     }
   }
@@ -83,16 +51,17 @@ class _PasswordFormState extends State<PasswordForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomTextField(
-            hintText: "Email",
+            hintText: "",
+            placeholder: "Enter email address",
             onChanged: (val) {},
             controller: _emailController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your email';
               }
-              if (!RegExp('^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]')
+              if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
                   .hasMatch(value)) {
-                return 'Please enter a valid email';
+                return 'Enter a valid email address';
               }
               return null;
             },

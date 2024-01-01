@@ -1,45 +1,27 @@
-import 'dart:convert';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:afrikunet/components/buttons/primary.dart';
+import 'package:afrikunet/components/text/textComponents.dart';
+import 'package:afrikunet/layout/appbar/appbar.dart';
+import 'package:afrikunet/screens/success_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:afrikunet/components/button/roundedbutton.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
-import 'package:afrikunet/helper/service/api_service.dart';
-import 'package:afrikunet/screens/auth/forgotpass/resetpass.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:afrikunet/screens/auth/forgotpass/changePass.dart';
 
-import '../../../components/text_components.dart';
 import '../../../helper/preference/preference_manager.dart';
 import '../../../helper/state/state_manager.dart';
 
 typedef void InitCallback(params);
 
 class VerifyOTP extends StatefulWidget {
-  final String caller;
-  final PreferenceManager manager;
-  var credential;
-  InitCallback? onEntered;
-  String? email, pass, phone, name, verificationId;
-  VerifyOTP({
-    Key? key,
-    required this.caller,
-    required this.manager,
-    this.verificationId,
-    this.onEntered,
-    this.credential,
-    this.email,
-    this.name,
-    this.pass,
-    this.phone,
-  }) : super(key: key);
+  String email;
+  String caller;
+  VerifyOTP({Key? key, required this.email, required this.caller})
+      : super(key: key);
 
   @override
   State<VerifyOTP> createState() => _State();
@@ -49,87 +31,39 @@ class _State extends State<VerifyOTP> {
   final _controller = Get.find<StateController>();
   final _otpController = TextEditingController();
   // final _phoneController = TextEditingController();
-  PreferenceManager? _manager;
   String _code = '';
+  bool _shouldContinue = false;
   CountdownTimerController? _timerController;
   int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 1;
 
   @override
   void initState() {
     super.initState();
-    _manager = PreferenceManager(context);
+    _timerController?.start();
+    // Future.delayed(const Duration(minutes: 5), () {
+    //   _timerController?.start();
+    // });
   }
 
-  _resendCode() async {
-    _controller.setLoading(true);
-    try {
-      final resp =
-          await APIService().resendOTP(email: widget.email, type: "register");
-      debugPrint("RESEND OTP RESPONSE:: ${resp.body}");
-      _controller.setLoading(false);
-      if (resp.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(resp.body);
-        Constants.toast(map['message']);
-      } else {
-        Map<String, dynamic> map = jsonDecode(resp.body);
-        Constants.toast(map['message']);
-      }
-    } catch (e) {
-      _controller.setLoading(false);
-    }
-    // }
-  }
-
-  _linkAccount() async {
-    _controller.setLoading(true);
-    Map _params = {"code": _otpController.text, "email": widget.email};
-    try {
-      final resp = await APIService().verifyOTP(_params);
-      _controller.setLoading(false);
-      debugPrint("VERIFICATION RESP =>>>> ${resp.body}");
-
-      if (resp.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(resp.body);
-        widget.manager.saveAccessToken(map['token']);
-        Constants.toast(map['message']);
-
-        if (widget.caller != "Password") {
-          // Navigator.of(context).pushReplacement(
-          //   PageTransition(
-          //     type: PageTransitionType.size,
-          //     alignment: Alignment.bottomCenter,
-          //     child: _controller.accountType.value == "professional"
-          //         ? SetupProfile(
-          //             manager: _manager!,
-          //             email: "${widget.email}",
-          //           )
-          //         : SetupProfileEmployer(
-          //             manager: _manager!,
-          //             email: "${widget.email}",
-          //           ),
-          //   ),
-          // );
-        } else {
-          Navigator.of(context).pushReplacement(
-            PageTransition(
-              type: PageTransitionType.size,
-              alignment: Alignment.bottomCenter,
-              child: NewPassword(
-                manager: _manager!,
-                email: "${widget.email}",
-              ),
-            ),
-          );
-        }
-      } else {
-        _controller.setLoading(false);
-        Map<String, dynamic> map = jsonDecode(resp.body);
-        Constants.toast(map['message']);
-      }
-    } catch (e) {
-      _controller.setLoading(false);
-    }
-  }
+  // _resendCode() async {
+  //   _controller.setLoading(true);
+  //   try {
+  //     final resp =
+  //         await APIService().resendOTP(email: widget.email, type: "register");
+  //     debugPrint("RESEND OTP RESPONSE:: ${resp.body}");
+  //     _controller.setLoading(false);
+  //     if (resp.statusCode == 200) {
+  //       Map<String, dynamic> map = jsonDecode(resp.body);
+  //       Constants.toast(map['message']);
+  //     } else {
+  //       Map<String, dynamic> map = jsonDecode(resp.body);
+  //       Constants.toast(map['message']);
+  //     }
+  //   } catch (e) {
+  //     _controller.setLoading(false);
+  //   }
+  //   // }
+  // }
 
   @override
   void dispose() {
@@ -149,241 +83,224 @@ class _State extends State<VerifyOTP> {
         progressIndicator: const CircularProgressIndicator.adaptive(),
         backgroundColor: Colors.black54,
         child: Scaffold(
-          body: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              SlidingUpPanel(
-                maxHeight: MediaQuery.of(context).size.height * 0.64,
-                minHeight: MediaQuery.of(context).size.height * 0.64,
-                parallaxEnabled: true,
-                defaultPanelState: PanelState.OPEN,
-                renderPanelSheet: true,
-                parallaxOffset: .5,
-                body: Container(
-                  color: Constants.primaryColor,
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: Stack(
-                    fit: StackFit.expand,
+          body: SafeArea(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 16),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/bg.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Positioned(
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.48,
-                          child: Image.asset(
-                            'assets/images/forgot_pass_img.png',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: 40,
-                        left: 8.0,
-                        child: IconButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          icon: const Icon(
-                            CupertinoIcons.arrow_left_circle,
-                            color: Colors.white,
-                            size: 36,
-                          ),
-                        ),
+                      IconButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        icon: const Icon(Icons.arrow_back_ios),
                       ),
                     ],
                   ),
-                ),
-                panelBuilder: (sc) => _panel(sc),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(24.0),
-                  topRight: Radius.circular(24.0),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _panel(ScrollController sc) {
-    return MediaQuery.removePadding(
-      context: context,
-      removeTop: true,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(18),
-          topRight: Radius.circular(18),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                width: double.infinity,
-                height: 75,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.5),
-                  image: const DecorationImage(
-                    image: AssetImage(
-                      "assets/images/bottom_mark.png",
-                    ),
-                    fit: BoxFit.cover,
+                  const SizedBox(
+                    height: 36,
                   ),
-                ),
-              ),
-            ),
-            ListView(
-              shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              children: [
-                const SizedBox(
-                  height: 21,
-                ),
-                TextPoppins(
-                  text: "VERIFY ACCOUNT",
-                  fontSize: 21,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                ),
-                const SizedBox(
-                  height: 18,
-                ),
-                const Text(
-                  "Please enter verification code sent \nto you.",
-                  softWrap: true,
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                const SizedBox(
-                  height: 24.0,
-                ),
-                PinCodeTextField(
-                  appContext: context,
-                  backgroundColor: Colors.white,
-                  pastedTextStyle: const TextStyle(
-                    color: Constants.primaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  length: 6,
-                  autoFocus: true,
-                  obscureText: false,
-                  animationType: AnimationType.fade,
-                  validator: (v) {
-                    if (v!.length < 3) {
-                      return "I'm from validator";
-                    } else {
-                      return null;
-                    }
-                  },
-                  pinTheme: PinTheme(
-                    shape: PinCodeFieldShape.box,
-                    borderWidth: 0.75,
-                    fieldOuterPadding:
-                        const EdgeInsets.symmetric(horizontal: 0.0),
-                    borderRadius: BorderRadius.circular(5),
-                    fieldHeight: 56,
-                    fieldWidth: 40,
-                    activeFillColor: Colors.white,
-                    activeColor: Constants.primaryColor,
-                    inactiveColor: Colors.black45,
-                  ),
-                  cursorColor: Colors.black,
-                  animationDuration: const Duration(milliseconds: 300),
-                  // enableActiveFill: true,
-                  // errorAnimationController: errorController,
-                  controller: _otpController,
-                  keyboardType: TextInputType.number,
-                  boxShadows: null,
-                  // const [
-                  //   BoxShadow(
-                  //     offset: Offset(0, 1),
-                  //     color: Colors.black12,
-                  //     blurRadius: 10,
-                  //   )
-                  // ],
-                  onCompleted: (v) {
-                    debugPrint("Completed");
-                  },
-                  onChanged: (value) {
-                    debugPrint(value);
-                  },
-                  beforeTextPaste: (text) {
-                    debugPrint("Allowing to paste $text");
-                    //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                    //but you can show anything you want here, like your pop up saying wrong paste format or etc
-                    return true;
-                  },
-                  autoDismissKeyboard: true,
-                ),
-                const SizedBox(
-                  height: 32.0,
-                ),
-                RoundedButton(
-                  bgColor: Constants.primaryColor,
-                  child: TextPoppins(
-                    text: "VERIFY OTP",
-                    fontSize: 14,
-                  ),
-                  borderColor: Colors.transparent,
-                  foreColor: Colors.white,
-                  onPressed: () {
-                    _linkAccount();
-                  },
-                  variant: "Filled",
-                ),
-                const SizedBox(
-                  height: 16.0,
-                ),
-                TextPoppins(
-                  text: "Did not receive the code?",
-                  fontSize: 14,
-                  align: TextAlign.center,
-                  color: Colors.black45,
-                ),
-                const SizedBox(
-                  height: 16.0,
-                ),
-                CountdownTimer(
-                  controller: _timerController,
-                  endTime: endTime,
-                  widgetBuilder: (_, CurrentRemainingTime? time) {
-                    if (time == null) {
-                      return RoundedButton(
-                        bgColor: Colors.transparent,
-                        child: TextPoppins(
-                          text: "RESEND CODE",
-                          fontSize: 14,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: TextSmall(
+                            text: widget.caller == "voucher"
+                                ? "A verification code has been sent to wenprecious@gamail.com"
+                                : "Enter the 4 digit code sent to your email",
+                            align: TextAlign.center,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                        borderColor: Constants.primaryColor,
-                        foreColor: Constants.primaryColor,
-                        onPressed: () {
-                          _timerController?.start();
-                          _controller.setLoading(true);
-                          _resendCode();
-                        },
-                        variant: "Outlined",
-                      );
-                    }
-                    return TextPoppins(
-                      text:
-                          'Resend code in ${_pluralizer(time.min ?? 0) ?? "0"} : ${_pluralizer(time.sec ?? 0)}',
-                      fontSize: 15,
-                      align: TextAlign.center,
-                      color: Constants.primaryColor,
-                    );
-                  },
-                ),
-              ],
+                        const SizedBox(
+                          height: 16.0,
+                        ),
+                        CountdownTimer(
+                          controller: _timerController,
+                          endTime: endTime,
+                          widgetBuilder: (_, CurrentRemainingTime? time) {
+                            if (time == null) {
+                              return const SizedBox();
+                            }
+                            return TextMedium(
+                              text:
+                                  ' ${_pluralizer(time.min ?? 0) ?? "0"} : ${_pluralizer(time.sec ?? 0)}',
+                              align: TextAlign.center,
+                              color: const Color(0xFF1D1C1C),
+                            );
+                          },
+                        ),
+                        const SizedBox(
+                          height: 36,
+                        ),
+                        Center(
+                          child: SizedBox(
+                            width: 320,
+                            child: PinCodeTextField(
+                              appContext: context,
+                              backgroundColor: Colors.white,
+                              pastedTextStyle: const TextStyle(
+                                color: Constants.primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              length: 4,
+                              autoFocus: true,
+                              obscureText: false,
+                              animationType: AnimationType.fade,
+                              validator: (v) {
+                                if (v!.length < 3) {
+                                  return "";
+                                } else {
+                                  return null;
+                                }
+                              },
+                              pinTheme: PinTheme(
+                                shape: PinCodeFieldShape.box,
+                                borderWidth: 1.25,
+                                fieldOuterPadding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                fieldHeight: 60,
+                                fieldWidth: 56,
+                                activeFillColor: Colors.white,
+                                activeColor: Constants.primaryColor,
+                                inactiveColor: Colors.black45,
+                              ),
+                              cursorColor: Colors.black,
+                              animationDuration:
+                                  const Duration(milliseconds: 300),
+                              // enableActiveFill: true,
+                              // errorAnimationController: errorController,
+                              controller: _otpController,
+                              keyboardType: TextInputType.number,
+                              boxShadows: null,
+                              // const [
+                              //   BoxShadow(
+                              //     offset: Offset(0, 1),
+                              //     color: Colors.black12,
+                              //     blurRadius: 10,
+                              //   )
+                              // ],
+                              onCompleted: (v) {
+                                setState(() {
+                                  _shouldContinue = true;
+                                });
+                                debugPrint("Completed");
+                              },
+                              onChanged: (value) {
+                                if (value.length < 4) {
+                                  setState(() {
+                                    _shouldContinue = false;
+                                  });
+                                }
+                                debugPrint(value);
+                              },
+                              beforeTextPaste: (text) {
+                                debugPrint("Allowing to paste $text");
+                                //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                                //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                                return true;
+                              },
+                              autoDismissKeyboard: true,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 36,
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: PrimaryButton(
+                            buttonText: "Continue",
+                            onPressed: _shouldContinue
+                                ? () {
+                                    _controller.setLoading(true);
+                                    Future.delayed(
+                                      const Duration(seconds: 3),
+                                      () {
+                                        _controller.setLoading(false);
+                                        if (widget.caller == "signup") {
+                                          Get.to(
+                                            const Dashbboard(),
+                                            transition: Transition.cupertino,
+                                          );
+                                        } else if (widget.caller == "voucher") {
+                                          Get.to(
+                                            const SuccessPage(
+                                              isVoucher: true,
+                                            ),
+                                            transition: Transition.cupertino,
+                                          );
+                                        } else {
+                                          Get.to(
+                                            const ChangePassword(),
+                                            transition: Transition.cupertino,
+                                          );
+                                        }
+                                      },
+                                    );
+                                  }
+                                : null,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 8.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            TextSmall(
+                              text: "Didn't receive?",
+                              color: Colors.black,
+                            ),
+                            // _timerController.currentRemainingTime == null
+                            //     ?
+                            TextButton(
+                              onPressed: () {
+                                _controller.setLoading(true);
+                                Future.delayed(
+                                  const Duration(seconds: 3),
+                                  () {
+                                    _controller.setLoading(false);
+                                    Constants.toast(
+                                        "OTP has been resent to ${widget.email}");
+                                  },
+                                );
+                              },
+                              child: TextSmall(
+                                text: "Resend Code ",
+                                fontWeight: FontWeight.w600,
+                                color: Constants.primaryColor,
+                              ),
+                            ),
+                            // : const SizedBox(),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ],
+          ),
         ),
       ),
     );

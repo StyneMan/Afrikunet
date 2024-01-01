@@ -1,20 +1,16 @@
 import 'package:afrikunet/components/buttons/primary.dart';
+import 'package:afrikunet/components/dashboard/dashboard.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
+import 'package:afrikunet/layout/appbar/appbar.dart';
 import 'package:afrikunet/screens/auth/register/register.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:afrikunet/components/button/roundedbutton.dart';
 import 'package:afrikunet/components/inputfield/passwordfield.dart';
 import 'package:afrikunet/components/inputfield/textfield.dart';
 import 'package:afrikunet/helper/socket/socket_manager.dart';
 
-import '../../components/text_components.dart';
 import '../../helper/constants/constants.dart';
-import '../../helper/preference/preference_manager.dart';
-import '../../helper/state/state_manager.dart';
 import '../../screens/auth/forgotPass/forgotPass.dart';
 
 class LoginForm extends StatefulWidget {
@@ -35,14 +31,27 @@ class _LoginFormState extends State<LoginForm> {
 
   final socket = SocketManager().socket;
 
+  bool _isNumberOk = false,
+      _isLowercaseOk = false,
+      _isCapitalOk = false,
+      _isSpecialCharOk = false;
+
   _login() async {
     FocusManager.instance.primaryFocus?.unfocus();
-    // _controller.setLoading(true);
+    _controller.setLoading(true);
     // Map _payload = {
     //   "email": _emailController.text,
     //   "password": _passwordController.text,
     // };
-    try {} catch (e) {
+    try {
+      Future.delayed(const Duration(seconds: 3), () {
+        _controller.setLoading(false);
+        Get.to(
+          Dashboard(),
+          transition: Transition.cupertino,
+        );
+      });
+    } catch (e) {
       _controller.setLoading(false);
       // print(e.message);
       Constants.toast(e.toString());
@@ -69,16 +78,16 @@ class _LoginFormState extends State<LoginForm> {
                 height: 4.0,
               ),
               CustomTextField(
-                hintText: "Email",
                 onChanged: (val) {},
+                placeholder: "Enter email address",
                 controller: _emailController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your email or phone';
                   }
-                  if (!RegExp('^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]')
+                  if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
                       .hasMatch(value)) {
-                    return 'Please enter a valid email';
+                    return 'Enter a valid email address';
                   }
                   return null;
                 },
@@ -96,13 +105,62 @@ class _LoginFormState extends State<LoginForm> {
                   if (value == null || value.isEmpty) {
                     return 'Please type password';
                   }
+                  if (value.toString().length < 8) {
+                    return "Password must be at least 8 characters!";
+                  }
+                  if (!_isNumberOk ||
+                      !_isCapitalOk ||
+                      !_isLowercaseOk ||
+                      !_isSpecialCharOk) {
+                    return 'Password is too weak!';
+                  }
                   return null;
                 },
                 controller: _passwordController,
-                onChanged: (value) {},
+                onChanged: (value) {
+                  if (value.contains(RegExp(r'[0-9]'))) {
+                    setState(() {
+                      _isNumberOk = true;
+                    });
+                  } else {
+                    setState(() {
+                      _isNumberOk = false;
+                    });
+                  }
+
+                  if (value.contains(RegExp(r'[A-Z]'))) {
+                    setState(() {
+                      _isCapitalOk = true;
+                    });
+                  } else {
+                    setState(() {
+                      _isCapitalOk = false;
+                    });
+                  }
+
+                  if (value.contains(RegExp(r'[a-z]'))) {
+                    setState(() {
+                      _isLowercaseOk = true;
+                    });
+                  } else {
+                    setState(() {
+                      _isLowercaseOk = false;
+                    });
+                  }
+
+                  if (value.contains(RegExp(r'[!@#$%^&*(),.?"_:;{}|<>/+=-]'))) {
+                    setState(() {
+                      _isSpecialCharOk = true;
+                    });
+                  } else {
+                    setState(() {
+                      _isSpecialCharOk = false;
+                    });
+                  }
+                },
               ),
               const SizedBox(
-                height: 2.0,
+                height: 6.0,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -152,7 +210,7 @@ class _LoginFormState extends State<LoginForm> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   TextSmall(
-                    text: "New Here? ",
+                    text: "New Here?",
                     color: Colors.black,
                   ),
                   TextButton(
@@ -160,7 +218,7 @@ class _LoginFormState extends State<LoginForm> {
                       Get.to(Register(), transition: Transition.cupertino);
                     },
                     child: TextSmall(
-                      text: " Create Account ",
+                      text: "Create Account ",
                       fontWeight: FontWeight.w600,
                       color: Constants.primaryColor,
                     ),

@@ -16,10 +16,14 @@ class OnbaoardingItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CachedNetworkImage(
-            imageUrl: item.image,
-            width: 256,
-            height: 320,
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.7,
+            child: SvgPicture.asset(
+              item.image,
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: 320,
+              fit: BoxFit.contain,
+            ),
           ),
           const SizedBox(
             height: 8.0,

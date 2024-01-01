@@ -1,25 +1,22 @@
-import 'dart:convert';
 import 'dart:io';
 
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:afrikunet/screens/home/home.dart';
+import 'package:afrikunet/screens/profile/profile.dart';
+import 'package:afrikunet/screens/settings/settings.dart';
+import 'package:afrikunet/screens/vouchers/my_vouchers.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
-import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
-import 'package:afrikunet/helper/service/api_service.dart';
 import 'package:afrikunet/screens/network/no_internet.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
-  final PreferenceManager manager;
   final bool showProfile;
-  Dashboard({Key? key, required this.manager, this.showProfile = false})
-      : super(key: key);
+  Dashboard({Key? key, this.showProfile = false}) : super(key: key);
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -27,88 +24,22 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   bool _isLoggedIn = false;
-  // int _selectedIndex = 0;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // String _token = "";
   final _controller = Get.find<StateController>();
-  final _currentUser = FirebaseAuth.instance.currentUser;
-
-  _initDialog() async {
-    try {
-      final _prefs = await SharedPreferences.getInstance();
-      final _token = _prefs.getString("accessToken") ?? "";
-      final _user = _prefs.getString("user") ?? "";
-      final _isShown = _prefs.getBool("dialogShown") ?? false;
-      Map<String, dynamic> userMap = jsonDecode(_user);
-
-      APIService().getFreelancers().then((value) {
-        debugPrint("STATE GET FREELANCERS >>> ${value.body}");
-        Map<String, dynamic> data = jsonDecode(value.body);
-        _controller.freelancers.value = data['docs'];
-      }).catchError((onError) {
-        debugPrint("STATE GET freelancer ERROR >>> $onError");
-        if (onError.toString().contains("rk is unreachable")) {
-          _controller.hasInternetAccess.value = false;
-        }
-      });
-
-      if (_token.isNotEmpty) {
-        APIService()
-            .getJobApplicationsByUser(
-                accessToken: _token, email: userMap['email'])
-            .then((value) {
-          debugPrint("STATE GET APPLICATIONS >>> ${value.body}");
-          Map<String, dynamic> data = jsonDecode(value.body);
-          _controller.myJobsApplied.value = data['data'];
-        }).catchError((onError) {
-          debugPrint("STATE GET freelancer ERROR >>> $onError");
-          if (onError.toString().contains("rk is unreachable")) {
-            _controller.hasInternetAccess.value = false;
-          }
-        });
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-      if (e.toString().contains("rk is unreachable")) {
-        _controller.hasInternetAccess.value = false;
-      }
-    }
-  }
-
-  String getCurrentRouteName(BuildContext context) {
-    final route = ModalRoute.of(context);
-    if (route != null && route.settings.name != null) {
-      return route.settings.name!;
-    } else {
-      return 'Unknown Route';
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    _initDialog();
-    // if (widget.showProfile) {
-    //   Future.delayed(const Duration(milliseconds: 1200), () {
-    //     Get.to(MyProfile(manager: widget.manager),
-    //         transition: Transition.cupertino);
-    //   });
-    // }
-    // debugPrint("CURR USER STATE >> ${_controller.userData.value}");
   }
 
   void _onItemTapped(int index) {
-    // setState(() {
     _controller.selectedIndex.value = index;
-    // });
   }
 
   @override
   Widget build(BuildContext context) {
     DateTime pre_backpress = DateTime.now();
-
-    // debugPrint("CURRENT ROUTE NAME  => ${getCurrentRouteName(context)}");
 
     return WillPopScope(
       onWillPop: () async {
@@ -144,8 +75,7 @@ class _DashboardState extends State<Dashboard> {
               ? const NoInternet()
               : Scaffold(
                   key: _scaffoldKey,
-                  body:
-                      const SizedBox(), // _buildScreens()[_controller.selectedIndex.value],
+                  body: _buildScreens()[_controller.selectedIndex.value],
                   bottomNavigationBar: BottomNavigationBar(
                     currentIndex: _controller.selectedIndex.value,
                     onTap: _onItemTapped,
@@ -157,56 +87,45 @@ class _DashboardState extends State<Dashboard> {
                     items: <BottomNavigationBarItem>[
                       BottomNavigationBarItem(
                         icon: SvgPicture.asset(
-                          "assets/images/pros_icon.svg",
+                          "assets/images/home_icon.svg",
                           color: Colors.grey,
                         ),
-                        label: 'Explore',
+                        label: 'Home',
                         activeIcon: SvgPicture.asset(
-                          "assets/images/pros_icon.svg",
+                          "assets/images/home_icon.svg",
                           color: Constants.primaryColor,
                         ),
                       ),
                       BottomNavigationBarItem(
                         icon: SvgPicture.asset(
-                          "assets/images/jobs_icon.svg",
+                          "assets/images/voucher_icon.svg",
                           color: Colors.grey,
                         ),
-                        label: 'Jobs',
+                        label: 'My Vouchers',
                         activeIcon: SvgPicture.asset(
-                          "assets/images/jobs_icon.svg",
+                          "assets/images/voucher_icon.svg",
                           color: Constants.primaryColor,
                         ),
                       ),
                       BottomNavigationBarItem(
                         icon: SvgPicture.asset(
-                          "assets/images/messages_icon.svg",
+                          "assets/images/profile_icon.svg",
                           color: Colors.grey,
                         ),
-                        label: 'Messages',
+                        label: 'Profile',
                         activeIcon: SvgPicture.asset(
-                          "assets/images/messages_icon.svg",
+                          "assets/images/profile_icon.svg",
                           color: Constants.primaryColor,
                         ),
                       ),
                       BottomNavigationBarItem(
                         icon: SvgPicture.asset(
-                          "assets/images/alerts_icon.svg",
+                          "assets/images/settings_icon.svg",
                           color: Colors.grey,
                         ),
-                        label: 'Alerts',
+                        label: 'Settings',
                         activeIcon: SvgPicture.asset(
-                          "assets/images/alerts_icon.svg",
-                          color: Constants.primaryColor,
-                        ),
-                      ),
-                      BottomNavigationBarItem(
-                        icon: SvgPicture.asset(
-                          "assets/images/account_icon.svg",
-                          color: Colors.grey,
-                        ),
-                        label: 'Account',
-                        activeIcon: SvgPicture.asset(
-                          "assets/images/account_icon.svg",
+                          "assets/images/settings_icon.svg",
                           color: Constants.primaryColor,
                         ),
                       ),
@@ -218,15 +137,12 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  // List<Widget> _buildScreens() {
-  //   return [
-  //     Pros(
-  //       manager: widget.manager,
-  //     ),
-  //     Jobs(manager: widget.manager),
-  //     Messages(manager: widget.manager),
-  //     Alerts(manager: widget.manager),
-  //     Account(manager: widget.manager)
-  //   ];
-  // }
+  List<Widget> _buildScreens() {
+    return [
+      HomePage(),
+      const MyVouchersPage(),
+      const ProfilePage(),
+      const SettingsPage(),
+    ];
+  }
 }

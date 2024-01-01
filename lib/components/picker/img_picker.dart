@@ -1,4 +1,4 @@
-import 'package:afrikunet/components/text_components.dart';
+import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:flutter/cupertino.dart';
@@ -134,7 +134,9 @@ class _ImgPickerState extends State<ImgPicker> {
             imgFromCamera();
           },
           icon: const Icon(CupertinoIcons.camera),
-          label: TextPoppins(text: "Camera", fontSize: 13),
+          label: TextBody2(
+            text: "Camera",
+          ),
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.all(10.0),
             backgroundColor: Colors.green,
@@ -148,8 +150,10 @@ class _ImgPickerState extends State<ImgPicker> {
             imgFromGallery();
           },
           icon: const Icon(CupertinoIcons.folder),
-          label: TextPoppins(text: "Gallery", fontSize: 13),
-          style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(10.0)),
+          label: TextBody2(text: "Gallery"),
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.all(10.0),
+          ),
         ),
       ],
     );

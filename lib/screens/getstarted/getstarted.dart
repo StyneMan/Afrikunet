@@ -18,9 +18,7 @@ class GetStarted extends StatelessWidget {
         width: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: CachedNetworkImageProvider(
-              'https://i.imgur.com/RwCXUQu.png',
-            ),
+            image: AssetImage('assets/images/bg.png'),
             fit: BoxFit.cover,
           ),
         ),
@@ -33,13 +31,12 @@ class GetStarted extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CachedNetworkImage(
-                      imageUrl: 'https://i.imgur.com/yOZMoKK.png'),
+                  Image.asset('assets/images/get_started.png'),
                   const SizedBox(
                     height: 8.0,
                   ),
                   TextLarge(text: "Let's Get Started"),
-                  TextBody1(text: "Start saving and exchanging vouchers today"),
+                  TextBody1(text: "Buy gift, share and connect"),
                 ],
               ),
             ),

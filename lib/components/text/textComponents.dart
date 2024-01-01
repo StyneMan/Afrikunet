@@ -10,7 +10,7 @@ class TextLarge extends StatelessWidget {
   TextLarge({
     required this.text,
     this.color = Colors.black,
-    this.fontWeight = FontWeight.w600,
+    this.fontWeight = FontWeight.w500,
     this.align,
     this.softWrap,
   });
@@ -23,12 +23,11 @@ class TextLarge extends StatelessWidget {
       text!,
       softWrap: softWrap,
       textAlign: align,
-      style: TextStyle(
-        color: color,
-        fontSize: 30,
-        fontFamily: fontFamily,
-        fontWeight: fontWeight,
-      ),
+      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            color: color,
+            fontFamily: fontFamily,
+            fontWeight: fontWeight,
+          ),
     );
   }
 }
@@ -53,12 +52,11 @@ class TextMedium extends StatelessWidget {
     return Text(
       text!,
       textAlign: align,
-      style: TextStyle(
-        color: color,
-        fontSize: 20,
-        fontFamily: fontFamily,
-        fontWeight: fontWeight,
-      ),
+      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: color,
+            fontWeight: fontWeight,
+            fontFamily: fontFamily,
+          ),
     );
   }
 }
@@ -83,12 +81,11 @@ class TextSmall extends StatelessWidget {
     return Text(
       text!,
       textAlign: align,
-      style: TextStyle(
-        color: color,
-        fontSize: 17,
-        fontFamily: fontFamily,
-        fontWeight: fontWeight,
-      ),
+      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            color: color,
+            fontWeight: fontWeight,
+            fontFamily: fontFamily,
+          ),
     );
   }
 }
@@ -113,12 +110,10 @@ class TextBody1 extends StatelessWidget {
     return Text(
       text!,
       textAlign: align,
-      style: TextStyle(
-        color: color,
-        fontSize: 15,
-        fontFamily: fontFamily,
-        fontWeight: fontWeight,
-      ),
+      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            color: color,
+            fontFamily: fontFamily,
+          ),
     );
   }
 }
@@ -143,12 +138,10 @@ class TextBody2 extends StatelessWidget {
     return Text(
       text!,
       textAlign: align,
-      style: TextStyle(
-        color: color,
-        fontSize: 14,
-        fontFamily: fontFamily,
-        fontWeight: fontWeight,
-      ),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: color,
+            fontFamily: fontFamily,
+          ),
     );
   }
 }

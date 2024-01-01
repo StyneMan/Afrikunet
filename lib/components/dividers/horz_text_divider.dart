@@ -1,7 +1,5 @@
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:flutter/material.dart';
-import 'package:afrikunet/components/text_components.dart';
-import 'package:afrikunet/helper/constants/constants.dart';
 
 class HorzTextDivider extends StatelessWidget {
   final String text;
