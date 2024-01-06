@@ -60,7 +60,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           icon: 'assets/images/add_bank.svg',
           title: 'Add Bank',
           isAction: false,
-          widget: const AddBank(),
+          widget: AddBank(),
         ),
         DrawerModel(
           icon: 'assets/images/share_ios.svg',
@@ -104,27 +104,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.25),
+      padding:
+          EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.275),
       child: Container(
         color: Colors.white,
-        height: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 10.0,
-            ),
             Container(
               padding: const EdgeInsets.only(
-                top: 16.0,
+                top: 42.0,
                 left: 18,
                 right: 18,
                 bottom: 16,
               ),
               width: double.infinity,
               color: Constants.secondaryColor,
-              height: MediaQuery.of(context).size.height * 0.15,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -157,139 +153,148 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 24,
-            ),
             Expanded(
-              child: Container(
-                color: Colors.white,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListView.separated(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      shrinkWrap: true,
-                      itemBuilder: (context, i) {
-                        return ListTile(
-                          dense: true,
-                          contentPadding: const EdgeInsets.all(2.0),
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                drawerList[i].icon,
-                                width: 22,
-                                color: Constants.secondaryColor,
+              child: ListView(
+                padding: const EdgeInsets.all(0.0),
+                shrinkWrap: true,
+                children: [
+                  Container(
+                    color: Colors.white,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListView.separated(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, i) {
+                            return ListTile(
+                              dense: true,
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 2.0),
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    drawerList[i].icon,
+                                    width: 18,
+                                    color: Constants.secondaryColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 21.0,
+                                  ),
+                                  TextSmall(
+                                    text: drawerList[i].title,
+                                    fontWeight: FontWeight.w400,
+                                    color: Constants.secondaryColor,
+                                  ),
+                                ],
                               ),
-                              const SizedBox(
-                                width: 21.0,
-                              ),
-                              TextSmall(
-                                text: drawerList[i].title,
-                                fontWeight: FontWeight.w400,
-                                color: Constants.secondaryColor,
-                              ),
-                            ],
-                          ),
-                          onTap: () async {
-                            // if (i == 0) {
-                            //   Navigator.of(context).pop();
-                            //   _controller.selectedIndex.value = 0;
-                            // } else if (i == 1) {
-                            //   Navigator.of(context).pop();
-                            //   _controller.selectedIndex.value = 1;
-                            // } else if (i == 2) {
-                            //   Navigator.of(context).pop();
-                            //   _controller.selectedIndex.value = 2;
-                            // } else {
-                            //   if (drawerList[i].isAction) {
-                            //     Navigator.of(context).pop();
-                            //     _launchInBrowser("${drawerList[i].url}");
-                            //   } else {
-                            //     Navigator.of(context).pop();
-                            //     Navigator.of(context).push(
-                            //       PageTransition(
-                            //         type: PageTransitionType.size,
-                            //         alignment: Alignment.bottomCenter,
-                            //         child: drawerList[i].widget!,
-                            //       ),
-                            //     );
-                            //   }
-                            // }
+                              onTap: () async {
+                                // if (i == 0) {
+                                //   Navigator.of(context).pop();
+                                //   _controller.selectedIndex.value = 0;
+                                // } else if (i == 1) {
+                                //   Navigator.of(context).pop();
+                                //   _controller.selectedIndex.value = 1;
+                                // } else if (i == 2) {
+                                //   Navigator.of(context).pop();
+                                //   _controller.selectedIndex.value = 2;
+                                // } else {
+                                //   if (drawerList[i].isAction) {
+                                //     Navigator.of(context).pop();
+                                //     _launchInBrowser("${drawerList[i].url}");
+                                //   } else {
+                                //     Navigator.of(context).pop();
+                                //     Navigator.of(context).push(
+                                //       PageTransition(
+                                //         type: PageTransitionType.size,
+                                //         alignment: Alignment.bottomCenter,
+                                //         child: drawerList[i].widget!,
+                                //       ),
+                                //     );
+                                //   }
+                                // }
+                              },
+                            );
                           },
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const Divider(),
-                      itemCount: drawerList.length,
+                          separatorBuilder: (BuildContext context, int index) =>
+                              const Divider(),
+                          itemCount: drawerList.length,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 21.0,
+                      vertical: 10.0,
+                    ),
+                    child: DottedDivider(),
+                  ),
+                  const SizedBox(
+                    height: 36,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                    child: ListTile(
+                      dense: true,
+                      contentPadding: const EdgeInsets.all(2.0),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            CupertinoIcons.settings,
+                            size: 23,
+                            color: Constants.secondaryColor,
+                          ),
+                          const SizedBox(
+                            width: 21.0,
+                          ),
+                          TextSmall(
+                            text: "Account Settings",
+                            fontWeight: FontWeight.w400,
+                            color: Constants.secondaryColor,
+                          ),
+                        ],
+                      ),
+                      onTap: () async {},
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                    child: ListTile(
+                      dense: true,
+                      contentPadding: const EdgeInsets.all(2.0),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            CupertinoIcons.square_arrow_left,
+                            color: Constants.secondaryColor,
+                          ),
+                          const SizedBox(
+                            width: 21.0,
+                          ),
+                          TextSmall(
+                            text: "Logout",
+                            fontWeight: FontWeight.w600,
+                            color: Constants.secondaryColor,
+                          ),
+                        ],
+                      ),
+                      onTap: () async {},
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 21.0,
-                vertical: 10.0,
-              ),
-              child: DottedDivider(),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: ListTile(
-                dense: true,
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/images/settings_icon.svg',
-                      width: 22,
-                      color: Constants.secondaryColor,
-                    ),
-                    const SizedBox(
-                      width: 21.0,
-                    ),
-                    TextSmall(
-                      text: "Account Settings",
-                      fontWeight: FontWeight.w400,
-                      color: Constants.secondaryColor,
-                    ),
-                  ],
-                ),
-                onTap: () async {},
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 13.0),
-              child: ListTile(
-                dense: true,
-                contentPadding: const EdgeInsets.all(2.0),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      CupertinoIcons.square_arrow_left,
-                      color: Constants.secondaryColor,
-                    ),
-                    const SizedBox(
-                      width: 21.0,
-                    ),
-                    TextSmall(
-                      text: "Logout",
-                      fontWeight: FontWeight.w600,
-                      color: Constants.secondaryColor,
-                    ),
-                  ],
-                ),
-                onTap: () async {},
-              ),
-            ),
-            const SizedBox(
-              height: 16,
             ),
           ],
         ),

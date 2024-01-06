@@ -26,7 +26,7 @@ class ActionButton extends StatelessWidget {
       style: TextButton.styleFrom(
         backgroundColor: bgColor,
         foregroundColor: strokeColor,
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radius),
           side: BorderSide(

@@ -3,8 +3,12 @@ import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/drawer/custom_drawer.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/screens/airtime/airtime.dart';
+import 'package:afrikunet/screens/bank/add_bank.dart';
+import 'package:afrikunet/screens/bills/billpay.dart';
 import 'package:afrikunet/screens/vouchers/buy_voucher.dart';
 import 'package:afrikunet/screens/vouchers/redeem_voucher.dart';
+import 'package:afrikunet/screens/vouchers/split_voucher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -44,7 +48,7 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       body: SafeArea(
         child: ListView(
           children: [
@@ -65,9 +69,9 @@ class HomePage extends StatelessWidget {
             fit: BoxFit.fill,
           ),
         ),
-        height: 210,
+        height: 175,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
@@ -91,6 +95,7 @@ class HomePage extends StatelessWidget {
                       children: [
                         Text(
                           "Good evening, STANLEY",
+                          textScaleFactor: 0.92,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -101,6 +106,7 @@ class HomePage extends StatelessWidget {
                         SizedBox(height: 4.0),
                         Text(
                           "Last login 03/12/2023 08:30pm",
+                          textScaleFactor: 0.86,
                           style: TextStyle(
                             fontSize: 11,
                             fontFamily: 'OpenSans',
@@ -113,15 +119,23 @@ class HomePage extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {},
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      TextSmall(text: "History", color: Colors.white),
-                      const SizedBox(
+                      Text(
+                        "History",
+                        textScaleFactor: 0.86,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontFamily: 'OpenSans',
+                          color: Color(0xFFC5C5C5),
+                        ),
+                      ),
+                      SizedBox(
                         width: 4.0,
                       ),
-                      const Icon(
+                      Icon(
                         Icons.calendar_today_outlined,
                         color: Colors.white,
                         size: 16,
@@ -138,7 +152,7 @@ class HomePage extends StatelessWidget {
                 Expanded(
                   child: PrimaryButton(
                     buttonText: "Buy Voucher",
-                    fontSize: 16,
+                    fontSize: 14,
                     onPressed: () {
                       Get.to(
                         const BuyVoucher(),
@@ -150,12 +164,12 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  width: 12.0,
+                  width: 16.0,
                 ),
                 Expanded(
                   child: PrimaryButton(
                     buttonText: "Redeem Voucher",
-                    fontSize: 16,
+                    fontSize: 14,
                     onPressed: () {
                       Get.to(
                         const RedeemVoucher(),
@@ -167,7 +181,8 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ],
-            )
+            ),
+            const SizedBox(height: 0.5)
           ],
         ),
       );
@@ -179,10 +194,9 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Column(
@@ -196,10 +210,15 @@ class HomePage extends StatelessWidget {
                           height: 19,
                           fit: BoxFit.cover,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(
+                            const BillPay(),
+                            transition: Transition.cupertino,
+                          );
+                        },
                       ),
                       const SizedBox(height: 8.0),
-                      TextBody1(text: "Bill Pay")
+                      TextBody2(text: "Bill Pay")
                     ],
                   ),
                 ),
@@ -215,10 +234,15 @@ class HomePage extends StatelessWidget {
                           color: Constants.primaryColor,
                           fit: BoxFit.cover,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(
+                            const Airtime(),
+                            transition: Transition.cupertino,
+                          );
+                        },
                       ),
                       const SizedBox(height: 8.0),
-                      TextBody1(text: "Airtime")
+                      TextBody2(text: "Airtime")
                     ],
                   ),
                 ),
@@ -234,10 +258,15 @@ class HomePage extends StatelessWidget {
                           color: Constants.primaryColor,
                           fit: BoxFit.cover,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(
+                            AddBank(),
+                            transition: Transition.cupertino,
+                          );
+                        },
                       ),
                       const SizedBox(height: 8.0),
-                      TextBody1(text: "Add Bank")
+                      TextBody2(text: "Add Bank")
                     ],
                   ),
                 ),
@@ -253,10 +282,18 @@ class HomePage extends StatelessWidget {
                           color: Constants.primaryColor,
                           fit: BoxFit.cover,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(
+                            const SplitVoucher(),
+                            transition: Transition.cupertino,
+                          );
+                        },
                       ),
                       const SizedBox(height: 8.0),
-                      TextBody1(text: "Split Voucher")
+                      TextBody2(
+                        text: "Split Voucher",
+                        align: TextAlign.center,
+                      ),
                     ],
                   ),
                 ),

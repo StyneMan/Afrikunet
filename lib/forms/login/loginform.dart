@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:afrikunet/components/inputfield/passwordfield.dart';
 import 'package:afrikunet/components/inputfield/textfield.dart';
 import 'package:afrikunet/helper/socket/socket_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helper/constants/constants.dart';
 import '../../screens/auth/forgotPass/forgotPass.dart';
@@ -44,8 +45,11 @@ class _LoginFormState extends State<LoginForm> {
     //   "password": _passwordController.text,
     // };
     try {
+      final _prefs = await SharedPreferences.getInstance();
+
       Future.delayed(const Duration(seconds: 3), () {
         _controller.setLoading(false);
+        _prefs.setBool("loggedIn", true);
         Get.to(
           Dashboard(),
           transition: Transition.cupertino,

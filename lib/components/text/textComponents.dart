@@ -32,6 +32,38 @@ class TextLarge extends StatelessWidget {
   }
 }
 
+class TextHeading extends StatelessWidget {
+  late final String? text;
+  late final Color color;
+  late final TextAlign? align;
+  late final FontWeight fontWeight;
+  late final bool? softWrap;
+
+  TextHeading({
+    required this.text,
+    this.color = Colors.black,
+    this.fontWeight = FontWeight.w500,
+    this.align,
+    this.softWrap,
+  });
+
+  final fontFamily = "OpenSans";
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text!,
+      softWrap: softWrap,
+      textAlign: align,
+      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: color,
+            fontFamily: fontFamily,
+            fontWeight: fontWeight,
+          ),
+    );
+  }
+}
+
 class TextMedium extends StatelessWidget {
   late final String? text;
   late final Color color;

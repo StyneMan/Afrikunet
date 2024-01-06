@@ -88,6 +88,7 @@ dependencies:
   firebase_messaging: ^14.0.0
   path_provider: ^2.0.15
   connectivity_plus: ^2.1.0
+  mask_text_input_formatter: ^2.7.0
 
 dependency_overrides:
   # firebase_core_platform_interface: 4.5.1

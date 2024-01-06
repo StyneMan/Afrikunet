@@ -21,74 +21,20 @@ class StateController extends GetxController {
   var isLoading = false.obs;
   var isAuthenticated = false.obs;
   var hideNavbar = false.obs;
-  var showPlan = false.obs;
   var hasInternetAccess = true.obs;
 
   var onboardingIndex = 0.obs;
-
-  var allProfessions = [].obs;
+  var cableTvAmount = 0.0.obs;
+  var cableTvPackageName = "".obs;
+  var electricityDistributorName = "".obs;
 
   var currentUser = FirebaseAuth.instance.currentUser;
   var croppedPic = "".obs;
   var customSearchBar = [].obs;
 
-  //Skills Management
-  var shouldAddSkills = false.obs;
-
-  // var tabController = PersistentTabController(initialIndex: 0);
-
-  //Control Experience/Education navigation
-  var shouldExitExpEdu = false.obs;
-
   var productsData = "".obs;
 
-  // var onboardingIndex = 0.obs;
-
   var userData = {}.obs;
-  var searchData = [].obs;
-  var freelancers = [].obs;
-  var recruiters = [].obs;
-  var conversationData = {}.obs;
-  var currentConversation = [].obs;
-  var isConversationLoading = true.obs;
-  var myChats = [].obs;
-  var currentMessages = [].obs;
-  var selectedConversation = {}.obs;
-  var myJobs = [].obs;
-  var myJobsApplied = [].obs;
-  var savedJobs = [].obs;
-  var allJobs = [].obs;
-
-  // ****** ALL Clearable Jobs Data ******
-  var jobQuestions = [].obs;
-  var jobRequirements = [].obs;
-  var currentJobStep = 0.obs;
-  var jobTitle = "".obs;
-  var jobCompany = "".obs;
-  var jobType = "".obs;
-  var workplaceType = "".obs;
-  var jobState = "".obs;
-  var jobCity = "".obs;
-  var jobCountry = "".obs;
-  var jobDescription = "".obs;
-  var jobMinQualification = "".obs;
-
-  // ****** ALL Clearable Job Application Data ******
-  // var resumee;
-  var applicantScreeningAnswers = [].obs;
-  var currentApplicationStep = 0.obs;
-  var applicationEmail = "".obs;
-  var applicationPhone = "".obs;
-
-  // ****** ALL Clearable State Data ******
-  var pickedDocuments = [].obs;
-  var documentsModel = [].obs;
-  var languagesSpoken = [].obs;
-  var languagesSpeakWrite = [].obs;
-  var accountType = "Boy".obs;
-  var currentProfileStep = 0.obs;
-  var registrationEmail = "".obs;
-  var registrationPhone = "".obs;
 
   // ****** PROFILE SETUP STEP ONE *******
   var firstname = "".obs;
@@ -101,23 +47,8 @@ class StateController extends GetxController {
   var state = "".obs;
   var maritalStatus = "".obs;
   var dob = "".obs;
-  var experience = "".obs;
   var city = "".obs;
   var country = "".obs;
-  var profession = "".obs;
-
-  // ****** PROFILE SETUP STEP TWO *******
-  var nokName = "".obs;
-  var nokEmail = "".obs;
-  var nokPhone = "".obs;
-  var nokAddress = "".obs;
-  var nokRelationship = "".obs;
-
-  // ****** PROFILE SETUP STEP THREE *******
-  var school = "".obs;
-  var degree = "".obs;
-  var fieldStudy = "".obs;
-  var dateGraduated = "".obs;
 
   ScrollController transactionsScrollController = ScrollController();
   ScrollController messagesScrollController = ScrollController();
@@ -225,37 +156,7 @@ class StateController extends GetxController {
     }
   }
 
-  clearJobsData() {
-    jobCity.value = "";
-    jobState.value = "";
-    jobCountry.value = "";
-    jobTitle.value = "";
-    jobType.value = "";
-    jobCompany.value = "";
-    jobDescription.value = "";
-    workplaceType.value = "";
-    jobQuestions.value = [];
-    jobRequirements.value = [];
-    jobMinQualification.value = "";
-    currentJobStep.value = 0;
-  }
-
-  clearApplicationData() {
-    applicationEmail.value = "";
-    applicationPhone.value = "";
-    currentApplicationStep.value = 0;
-  }
-
   clearTempProfile() {
-    dateGraduated.value = "";
-    fieldStudy.value = "";
-    degree.value = "";
-    school.value = "";
-    nokRelationship.value = "";
-    nokAddress.value = "";
-    nokPhone.value = "";
-    nokEmail.value = "";
-    nokName.value = "";
     dob.value = "";
     address.value = "";
     gender.value = "";
@@ -264,19 +165,9 @@ class StateController extends GetxController {
     firstname.value = "";
     middlename.value = "";
     lastname.value = "";
-    profession.value = "";
     city.value = "";
     state.value = "";
     country.value = "";
-    registrationPhone.value = "";
-    registrationEmail.value = "";
-    currentProfileStep.value = 0;
-    accountType.value = "Boy";
-    pickedDocuments.value = [];
-  }
-
-  setSearchData(var data) {
-    searchData.value.add(data);
   }
 
   void setAccessToken(String token) {
@@ -285,10 +176,6 @@ class StateController extends GetxController {
 
   void setHasInternet(bool state) {
     hasInternetAccess.value = state;
-  }
-
-  void setShowPlan(bool state) {
-    showPlan.value = state;
   }
 
   void setProductsData(String state) {

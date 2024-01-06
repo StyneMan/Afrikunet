@@ -6,7 +6,6 @@ import 'dart:io';
 
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:afrikunet/screens/onboarding/onboarding.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:afrikunet/components/dashboard/dashboard.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
@@ -241,23 +240,9 @@ class _MyAppState extends State<MyApp> {
           }
         },
       );
-
-      socket.on(
-        "new-message",
-        (data) {
-          debugPrint("DATA FROM MESSAGE >> ${(data)}");
-          Map<String, dynamic> map = jsonDecode(jsonEncode(data));
-          final senderId = map['senderId'];
-          if (senderId != _userMap['id']) {
-            _controller.currentConversation.add(map['message']);
-          }
-
-          // _refreshChatList();
-          //Now play sound here
-          // AudioPlayer().play(AssetSource('assets/audio/sound2.mp3'));
-        },
-      );
-    } catch (e) {}
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   @override

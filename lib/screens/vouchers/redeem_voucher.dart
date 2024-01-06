@@ -24,10 +24,11 @@ class _RedeemVoucherState extends State<RedeemVoucher> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
-        leading: Row(
+        automaticallyImplyLeading: false,
+        title: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(right: 6.0, top: 4.0, bottom: 4.0),
               child: InkWell(
                 onTap: () {
                   Get.back();
@@ -38,13 +39,13 @@ class _RedeemVoucherState extends State<RedeemVoucher> {
                 ),
               ),
             ),
+            TextMedium(
+              text: "Redeem Voucher",
+              color: Colors.black,
+            ),
           ],
         ),
-        title: TextMedium(
-          text: "Redeem Voucher",
-          color: Colors.black,
-        ),
-        centerTitle: true,
+        centerTitle: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -134,12 +134,10 @@ class _ImgPickerState extends State<ImgPicker> {
             imgFromCamera();
           },
           icon: const Icon(CupertinoIcons.camera),
-          label: TextBody2(
-            text: "Camera",
-          ),
+          label: TextBody2(text: "Camera", color: Colors.white),
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.all(10.0),
-            backgroundColor: Colors.green,
+            backgroundColor: Constants.accentColor,
           ),
         ),
         const SizedBox(
@@ -150,10 +148,10 @@ class _ImgPickerState extends State<ImgPicker> {
             imgFromGallery();
           },
           icon: const Icon(CupertinoIcons.folder),
-          label: TextBody2(text: "Gallery"),
+          label: TextBody2(text: "Gallery", color: Colors.white),
           style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.all(10.0),
-          ),
+              padding: const EdgeInsets.all(10.0),
+              backgroundColor: Constants.secondaryColor),
         ),
       ],
     );

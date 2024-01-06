@@ -1,5 +1,6 @@
 import 'package:afrikunet/components/dividers/dotted_divider.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class PaymentMethod extends StatefulWidget {
@@ -17,12 +18,12 @@ class _PaymentMethodState extends State<PaymentMethod> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(1.0),
+      padding: const EdgeInsets.all(0.0),
       child: Card(
         elevation: 2.0,
         shadowColor: const Color(0xFFD0D0D0),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24.0),
+          borderRadius: BorderRadius.circular(12.0),
         ),
         color: const Color(0xFFF2F2F2),
         child: Padding(
@@ -37,7 +38,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: Colors.black,
                     fontFamily: 'OpenSans',
-                    fontWeight: FontWeight.w600),
+                    fontWeight: FontWeight.w500),
               ),
               const SizedBox(height: 4.0),
               Padding(
@@ -127,15 +128,29 @@ class _PaymentMethodState extends State<PaymentMethod> {
                     ],
                   ),
                   Checkbox(
-                      value: _isChecked2,
-                      onChanged: (val) {
-                        setState(() {
-                          _isChecked2 = val!;
-                          _isChecked = false;
-                        });
-                      })
+                    value: _isChecked2,
+                    onChanged: (val) {
+                      setState(() {
+                        _isChecked2 = val!;
+                        _isChecked = false;
+                      });
+                    },
+                  )
                 ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: TextBody2(
+                      text: "Add card",
+                      color: Constants.primaryColor,
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),

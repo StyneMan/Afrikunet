@@ -10,7 +10,7 @@ class RoundedInputMoney extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final TextEditingController controller;
   var validator;
-
+  final Color strokeColor;
   final double borderRadius;
 
   RoundedInputMoney({
@@ -18,6 +18,7 @@ class RoundedInputMoney extends StatelessWidget {
     required this.hintText,
     this.icon = Icons.money,
     this.enabled,
+    this.strokeColor = Colors.black,
     required this.onChanged,
     required this.controller,
     required this.validator,
@@ -55,11 +56,17 @@ class RoundedInputMoney extends StatelessWidget {
           borderRadius: BorderRadius.all(
             Radius.circular(borderRadius),
           ),
+          borderSide: BorderSide(
+            color: strokeColor,
+          ),
           gapPadding: 4.0,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(borderRadius),
+          ),
+          borderSide: BorderSide(
+            color: strokeColor,
           ),
           gapPadding: 4.0,
         ),
