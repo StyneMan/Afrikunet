@@ -56,17 +56,26 @@ class CustomTextArea2 extends StatelessWidget {
           borderRadius: BorderRadius.all(
             Radius.circular(borderRadius),
           ),
+          borderSide: const BorderSide(
+            color: Constants.strokeColor,
+          ),
           gapPadding: 4.0,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(borderRadius),
           ),
+          borderSide: const BorderSide(
+            color: Constants.strokeColor,
+          ),
           gapPadding: 4.0,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(borderRadius),
+          ),
+          borderSide: const BorderSide(
+            color: Constants.strokeColor,
           ),
           gapPadding: 4.0,
         ),
@@ -75,13 +84,13 @@ class CustomTextArea2 extends StatelessWidget {
         labelText: hintText,
         focusColor: Constants.accentColor,
         hintStyle: const TextStyle(
-          fontFamily: "Poppins",
+          fontFamily: "OpenSans",
           color: Colors.black38,
           fontSize: 14,
           fontWeight: FontWeight.w400,
         ),
         labelStyle: const TextStyle(
-          fontFamily: "Poppins",
+          fontFamily: "OpenSans",
           fontWeight: FontWeight.w500,
           fontSize: 18,
         ),

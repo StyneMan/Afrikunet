@@ -193,16 +193,33 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 ],
                               ),
                               onTap: () async {
-                                // if (i == 0) {
-                                //   Navigator.of(context).pop();
-                                //   _controller.selectedIndex.value = 0;
-                                // } else if (i == 1) {
-                                //   Navigator.of(context).pop();
-                                //   _controller.selectedIndex.value = 1;
-                                // } else if (i == 2) {
-                                //   Navigator.of(context).pop();
-                                //   _controller.selectedIndex.value = 2;
-                                // } else {
+                                if (i == 0) {
+                                  Get.back();
+                                  _controller.selectedIndex.value = 2;
+                                } else if (i == 1) {
+                                  Get.back();
+                                  Get.to(
+                                    drawerList[i].widget,
+                                    transition: Transition.cupertino,
+                                  );
+                                } else if (i == 2) {
+                                  Get.back();
+                                  Get.to(
+                                    drawerList[i].widget,
+                                    transition: Transition.cupertino,
+                                  );
+                                } else if (i == 3) {
+                                  Get.back();
+                                  _controller.selectedIndex.value = 1;
+                                } else if (i == 4) {
+                                  Get.back();
+                                  Get.to(
+                                    drawerList[i].widget,
+                                    transition: Transition.cupertino,
+                                  );
+                                }
+
+                                // else {
                                 //   if (drawerList[i].isAction) {
                                 //     Navigator.of(context).pop();
                                 //     _launchInBrowser("${drawerList[i].url}");
@@ -261,7 +278,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           ),
                         ],
                       ),
-                      onTap: () async {},
+                      onTap: () {
+                        Get.back();
+                        _controller.selectedIndex.value = 3;
+                      },
                     ),
                   ),
                   Padding(

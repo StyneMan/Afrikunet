@@ -3,7 +3,7 @@ import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class GiftCard extends StatelessWidget {
+class GiftCardMini extends StatelessWidget {
   final String bgImage;
   final String logo;
   final String amount;
@@ -11,14 +11,14 @@ class GiftCard extends StatelessWidget {
   final String type;
   final double width;
 
-  const GiftCard({
+  const GiftCardMini({
     Key? key,
     required this.amount,
     required this.bgImage,
     required this.code,
     required this.logo,
     required this.type,
-    this.width = 350,
+    this.width = 256,
   }) : super(key: key);
 
   @override
@@ -26,8 +26,8 @@ class GiftCard extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          width: width,
-          padding: const EdgeInsets.all(10.0),
+          width: double.infinity,
+          padding: const EdgeInsets.all(5.0),
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage(bgImage),
@@ -40,9 +40,9 @@ class GiftCard extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 5,
-          right: 16,
-          left: 4.0,
+          top: 3,
+          right: 8,
+          left: 2.0,
           bottom: 0,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -54,22 +54,22 @@ class GiftCard extends StatelessWidget {
                 children: [
                   Image.asset(
                     logo,
-                    scale: 1.5,
+                    scale: 2.5,
                   ),
                   Text(
                     "${Constants.nairaSign(context).currencySymbol}$amount",
                     style: TextStyle(
                       color: type == "blue" ? Colors.white : Colors.black,
-                      fontSize: 24,
+                      fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
                   )
                 ],
               ),
-              const SizedBox(height: 4.0),
+              const SizedBox(height: 2.0),
               Center(
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.4,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,7 +94,7 @@ class GiftCard extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: type == "blue" ? Colors.white : Colors.black,
-                          fontSize: 36,
+                          fontSize: 24,
                           fontFamily: "OpenSans",
                           fontWeight: FontWeight.bold,
                         ),
@@ -104,7 +104,7 @@ class GiftCard extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: type == "blue" ? Colors.white : Colors.black,
-                          fontSize: 13,
+                          fontSize: 9,
                           fontFamily: "OpenSans",
                           fontWeight: FontWeight.w400,
                         ),
@@ -115,7 +115,7 @@ class GiftCard extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: type == "blue" ? Colors.white : Colors.black,
-                          fontSize: 11,
+                          fontSize: 8,
                           fontFamily: "OpenSans",
                           fontWeight: FontWeight.w400,
                         ),
@@ -129,15 +129,15 @@ class GiftCard extends StatelessWidget {
         ),
         Positioned(
           bottom: 13,
-          left: 10,
-          right: 10,
+          left: 5,
+          right: 5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SvgPicture.asset(
                 "assets/images/asterisk.svg",
-                width: 10.0,
+                width: 6.0,
                 color: type == "blue" ? Colors.white : Colors.black,
               ),
               const SizedBox(width: 1.0),
@@ -146,7 +146,7 @@ class GiftCard extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: type == "blue" ? Colors.white : Colors.black,
-                  fontSize: 11,
+                  fontSize: 9,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
                 ),
@@ -154,7 +154,7 @@ class GiftCard extends StatelessWidget {
               const SizedBox(width: 6.0),
               SvgPicture.asset(
                 "assets/images/asterisk.svg",
-                width: 10.0,
+                width: 6.0,
                 color: type == "blue" ? Colors.white : Colors.black,
               ),
               const SizedBox(width: 1.0),
@@ -163,7 +163,7 @@ class GiftCard extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: type == "blue" ? Colors.white : Colors.black,
-                  fontSize: 11,
+                  fontSize: 9,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
                 ),
@@ -171,7 +171,7 @@ class GiftCard extends StatelessWidget {
               const SizedBox(width: 6.0),
               SvgPicture.asset(
                 "assets/images/asterisk.svg",
-                width: 10.0,
+                width: 6.0,
                 color: type == "blue" ? Colors.white : Colors.black,
               ),
               const SizedBox(width: 1.0),
@@ -180,7 +180,7 @@ class GiftCard extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: type == "blue" ? Colors.white : Colors.black,
-                  fontSize: 11,
+                  fontSize: 9,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
                 ),
@@ -188,7 +188,7 @@ class GiftCard extends StatelessWidget {
               const SizedBox(width: 6.0),
               SvgPicture.asset(
                 "assets/images/asterisk.svg",
-                width: 10.0,
+                width: 6.0,
                 color: type == "blue" ? Colors.white : Colors.black,
               ),
               const SizedBox(width: 1.0),
@@ -197,7 +197,7 @@ class GiftCard extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: type == "blue" ? Colors.white : Colors.black,
-                  fontSize: 11,
+                  fontSize: 9,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
                 ),
@@ -205,7 +205,7 @@ class GiftCard extends StatelessWidget {
               const SizedBox(width: 6.0),
               SvgPicture.asset(
                 "assets/images/asterisk.svg",
-                width: 10.0,
+                width: 6.0,
                 color: type == "blue" ? Colors.white : Colors.black,
               ),
               const SizedBox(width: 1.0),
@@ -214,7 +214,7 @@ class GiftCard extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: type == "blue" ? Colors.white : Colors.black,
-                  fontSize: 11,
+                  fontSize: 9,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
                 ),
@@ -222,7 +222,7 @@ class GiftCard extends StatelessWidget {
               const SizedBox(width: 6.0),
               SvgPicture.asset(
                 "assets/images/asterisk.svg",
-                width: 10.0,
+                width: 6.0,
                 color: type == "blue" ? Colors.white : Colors.black,
               ),
               const SizedBox(width: 1.0),
@@ -231,7 +231,7 @@ class GiftCard extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: type == "blue" ? Colors.white : Colors.black,
-                  fontSize: 12,
+                  fontSize: 9,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
                 ),

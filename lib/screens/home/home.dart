@@ -60,6 +60,18 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  String getGreeting() {
+    var hour = DateTime.now().hour;
+
+    if (hour >= 0 && hour < 12) {
+      return 'Good morning';
+    } else if (hour >= 12 && hour < 17) {
+      return 'Good afternoon';
+    } else {
+      return 'Good evening';
+    }
+  }
+
   Widget _header(context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 1.0),
         decoration: const BoxDecoration(
@@ -78,15 +90,15 @@ class HomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       foregroundImage:
                           AssetImage("assets/images/developer.jpg"),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 4.0,
                     ),
                     Column(
@@ -94,17 +106,17 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Good evening, STANLEY",
+                          "${getGreeting()}, STANLEY",
                           textScaleFactor: 0.92,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
                             fontFamily: 'OpenSans',
                             color: Colors.white,
                           ),
                         ),
-                        SizedBox(height: 4.0),
-                        Text(
+                        const SizedBox(height: 4.0),
+                        const Text(
                           "Last login 03/12/2023 08:30pm",
                           textScaleFactor: 0.86,
                           style: TextStyle(

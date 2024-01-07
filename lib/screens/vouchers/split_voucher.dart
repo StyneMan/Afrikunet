@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'select_split_voucher.dart';
+
 class SplitVoucher extends StatefulWidget {
   const SplitVoucher({Key? key}) : super(key: key);
 
@@ -70,7 +72,12 @@ class _SplitVoucherState extends State<SplitVoucher> {
                     child: PrimaryButton(
                       buttonText: "Proceed",
                       fontSize: 15,
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(
+                          const SelectSplitVoucher(),
+                          transition: Transition.cupertino,
+                        );
+                      },
                     ),
                   )
                 ],

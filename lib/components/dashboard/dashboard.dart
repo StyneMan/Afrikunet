@@ -142,7 +142,7 @@ class _DashboardState extends State<Dashboard> {
       HomePage(),
       const MyVouchersPage(),
       const ProfilePage(),
-      const SettingsPage(),
+      SettingsPage(),
     ];
   }
 }
