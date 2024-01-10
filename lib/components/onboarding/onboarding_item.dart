@@ -18,7 +18,7 @@ class OnbaoardingItem extends StatelessWidget {
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.7,
-            child: SvgPicture.asset(
+            child: Image.asset(
               item.image,
               width: MediaQuery.of(context).size.width * 0.7,
               height: 320,

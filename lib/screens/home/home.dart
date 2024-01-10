@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../history/history.dart';
 import 'widgets/home_slider.dart';
 
 class HomePage extends StatelessWidget {
@@ -130,7 +131,18 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(
+                      const HistoryScreen(),
+                      transition: Transition.cupertino,
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 1.0,
+                      vertical: 8.0,
+                    ),
+                  ),
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,

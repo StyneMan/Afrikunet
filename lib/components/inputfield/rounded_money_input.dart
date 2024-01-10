@@ -50,6 +50,9 @@ class RoundedInputMoney extends StatelessWidget {
           borderRadius: BorderRadius.all(
             Radius.circular(borderRadius),
           ),
+          borderSide: BorderSide(
+            color: strokeColor,
+          ),
           gapPadding: 4.0,
         ),
         enabledBorder: OutlineInputBorder(
@@ -75,13 +78,13 @@ class RoundedInputMoney extends StatelessWidget {
         // labelText: hintText,
         focusColor: Constants.accentColor,
         hintStyle: const TextStyle(
-          fontFamily: "Poppins",
+          fontFamily: "OpenSans",
           color: Colors.black38,
           fontSize: 14,
           fontWeight: FontWeight.w400,
         ),
         labelStyle: const TextStyle(
-          fontFamily: "Poppins",
+          fontFamily: "OpenSans",
           fontWeight: FontWeight.w500,
           fontSize: 18,
         ),

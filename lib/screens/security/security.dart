@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import 'change_password.dart';
+
 class AppSecurity extends StatefulWidget {
   const AppSecurity({Key? key}) : super(key: key);
 
@@ -188,7 +190,12 @@ class _AppSecurityState extends State<AppSecurity> {
                       height: 10.0,
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(
+                          const ChangePassword(),
+                          transition: Transition.cupertino,
+                        );
+                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,

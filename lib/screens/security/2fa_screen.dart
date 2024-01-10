@@ -1,6 +1,9 @@
 import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'preferred_method.dart';
 
 class TwoFactorAuthScreen extends StatelessWidget {
   const TwoFactorAuthScreen({Key? key}) : super(key: key);
@@ -10,7 +13,7 @@ class TwoFactorAuthScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: Container(
+          child: SizedBox(
             width: double.infinity,
             height: MediaQuery.of(context).size.height * 0.8,
             child: Column(
@@ -51,7 +54,12 @@ class TwoFactorAuthScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.80,
                   child: PrimaryButton(
                     buttonText: "Get Started",
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(
+                        const PreferredMethod(),
+                        transition: Transition.cupertino,
+                      );
+                    },
                   ),
                 ),
               ],

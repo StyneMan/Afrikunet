@@ -1,4 +1,5 @@
 import 'package:afrikunet/components/buttons/primary.dart';
+import 'package:afrikunet/components/dialog/info_dialog.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/layout/appbar/appbar.dart';
 import 'package:afrikunet/screens/success_screen.dart';
@@ -6,13 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/screens/auth/forgotpass/changePass.dart';
 
-import '../../../helper/preference/preference_manager.dart';
 import '../../../helper/state/state_manager.dart';
 
 typedef void InitCallback(params);
@@ -85,7 +86,7 @@ class _State extends State<VerifyOTP> {
         child: Scaffold(
           body: SafeArea(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               width: double.infinity,
               decoration: const BoxDecoration(
                 image: DecorationImage(
@@ -123,8 +124,8 @@ class _State extends State<VerifyOTP> {
                           width: MediaQuery.of(context).size.width * 0.5,
                           child: TextSmall(
                             text: widget.caller == "voucher"
-                                ? "A verification code has been sent to wenprecious@gamail.com"
-                                : "Enter the 4 digit code sent to your email",
+                                ? "A verification code has been sent to ${widget.email}"
+                                : "Enter the code sent to ${widget.email}",
                             align: TextAlign.center,
                             color: Colors.black87,
                             fontWeight: FontWeight.w400,
@@ -247,6 +248,66 @@ class _State extends State<VerifyOTP> {
                                               isVoucher: true,
                                             ),
                                             transition: Transition.cupertino,
+                                          );
+                                        } else if (widget.caller == "2fa") {
+                                          // Show dialog here ...
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            builder: (BuildContext context) =>
+                                                InfoDialog(
+                                              body: SingleChildScrollView(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: Center(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      const SizedBox(
+                                                        height: 24.0,
+                                                      ),
+                                                      SvgPicture.asset(
+                                                          "assets/images/check_all.svg"),
+                                                      const SizedBox(
+                                                        height: 10.0,
+                                                      ),
+                                                      TextSmall(
+                                                        text:
+                                                            "2FA successfully enabled. You can now login with 2FA.",
+                                                        align: TextAlign.center,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 24,
+                                                      ),
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(10.0),
+                                                        width: double.infinity,
+                                                        child: PrimaryButton(
+                                                          buttonText: "Done",
+                                                          fontSize: 15,
+                                                          onPressed: () {
+                                                            Get.back();
+                                                            Get.back();
+                                                            Get.back();
+                                                            Get.back();
+                                                            Get.back();
+                                                          },
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                           );
                                         } else {
                                           Get.to(

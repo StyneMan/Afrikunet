@@ -1,16 +1,11 @@
-import 'dart:convert';
-
 import 'package:afrikunet/components/buttons/google.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:afrikunet/components/dashboard/dashboard.dart';
 import 'package:afrikunet/components/dividers/horz_text_divider.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
-import 'package:afrikunet/helper/service/api_service.dart';
 
 import '../../../forms/signup/signupform.dart';
 import '../../../helper/state/state_manager.dart';

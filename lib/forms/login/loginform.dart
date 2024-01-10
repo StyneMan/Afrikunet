@@ -2,7 +2,6 @@ import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/dashboard/dashboard.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
-import 'package:afrikunet/layout/appbar/appbar.dart';
 import 'package:afrikunet/screens/auth/register/register.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -87,7 +86,7 @@ class _LoginFormState extends State<LoginForm> {
                 controller: _emailController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your email or phone';
+                    return 'Please enter your email';
                   }
                   if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
                       .hasMatch(value)) {

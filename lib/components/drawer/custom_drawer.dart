@@ -27,7 +27,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
   List<DrawerModel> drawerList = [];
 
   final _controller = Get.find<StateController>();
-  bool _isLoggedIn = true;
 
   _initAuth() {
     setState(() {

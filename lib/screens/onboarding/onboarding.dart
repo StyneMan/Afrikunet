@@ -4,7 +4,6 @@ import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/model/onboarding.dart';
 import 'package:afrikunet/screens/getstarted/getstarted.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

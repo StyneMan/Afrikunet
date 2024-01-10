@@ -284,59 +284,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         TextButton(
                           onPressed: () {
-                            // Get.to(
-                            //   ContactSupport(),
-                            //   transition: Transition.cupertino,
-                            // );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.settings,
-                                    color: Colors.black54,
-                                  ),
-                                  const SizedBox(
-                                    width: 16.0,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      TextMedium(
-                                        text: "Settings",
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      TextBody2(
-                                        text: "",
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const Icon(
-                                Icons.chevron_right,
-                                size: 21,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 2.0,
-                        ),
-                        const Divider(),
-                        const SizedBox(
-                          height: 2.0,
-                        ),
-                        TextButton(
-                          onPressed: () {
                             // _logout();
                           },
                           child: Row(
