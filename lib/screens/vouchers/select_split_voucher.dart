@@ -1,5 +1,5 @@
 import 'package:afrikunet/components/buttons/primary.dart';
-import 'package:afrikunet/components/cards/giftcard.dart';
+import 'package:afrikunet/components/cards/giftcard_item.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -64,7 +64,7 @@ class _SelectSplitVoucherState extends State<SelectSplitVoucher> {
               children: [
                 const SizedBox(
                   height: 225,
-                  child: GiftCard(
+                  child: GiftCardItem(
                     amount: "1000",
                     bgImage: "assets/images/giftcard_bg.png",
                     code: "XDT12IUNWpo1HN",
@@ -101,7 +101,7 @@ class _SelectSplitVoucherState extends State<SelectSplitVoucher> {
               children: [
                 const SizedBox(
                   height: 225,
-                  child: GiftCard(
+                  child: GiftCardItem(
                     amount: "1000",
                     bgImage: "assets/images/giftcard_bg.png",
                     code: "XDT12IUNWpo1HN",

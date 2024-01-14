@@ -34,7 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Constants.secondaryColor,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         automaticallyImplyLeading: false,
         title: TextHeading(
           text: "Profile",
@@ -153,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: TextLarge(
                         text: "Stanley Brown",
                         fontWeight: FontWeight.w500,
-                        color: Colors.black,
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                     ),
                     Column(
@@ -188,9 +188,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.lock_outline_rounded,
-                                    color: Colors.black54,
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
                                   ),
                                   const SizedBox(
                                     width: 18.0,
@@ -202,11 +203,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                     children: [
                                       TextMedium(
                                         text: "Security",
-                                        color: Colors.black,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
                                         fontWeight: FontWeight.w400,
                                       ),
                                       TextBody2(
                                         text: "2FA, App lock, Pin & Biometrics",
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
                                       ),
                                     ],
                                   ),
@@ -243,7 +249,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 children: [
                                   SvgPicture.asset(
                                     "assets/images/people.svg",
-                                    color: Colors.black54,
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
                                     width: 22,
                                     height: 18,
                                   ),
@@ -257,12 +264,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                     children: [
                                       TextMedium(
                                         text: "About Us",
-                                        color: Colors.black,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
                                         fontWeight: FontWeight.w400,
                                       ),
                                       TextBody2(
                                         text:
                                             "FAQs, Privacy Policy, Contact us",
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
                                       ),
                                     ],
                                   ),

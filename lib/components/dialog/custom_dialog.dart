@@ -38,7 +38,7 @@ class CustomDialog extends StatelessWidget {
             margin: const EdgeInsets.only(top: Constants.avatarRadius),
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.background,
               borderRadius: BorderRadius.circular(Constants.padding),
               boxShadow: null,
               // const [

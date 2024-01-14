@@ -19,9 +19,8 @@ class _RedeemVoucherState extends State<RedeemVoucher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0.0,
         automaticallyImplyLeading: false,
         title: Row(
@@ -32,15 +31,15 @@ class _RedeemVoucherState extends State<RedeemVoucher> {
                 onTap: () {
                   Get.back();
                 },
-                child: const Icon(
+                child: Icon(
                   CupertinoIcons.back,
-                  color: Constants.primaryColor,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
               ),
             ),
             TextMedium(
               text: "Redeem Voucher",
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ],
         ),
@@ -58,13 +57,13 @@ class _RedeemVoucherState extends State<RedeemVoucher> {
                   TextLarge(
                     text: "Redeem your voucher via scanning or code",
                     align: TextAlign.center,
-                    color: const Color(0xFF262626),
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   const SizedBox(height: 10.0),
                   TextBody1(
                     text: "Your choice, Your Purchase. Quick and easy",
                     align: TextAlign.center,
-                    color: const Color(0xFF5D5D5D),
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                   Row(
@@ -74,6 +73,8 @@ class _RedeemVoucherState extends State<RedeemVoucher> {
                       Expanded(
                         child: PrimaryButton(
                           buttonText: "Scan",
+                          bgColor:
+                              Theme.of(context).colorScheme.primaryContainer,
                           onPressed: () {},
                         ),
                       ),
@@ -81,6 +82,7 @@ class _RedeemVoucherState extends State<RedeemVoucher> {
                       Expanded(
                         child: SecondaryButton(
                           buttonText: "Enter Code",
+                          foreColor: Theme.of(context).colorScheme.secondary,
                           onPressed: () {
                             Get.to(
                               VoucherCode(),

@@ -1,6 +1,7 @@
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
+import 'package:afrikunet/helper/state/theme_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,9 +23,8 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0.0,
         automaticallyImplyLeading: false,
         title: Row(
@@ -35,15 +35,15 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: () {
                   _controller.selectedIndex.value = 0;
                 },
-                child: const Icon(
+                child: Icon(
                   CupertinoIcons.back,
-                  color: Constants.primaryColor,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
               ),
             ),
             TextMedium(
               text: "Settings",
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ],
         ),
@@ -56,6 +56,7 @@ class _SettingsPageState extends State<SettingsPage> {
           TextSmall(
             text: "Appearance",
             fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.tertiary,
           ),
           const SizedBox(height: 16.0),
           SizedBox(
@@ -76,9 +77,11 @@ class _SettingsPageState extends State<SettingsPage> {
                     children: [
                       TextSmall(
                         text: "Light",
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                       Radio(
-                        activeColor: Colors.black87,
+                        activeColor:
+                            Theme.of(context).colorScheme.inversePrimary,
                         value: "light",
                         groupValue: _currentMode,
                         onChanged: (value) {
@@ -102,9 +105,11 @@ class _SettingsPageState extends State<SettingsPage> {
                     children: [
                       TextSmall(
                         text: "Dark",
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                       Radio(
-                        activeColor: Colors.black87,
+                        activeColor:
+                            Theme.of(context).colorScheme.inversePrimary,
                         value: "dark",
                         groupValue: _currentMode,
                         onChanged: (value) {
@@ -128,9 +133,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     children: [
                       TextSmall(
                         text: "System Default",
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                       Radio(
-                        activeColor: Colors.black87,
+                        activeColor: Theme.of(context).colorScheme.primary,
                         value: "system default",
                         groupValue: _currentMode,
                         onChanged: (value) {
@@ -148,10 +154,8 @@ class _SettingsPageState extends State<SettingsPage> {
           const SizedBox(height: 24.0),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(16.0),
-            color: const Color(
-              0xFFF2F2F2,
-            ),
+            padding: const EdgeInsets.all(10.0),
+            color: Theme.of(context).colorScheme.background.withOpacity(0.4),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -165,9 +169,10 @@ class _SettingsPageState extends State<SettingsPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
+                          width: 40,
                           padding: const EdgeInsets.all(8.0),
                           decoration: BoxDecoration(
-                            color: Constants.primaryColor,
+                            color: Theme.of(context).colorScheme.primary,
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           child: SvgPicture.asset(
@@ -175,7 +180,10 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                         ),
                         const SizedBox(width: 6.0),
-                        TextSmall(text: "Email Notification"),
+                        TextSmall(
+                          text: "Email Notification",
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
                       ],
                     ),
                     CupertinoSwitch(
@@ -186,7 +194,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               !_enableEmailNotification,
                         );
                       },
-                      activeColor: Constants.primaryColor,
+                      activeColor: Theme.of(context).colorScheme.primary,
                     ),
                   ],
                 ),
@@ -202,9 +210,10 @@ class _SettingsPageState extends State<SettingsPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
+                          width: 40,
                           padding: const EdgeInsets.all(8.0),
                           decoration: BoxDecoration(
-                            color: Constants.primaryColor,
+                            color: Theme.of(context).colorScheme.primary,
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           child: SvgPicture.asset(
@@ -212,7 +221,10 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                         ),
                         const SizedBox(width: 6.0),
-                        TextSmall(text: "Push Notification"),
+                        TextSmall(
+                          text: "Push Notification",
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
                       ],
                     ),
                     CupertinoSwitch(
@@ -223,7 +235,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               !_enablePushNotification,
                         );
                       },
-                      activeColor: Constants.primaryColor,
+                      activeColor: Theme.of(context).colorScheme.primary,
                     ),
                   ],
                 ),
@@ -233,17 +245,21 @@ class _SettingsPageState extends State<SettingsPage> {
           const SizedBox(height: 16.0),
           Container(
             width: double.infinity,
-            color: const Color(
-              0xFFF2F2F2,
-            ),
+            color: Theme.of(context).colorScheme.background.withOpacity(0.4),
             child: TextButton(
               onPressed: () {},
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  TextSmall(text: "Language"),
-                  const Icon(Icons.chevron_right_rounded)
+                  TextSmall(
+                    text: "Language",
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  )
                 ],
               ),
             ),

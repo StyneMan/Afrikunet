@@ -35,7 +35,10 @@ class _AirtimeTabState extends State<AirtimeTab> {
         shrinkWrap: true,
         padding: const EdgeInsets.all(5.0),
         children: [
-          TextSmall(text: "Select your preferred network"),
+          TextSmall(
+            text: "Select your preferred network",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           SizedBox(
             height: 100,
             child: Row(
@@ -50,7 +53,7 @@ class _AirtimeTabState extends State<AirtimeTab> {
                         border: Border.all(
                           width: 1.0,
                           color: _current == i
-                              ? Constants.primaryColor
+                              ? Theme.of(context).colorScheme.secondary
                               : Colors.transparent,
                         ),
                       ),
@@ -68,7 +71,9 @@ class _AirtimeTabState extends State<AirtimeTab> {
             ),
           ),
           const SizedBox(height: 18.0),
-          TextSmall(text: "Phone number"),
+          TextSmall(
+              text: "Phone number",
+              color: Theme.of(context).colorScheme.tertiary),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -112,6 +117,7 @@ class _AirtimeTabState extends State<AirtimeTab> {
           TextSmall(
             text:
                 "How much ${networksAirtime[_current].name} airtime are you buying?",
+            color: Theme.of(context).colorScheme.tertiary,
           ),
           _amountSection(context),
           const SizedBox(height: 24.0),
@@ -120,6 +126,7 @@ class _AirtimeTabState extends State<AirtimeTab> {
           PrimaryButton(
             fontSize: 15,
             buttonText: "Pay",
+            bgColor: Theme.of(context).colorScheme.primaryContainer,
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 Get.bottomSheet(
@@ -171,6 +178,11 @@ class _AirtimeTabState extends State<AirtimeTab> {
                                     child: Text(
                                       "You are about to recharge ${_amountController.text} from access bank to this phone number ${_phoneController.text}.",
                                       textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
+                                      ),
                                     ),
                                   )
                                 ],
@@ -180,9 +192,13 @@ class _AirtimeTabState extends State<AirtimeTab> {
                                 width: double.infinity,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
+                                    horizontal: 8.0,
+                                  ),
                                   child: PrimaryButton(
                                     buttonText: "Confirm",
+                                    bgColor: Theme.of(context)
+                                        .colorScheme
+                                        .primaryContainer,
                                     onPressed: () {
                                       Get.back();
                                       Get.to(
@@ -226,6 +242,7 @@ class _AirtimeTabState extends State<AirtimeTab> {
                 });
               }
             },
+            strokeColor: Theme.of(context).colorScheme.tertiary,
             controller: _amountController,
             validator: (value) {
               if (value.toString().isEmpty) {
@@ -247,12 +264,14 @@ class _AirtimeTabState extends State<AirtimeTab> {
               Expanded(
                 child: ActionButton(
                   strokeColor: Colors.black,
-                  icon: const Text(
+                  icon: Text(
                     "₦200",
                     style: TextStyle(
-                      color: Color(0xFF505050),
+                      color: Theme.of(context).colorScheme.tertiary,
                     ),
                   ),
+                  bgColor:
+                      Theme.of(context).colorScheme.background.withOpacity(0.8),
                   radius: 10,
                   onPressed: () {
                     setState(() {
@@ -265,13 +284,15 @@ class _AirtimeTabState extends State<AirtimeTab> {
               Expanded(
                 child: ActionButton(
                   strokeColor: Colors.black,
-                  icon: const Text(
+                  icon: Text(
                     "₦300",
                     style: TextStyle(
-                      color: Color(0xFF505050),
+                      color: Theme.of(context).colorScheme.tertiary,
                     ),
                   ),
                   radius: 10,
+                  bgColor:
+                      Theme.of(context).colorScheme.background.withOpacity(0.8),
                   onPressed: () {
                     setState(() {
                       _amountController.text = "₦300";
@@ -284,12 +305,14 @@ class _AirtimeTabState extends State<AirtimeTab> {
                 child: ActionButton(
                   radius: 10,
                   strokeColor: Colors.black,
-                  icon: const Text(
+                  icon: Text(
                     "₦500",
                     style: TextStyle(
-                      color: Color(0xFF505050),
+                      color: Theme.of(context).colorScheme.tertiary,
                     ),
                   ),
+                  bgColor:
+                      Theme.of(context).colorScheme.background.withOpacity(0.8),
                   onPressed: () {
                     setState(() {
                       _amountController.text = "₦500";
@@ -301,12 +324,14 @@ class _AirtimeTabState extends State<AirtimeTab> {
               Expanded(
                 child: ActionButton(
                   strokeColor: Colors.black,
-                  icon: const Text(
+                  icon: Text(
                     "₦1000",
                     style: TextStyle(
-                      color: Color(0xFF505050),
+                      color: Theme.of(context).colorScheme.tertiary,
                     ),
                   ),
+                  bgColor:
+                      Theme.of(context).colorScheme.background.withOpacity(0.8),
                   radius: 10,
                   onPressed: () {
                     setState(() {

@@ -103,31 +103,32 @@ class _VoucherCodeState extends State<VoucherCode> {
         progressIndicator: const CircularProgressIndicator.adaptive(),
         backgroundColor: Colors.black54,
         child: Scaffold(
-          backgroundColor: Colors.white,
           appBar: AppBar(
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             elevation: 0.0,
-            leading: Row(
+            automaticallyImplyLeading: false,
+            title: Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:
+                      const EdgeInsets.only(right: 6.0, top: 4.0, bottom: 4.0),
                   child: InkWell(
                     onTap: () {
                       Get.back();
                     },
-                    child: const Icon(
+                    child: Icon(
                       CupertinoIcons.back,
-                      color: Constants.primaryColor,
+                      color: Theme.of(context).colorScheme.tertiary,
                     ),
                   ),
                 ),
+                TextMedium(
+                  text: "Voucher Code",
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
               ],
             ),
-            title: TextMedium(
-              text: "Voucher Code",
-              color: Colors.black,
-            ),
-            centerTitle: true,
+            centerTitle: false,
           ),
           body: Form(
             key: _formKey,
@@ -139,7 +140,7 @@ class _VoucherCodeState extends State<VoucherCode> {
                   child: TextMedium(
                     text: "Enter your voucher code",
                     fontWeight: FontWeight.w500,
-                    color: const Color(0xFF131313),
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                 ),
                 const SizedBox(height: 21.0),
@@ -189,13 +190,14 @@ class _VoucherCodeState extends State<VoucherCode> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.info,
-                        color: Constants.primaryColor,
+                        color: Theme.of(context).colorScheme.primaryContainer,
                       ),
                       const SizedBox(width: 8.0),
                       TextBody1(
                         text: "Only redeemable in Africa",
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                     ],
                   ),
@@ -204,6 +206,7 @@ class _VoucherCodeState extends State<VoucherCode> {
                 PrimaryButton(
                   fontSize: 16,
                   buttonText: "Redeem",
+                  bgColor: Theme.of(context).colorScheme.primaryContainer,
                   onPressed: _inputController.text.isEmpty
                       ? null
                       : () {

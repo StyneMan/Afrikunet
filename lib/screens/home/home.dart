@@ -26,7 +26,6 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Constants.secondaryColor,
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {
@@ -54,7 +53,7 @@ class HomePage extends StatelessWidget {
         child: ListView(
           children: [
             _header(context),
-            _body(),
+            _body(context),
           ],
         ),
       ),
@@ -74,10 +73,13 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _header(context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 1.0),
-        decoration: const BoxDecoration(
-          color: Constants.secondaryColor,
-          image: DecorationImage(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16.0,
+          vertical: 0.0,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primary,
+          image: const DecorationImage(
             image: AssetImage("assets/images/home_watermark.png"),
             fit: BoxFit.fill,
           ),
@@ -211,9 +213,8 @@ class HomePage extends StatelessWidget {
         ),
       );
 
-  Widget _body() => Container(
+  Widget _body(context) => Container(
         padding: const EdgeInsets.all(16.0),
-        color: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -230,10 +231,15 @@ class HomePage extends StatelessWidget {
                       ActionButton(
                         icon: SvgPicture.asset(
                           "assets/images/bill_pay.svg",
-                          color: Constants.primaryColor,
+                          color: Theme.of(context).colorScheme.secondary,
                           height: 19,
                           fit: BoxFit.cover,
                         ),
+                        bgColor: Theme.of(context)
+                            .colorScheme
+                            .background
+                            .withOpacity(0.8),
+                        strokeColor: Theme.of(context).colorScheme.secondary,
                         onPressed: () {
                           Get.to(
                             const BillPay(),
@@ -242,7 +248,10 @@ class HomePage extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 8.0),
-                      TextBody2(text: "Bill Pay")
+                      TextBody2(
+                        text: "Bill Pay",
+                        color: Theme.of(context).colorScheme.secondary,
+                      )
                     ],
                   ),
                 ),
@@ -255,9 +264,14 @@ class HomePage extends StatelessWidget {
                       ActionButton(
                         icon: SvgPicture.asset(
                           "assets/images/airtime.svg",
-                          color: Constants.primaryColor,
+                          color: Theme.of(context).colorScheme.secondary,
                           fit: BoxFit.cover,
                         ),
+                        bgColor: Theme.of(context)
+                            .colorScheme
+                            .background
+                            .withOpacity(0.8),
+                        strokeColor: Theme.of(context).colorScheme.secondary,
                         onPressed: () {
                           Get.to(
                             const Airtime(),
@@ -266,7 +280,10 @@ class HomePage extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 8.0),
-                      TextBody2(text: "Airtime")
+                      TextBody2(
+                        text: "Airtime",
+                        color: Theme.of(context).colorScheme.secondary,
+                      )
                     ],
                   ),
                 ),
@@ -279,9 +296,14 @@ class HomePage extends StatelessWidget {
                       ActionButton(
                         icon: SvgPicture.asset(
                           "assets/images/add_bank.svg",
-                          color: Constants.primaryColor,
+                          color: Theme.of(context).colorScheme.secondary,
                           fit: BoxFit.cover,
                         ),
+                        bgColor: Theme.of(context)
+                            .colorScheme
+                            .background
+                            .withOpacity(0.8),
+                        strokeColor: Theme.of(context).colorScheme.secondary,
                         onPressed: () {
                           Get.to(
                             AddBank(),
@@ -290,7 +312,10 @@ class HomePage extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 8.0),
-                      TextBody2(text: "Add Bank")
+                      TextBody2(
+                        text: "Add Bank",
+                        color: Theme.of(context).colorScheme.secondary,
+                      )
                     ],
                   ),
                 ),
@@ -303,9 +328,14 @@ class HomePage extends StatelessWidget {
                       ActionButton(
                         icon: SvgPicture.asset(
                           "assets/images/split_voucher.svg",
-                          color: Constants.primaryColor,
+                          color: Theme.of(context).colorScheme.secondary,
                           fit: BoxFit.cover,
                         ),
+                        bgColor: Theme.of(context)
+                            .colorScheme
+                            .background
+                            .withOpacity(0.8),
+                        strokeColor: Theme.of(context).colorScheme.secondary,
                         onPressed: () {
                           Get.to(
                             const SplitVoucher(),
@@ -317,6 +347,7 @@ class HomePage extends StatelessWidget {
                       TextBody2(
                         text: "Split Voucher",
                         align: TextAlign.center,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ],
                   ),

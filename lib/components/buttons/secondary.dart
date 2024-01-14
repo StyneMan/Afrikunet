@@ -29,8 +29,8 @@ class SecondaryButton extends StatelessWidget {
             Radius.circular(8.0),
           ),
         ),
-        side: const BorderSide(
-          color: Constants.primaryColor,
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.secondary,
           strokeAlign: 1.0,
           width: 1.0,
         ),

@@ -89,7 +89,7 @@ class _PhoneContactsState extends State<PhoneContacts> {
           }
 
           final List<Contact>? contacts = snapshot.data;
-          debugPrint("LIST OF CONtacts $contacts");
+          // debugPrint("LIST OF CONtacts $contacts");
 
           return ListView.separated(
             padding: const EdgeInsets.all(16.0),
@@ -124,12 +124,12 @@ class _PhoneContactsState extends State<PhoneContacts> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        CircleAvatar(
-                          backgroundImage: MemoryImage(
-                            contacts![index].thumbnail!,
-                          ),
-                        ),
-                        TextSmall(text: contacts[index].displayName),
+                        // CircleAvatar(
+                        // backgroundImage: MemoryImage(
+                        //   contacts![index].thumbnail!,
+                        // ),
+                        // ),
+                        TextSmall(text: contacts?[index].displayName),
                       ],
                     ),
                   ],

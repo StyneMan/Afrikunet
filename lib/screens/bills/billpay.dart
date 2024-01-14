@@ -19,7 +19,6 @@ class BillPay extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Constants.secondaryColor,
         automaticallyImplyLeading: true,
         title: TextHeading(
           text: "Bills",
@@ -50,6 +49,7 @@ class BillPay extends StatelessWidget {
                     const SizedBox(height: 10.0),
                     TextSmall(
                       text: "Select bill payment",
+                      color: Theme.of(context).colorScheme.tertiary,
                     ),
                     const SizedBox(height: 16.0),
                     Card(
@@ -89,15 +89,16 @@ class BillPay extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 40.0),
-                const Icon(
+                Icon(
                   CupertinoIcons.info_circle,
                   size: 84,
-                  color: Constants.primaryColor,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
                 const SizedBox(height: 10.0),
                 TextMedium(
                   text: "Coming soon!",
                   fontWeight: FontWeight.w400,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
                 const SizedBox(
                   height: 40,
@@ -136,12 +137,15 @@ class BillPay extends StatelessWidget {
                 const SizedBox(
                   width: 16.0,
                 ),
-                TextSmall(text: "$text"),
+                TextSmall(
+                  text: "$text",
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
               ],
             ),
-            const Icon(
+            Icon(
               Icons.chevron_right,
-              color: Colors.black54,
+              color: Theme.of(context).colorScheme.tertiary,
               size: 16,
             ),
           ],

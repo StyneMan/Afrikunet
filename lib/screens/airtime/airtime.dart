@@ -32,9 +32,8 @@ class _AirtimeState extends State<Airtime> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0.0,
         automaticallyImplyLeading: false,
         title: Row(
@@ -45,15 +44,15 @@ class _AirtimeState extends State<Airtime> with SingleTickerProviderStateMixin {
                 onTap: () {
                   Get.back();
                 },
-                child: const Icon(
+                child: Icon(
                   CupertinoIcons.back,
-                  color: Constants.primaryColor,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
               ),
             ),
             TextMedium(
               text: "Airtime",
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ],
         ),
@@ -72,9 +71,10 @@ class _AirtimeState extends State<Airtime> with SingleTickerProviderStateMixin {
                   margin: const EdgeInsets.all(0.5),
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: TabBar(
-                    unselectedLabelColor: Colors.grey,
-                    labelColor: Constants.primaryColor,
-                    indicatorColor: Constants.primaryColor,
+                    unselectedLabelColor:
+                        Theme.of(context).colorScheme.inversePrimary,
+                    labelColor: Theme.of(context).colorScheme.secondary,
+                    indicatorColor: Theme.of(context).colorScheme.secondary,
                     indicatorWeight: 2,
                     indicatorSize: TabBarIndicatorSize.label,
                     // indicator: BoxDecoration(
@@ -86,18 +86,22 @@ class _AirtimeState extends State<Airtime> with SingleTickerProviderStateMixin {
                       Tab(
                         child: Text(
                           "Airtime",
-                          style:
-                              TextStyle(fontSize: 16, fontFamily: "OpenSans"),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: "OpenSans",
+                          ),
                         ),
-                        height: 21,
+                        height: 32,
                       ),
                       Tab(
                         child: Text(
                           "Data",
-                          style:
-                              TextStyle(fontSize: 16, fontFamily: "OpenSans"),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: "OpenSans",
+                          ),
                         ),
-                        height: 21,
+                        height: 32,
                       ),
                     ],
                   ),

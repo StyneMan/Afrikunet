@@ -42,7 +42,7 @@ dependencies:
   fluttertoast: ^8.1.1
   get: ^4.6.5
   shimmer: ^2.0.0
-  flutter_svg: ^0.23.0
+  flutter_svg: ^1.0.3
   page_transition: ^2.0.9
   loading_overlay_pro: ^2.1.1
   shared_preferences: ^2.0.15
@@ -70,6 +70,7 @@ dependencies:
   flutter_contacts: ^1.1.7+1
   mobile_scanner: ^3.5.6
   avatars: ^3.0.2
+  pdf: ^3.10.7
   # flutter_localization: ^0.17.0
 
   firebase_core_platform_interface: 4.8.0

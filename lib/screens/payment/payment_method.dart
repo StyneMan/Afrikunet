@@ -25,7 +25,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
         ),
-        color: const Color(0xFFF2F2F2),
+        color: Theme.of(context).colorScheme.background.withOpacity(0.6),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
@@ -36,7 +36,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
               Text(
                 "Payment Method",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.tertiary,
                     fontFamily: 'OpenSans',
                     fontWeight: FontWeight.w500),
               ),
@@ -65,7 +65,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                       ),
                       TextSmall(
                         text: "GTBank",
-                        color: const Color(0xFF3B3B3B),
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                     ],
                   ),
@@ -75,14 +75,14 @@ class _PaymentMethodState extends State<PaymentMethod> {
                     children: [
                       TextSmall(
                         text: "Stanley Brown",
-                        color: const Color(0xFF3B3B3B),
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                       const SizedBox(
                         height: 8.0,
                       ),
                       TextSmall(
                         text: "12343***48",
-                        color: const Color(0xFF3B3B3B),
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                     ],
                   ),
@@ -123,7 +123,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                     children: [
                       TextSmall(
                         text: "52389976***742",
-                        color: const Color(0xFF3B3B3B),
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                     ],
                   ),
@@ -146,7 +146,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                     onTap: () {},
                     child: TextBody2(
                       text: "Add card",
-                      color: Constants.primaryColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 ],

@@ -1,4 +1,4 @@
-import 'package:afrikunet/components/cards/giftcard.dart';
+import 'package:afrikunet/components/cards/giftcard_item.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -60,8 +60,9 @@ class _VoucherTypeState extends State<VoucherType> {
                       "GiftCard",
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: _currentIndex == 0
-                                ? Constants.primaryColor
+                                ? Theme.of(context).colorScheme.inverseSurface
                                 : const Color(0xFF5C5B5B),
+                            fontSize: 14,
                             fontFamily: 'OpenSans',
                             fontWeight: FontWeight.w500,
                           ),
@@ -75,7 +76,7 @@ class _VoucherTypeState extends State<VoucherType> {
                       width: double.infinity,
                       height: 1.5,
                       color: _currentIndex == 0
-                          ? Constants.primaryColor
+                          ? Theme.of(context).colorScheme.inverseSurface
                           : Colors.transparent,
                     ),
                   )
@@ -94,8 +95,9 @@ class _VoucherTypeState extends State<VoucherType> {
                       "Wedding Gift",
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: _currentIndex == 1
-                                ? Constants.primaryColor
+                                ? Theme.of(context).colorScheme.inverseSurface
                                 : const Color(0xFF5C5B5B),
+                            fontSize: 14,
                             fontFamily: 'OpenSans',
                             fontWeight: FontWeight.w500,
                           ),
@@ -109,7 +111,7 @@ class _VoucherTypeState extends State<VoucherType> {
                       width: double.infinity,
                       height: 1.5,
                       color: _currentIndex == 1
-                          ? Constants.primaryColor
+                          ? Theme.of(context).colorScheme.inverseSurface
                           : Colors.transparent,
                     ),
                   )
@@ -128,9 +130,10 @@ class _VoucherTypeState extends State<VoucherType> {
                       "Birthday Gift",
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: _currentIndex == 2
-                                ? Constants.primaryColor
+                                ? Theme.of(context).colorScheme.inverseSurface
                                 : const Color(0xFF5C5B5B),
                             fontFamily: 'OpenSans',
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
                     ),
@@ -143,18 +146,19 @@ class _VoucherTypeState extends State<VoucherType> {
                       width: double.infinity,
                       height: 1.5,
                       color: _currentIndex == 2
-                          ? Constants.primaryColor
+                          ? Theme.of(context).colorScheme.inverseSurface
                           : Colors.transparent,
                     ),
                   )
                 ],
               ),
               IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    CupertinoIcons.ellipsis_circle,
-                    color: Constants.primaryColor,
-                  ))
+                onPressed: () {},
+                icon: Icon(
+                  CupertinoIcons.ellipsis_circle,
+                  color: Theme.of(context).colorScheme.inverseSurface,
+                ),
+              ),
             ],
           ),
         ),
@@ -165,16 +169,16 @@ class _VoucherTypeState extends State<VoucherType> {
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             children: const [
-              GiftCard(
-                amount: "1000",
+              GiftCardItem(
+                amount: "5",
                 bgImage: "assets/images/giftcard_bg.png",
                 code: "XDT12IUNWpo1HN",
                 logo: "assets/images/afrikunet_logo_white.png",
                 type: "blue",
               ),
               SizedBox(width: 16.0),
-              GiftCard(
-                amount: "1000",
+              GiftCardItem(
+                amount: "3",
                 bgImage: "assets/images/giftcard_bg.png",
                 code: "XDT12IUNWpo1HN",
                 logo: "assets/images/logo_blue.png",

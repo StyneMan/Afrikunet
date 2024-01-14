@@ -79,11 +79,11 @@ class HistoryScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: 8.0),
-              IconButton(
-                onPressed: () {},
-                icon: SvgPicture.asset("assets/images/delete.svg"),
-              ),
+              // const SizedBox(width: 8.0),
+              // IconButton(
+              //   onPressed: () {},
+              //   icon: SvgPicture.asset("assets/images/delete.svg"),
+              // ),
             ],
           );
         },

@@ -40,7 +40,6 @@ class _BillItemState extends State<BillItem>
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Constants.secondaryColor,
         automaticallyImplyLeading: true,
         title: TextMedium(
           text: widget.title,

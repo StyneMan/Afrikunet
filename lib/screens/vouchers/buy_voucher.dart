@@ -24,9 +24,8 @@ class _BuyVoucherState extends State<BuyVoucher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0.0,
         automaticallyImplyLeading: false,
         title: Row(
@@ -37,15 +36,15 @@ class _BuyVoucherState extends State<BuyVoucher> {
                 onTap: () {
                   Get.back();
                 },
-                child: const Icon(
+                child: Icon(
                   CupertinoIcons.back,
-                  color: Constants.primaryColor,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
               ),
             ),
             TextMedium(
               text: "Buy Voucher",
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ],
         ),
@@ -67,12 +66,6 @@ class _BuyVoucherState extends State<BuyVoucher> {
             child: VoucherType(),
           ),
           const SizedBox(height: 16.0),
-          const Padding(
-            padding: EdgeInsets.all(
-              16.0,
-            ),
-            child: PaymentMethod(),
-          ),
           Padding(
             padding: const EdgeInsets.all(
               16.0,

@@ -106,7 +106,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       padding:
           EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.275),
       child: Container(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.background,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,7 +119,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 bottom: 16,
               ),
               width: double.infinity,
-              color: Constants.secondaryColor,
+              color: Theme.of(context).colorScheme.primary,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -159,7 +159,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 children: [
                   Expanded(
                     child: Container(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.background,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,7 +180,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                     SvgPicture.asset(
                                       drawerList[i].icon,
                                       width: 18,
-                                      color: Constants.secondaryColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                     ),
                                     const SizedBox(
                                       width: 21.0,
@@ -188,7 +190,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                     TextSmall(
                                       text: drawerList[i].title,
                                       fontWeight: FontWeight.w400,
-                                      color: Constants.secondaryColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                     ),
                                   ],
                                 ),
@@ -269,10 +273,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Icon(
+                              Icon(
                                 CupertinoIcons.settings,
                                 size: 23,
-                                color: Constants.secondaryColor,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                               const SizedBox(
                                 width: 21.0,
@@ -280,7 +284,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               TextSmall(
                                 text: "Account Settings",
                                 fontWeight: FontWeight.w400,
-                                color: Constants.secondaryColor,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                             ],
                           ),
@@ -302,9 +306,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Icon(
+                              Icon(
                                 CupertinoIcons.square_arrow_left,
-                                color: Constants.secondaryColor,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                               const SizedBox(
                                 width: 21.0,
@@ -312,7 +316,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               TextSmall(
                                 text: "Logout",
                                 fontWeight: FontWeight.w600,
-                                color: Constants.secondaryColor,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                             ],
                           ),

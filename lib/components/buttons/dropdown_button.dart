@@ -35,13 +35,16 @@ class DropDownButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            TextSmall(text: title),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 14.0),
+            TextSmall(
+              text: title,
+              color: Theme.of(context).colorScheme.tertiary.withOpacity(0.6),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14.0),
               child: Icon(
                 Icons.keyboard_arrow_down,
                 size: 21,
-                color: Colors.black54,
+                color: Theme.of(context).colorScheme.tertiary.withOpacity(0.6),
               ),
             ),
           ],

@@ -43,7 +43,10 @@ class _ElectricityFormState extends State<ElectricityForm> {
       child: ListView(
         padding: const EdgeInsets.all(10.0),
         children: [
-          TextSmall(text: "Meter Number"),
+          TextSmall(
+            text: "Meter Number",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           const SizedBox(
             height: 4.0,
           ),
@@ -61,7 +64,10 @@ class _ElectricityFormState extends State<ElectricityForm> {
           const SizedBox(
             height: 24.0,
           ),
-          TextSmall(text: "Email address"),
+          TextSmall(
+            text: "Email address",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           const SizedBox(
             height: 4.0,
           ),
@@ -85,7 +91,10 @@ class _ElectricityFormState extends State<ElectricityForm> {
           const SizedBox(
             height: 24.0,
           ),
-          TextSmall(text: "Distributor"),
+          TextSmall(
+            text: "Distributor",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           const SizedBox(
             height: 4.0,
           ),
@@ -111,7 +120,10 @@ class _ElectricityFormState extends State<ElectricityForm> {
           const SizedBox(
             height: 8.0,
           ),
-          TextSmall(text: "Amount"),
+          TextSmall(
+            text: "Amount",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           const SizedBox(
             height: 4.0,
           ),
@@ -140,7 +152,10 @@ class _ElectricityFormState extends State<ElectricityForm> {
           const SizedBox(
             height: 24.0,
           ),
-          TextSmall(text: "Phone number"),
+          TextSmall(
+            text: "Phone number",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           const SizedBox(
             height: 4.0,
           ),
@@ -161,6 +176,7 @@ class _ElectricityFormState extends State<ElectricityForm> {
             width: double.infinity,
             child: PrimaryButton(
               buttonText: "Proceed",
+              bgColor: Theme.of(context).colorScheme.primaryContainer,
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   Get.bottomSheet(_confirmBottomSheetContent);
@@ -177,12 +193,12 @@ class _ElectricityFormState extends State<ElectricityForm> {
   Container get _bottomSheetContent => Container(
         padding: const EdgeInsets.all(10.0),
         height: MediaQuery.of(context).size.height * 0.70,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(21),
             topRight: Radius.circular(21),
           ),
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.background,
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -193,7 +209,7 @@ class _ElectricityFormState extends State<ElectricityForm> {
                 children: [
                   TextBody1(
                     text: "Select a distributor",
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.tertiary,
                     fontWeight: FontWeight.w600,
                   ),
                   IconButton(
@@ -245,8 +261,9 @@ class _ElectricityFormState extends State<ElectricityForm> {
                                 ),
                                 Text(
                                   widget.networks[index].name,
-                                  style: const TextStyle(
-                                    color: Colors.black54,
+                                  style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
                                     fontSize: 14,
                                   ),
                                 ),
@@ -254,7 +271,7 @@ class _ElectricityFormState extends State<ElectricityForm> {
                             ),
                           ),
                           Radio(
-                            activeColor: Colors.black87,
+                            activeColor: Theme.of(context).colorScheme.tertiary,
                             value: widget.networks[index].name,
                             groupValue:
                                 _controller.electricityDistributorName.value,
@@ -278,6 +295,7 @@ class _ElectricityFormState extends State<ElectricityForm> {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: PrimaryButton(
                     buttonText: "Done",
+                    bgColor: Theme.of(context).colorScheme.primaryContainer,
                     fontSize: 15,
                     onPressed: () {
                       Get.back();
@@ -293,12 +311,12 @@ class _ElectricityFormState extends State<ElectricityForm> {
   Container get _confirmBottomSheetContent => Container(
         padding: const EdgeInsets.all(10.0),
         height: MediaQuery.of(context).size.height * 0.70,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(21),
             topRight: Radius.circular(21),
           ),
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.background,
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -324,6 +342,7 @@ class _ElectricityFormState extends State<ElectricityForm> {
               Center(
                 child: TextHeading(
                   text: "Customer Details",
+                  color: Theme.of(context).colorScheme.tertiary,
                   align: TextAlign.center,
                   fontWeight: FontWeight.bold,
                 ),
@@ -352,10 +371,11 @@ class _ElectricityFormState extends State<ElectricityForm> {
               SizedBox(
                 width: double.infinity,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: PrimaryButton(
                     buttonText: "Confirm",
                     fontSize: 15,
+                    bgColor: Theme.of(context).colorScheme.primaryContainer,
                     onPressed: () {
                       Get.to(
                         const PayNow(
@@ -380,9 +400,11 @@ class _ElectricityFormState extends State<ElectricityForm> {
       children: [
         TextBody1(
           text: title,
+          color: Theme.of(context).colorScheme.tertiary,
         ),
         TextBody1(
           text: value,
+          color: Theme.of(context).colorScheme.tertiary,
         ),
       ],
     );

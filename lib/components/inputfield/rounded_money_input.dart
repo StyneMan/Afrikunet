@@ -29,7 +29,7 @@ class RoundedInputMoney extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       onChanged: onChanged,
-      cursorColor: Constants.primaryColor,
+      cursorColor: Theme.of(context).colorScheme.secondary,
       controller: controller,
       validator: validator,
       enabled: enabled,
@@ -77,9 +77,9 @@ class RoundedInputMoney extends StatelessWidget {
         hintText: hintText,
         // labelText: hintText,
         focusColor: Constants.accentColor,
-        hintStyle: const TextStyle(
+        hintStyle: TextStyle(
           fontFamily: "OpenSans",
-          color: Colors.black38,
+          color: Theme.of(context).colorScheme.tertiary.withOpacity(0.4),
           fontSize: 14,
           fontWeight: FontWeight.w400,
         ),

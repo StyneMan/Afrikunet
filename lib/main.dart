@@ -190,6 +190,7 @@ class _MyAppState extends State<MyApp> {
             title: 'AfriKunet',
             theme: appTheme,
             darkTheme: darkTheme,
+            themeMode: ThemeMode.system,
             home: _controller.hasInternetAccess.value
                 ? !_authenticated
                     ? const Onboarding()

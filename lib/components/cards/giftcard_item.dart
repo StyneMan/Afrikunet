@@ -3,7 +3,7 @@ import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class GiftCard extends StatelessWidget {
+class GiftCardItem extends StatelessWidget {
   final String bgImage;
   final String logo;
   final String amount;
@@ -11,7 +11,7 @@ class GiftCard extends StatelessWidget {
   final String type;
   final double width;
 
-  const GiftCard({
+  const GiftCardItem({
     Key? key,
     required this.amount,
     required this.bgImage,
@@ -57,7 +57,7 @@ class GiftCard extends StatelessWidget {
                     scale: 1.5,
                   ),
                   Text(
-                    "${Constants.nairaSign(context).currencySymbol}$amount",
+                    "$amount units",
                     style: TextStyle(
                       color: type == "blue" ? Colors.white : Colors.black,
                       fontSize: 24,
@@ -110,20 +110,22 @@ class GiftCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 4.0),
-                      Text(
-                        "Music, Games, Apps, Movies, Books and more...",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: type == "blue" ? Colors.white : Colors.black,
-                          fontSize: 11,
-                          fontFamily: "OpenSans",
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
                     ],
                   ),
                 ),
-              )
+              ),
+              Center(
+                child: Text(
+                  "Music, Games, Apps, Movies, Books and more...",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: type == "blue" ? Colors.white : Colors.black,
+                    fontSize: 11,
+                    fontFamily: "OpenSans",
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
             ],
           ),
         ),

@@ -1,4 +1,4 @@
-import 'package:afrikunet/components/cards/giftcard.dart';
+import 'package:afrikunet/components/cards/giftcard_item.dart';
 import 'package:afrikunet/components/cards/giftcard_mini.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/forms/voucher/split_voucher_form.dart';

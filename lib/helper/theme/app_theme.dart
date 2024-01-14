@@ -4,10 +4,12 @@ import 'package:flutter/services.dart';
 
 ThemeData appTheme = ThemeData(
   primaryColor: Constants.primaryColor,
-  primaryColorBrightness: Brightness.dark,
+  brightness: Brightness.light,
   appBarTheme: const AppBarTheme(
-    systemOverlayStyle:
-        SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light,
+    ),
+    backgroundColor: Constants.secondaryColor,
   ),
   textTheme: const TextTheme(
     bodyText2: TextStyle(),
@@ -41,29 +43,35 @@ ThemeData appTheme = ThemeData(
     backgroundColor: Constants.primaryColor,
     foregroundColor: Constants.primaryColor,
   ),
-  progressIndicatorTheme:
-      const ProgressIndicatorThemeData(circularTrackColor: Colors.white),
-  colorScheme: ThemeData()
-      .colorScheme
-      .copyWith(
-        primary: Constants.primaryColor,
-        secondary: const Color(0xFF64EE85),
-        brightness: Brightness.light,
-      )
-      .copyWith(
-        secondary: const Color(0xFF64EE85),
-      ),
+  progressIndicatorTheme: const ProgressIndicatorThemeData(
+    circularTrackColor: Colors.white,
+  ),
+  colorScheme: ColorScheme.light(
+    primary: Constants.secondaryColor,
+    secondary: Constants.secondaryColor,
+    background: Colors.white,
+    tertiary: Colors.grey[800],
+    inversePrimary: Colors.black54,
+    primaryContainer: Constants.primaryColor,
+    inverseSurface: Constants.primaryColor,
+    surface: Colors.white,
+  ),
 );
 
 ThemeData darkTheme = ThemeData(
   primaryColor: Constants.primaryColor2,
-  primaryColorBrightness: Brightness.dark,
   appBarTheme: const AppBarTheme(
-    systemOverlayStyle:
-        SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.dark,
+    ),
+    backgroundColor: Color(0xFF1F1F1F),
   ),
-  textTheme: const TextTheme(
-    bodyText2: TextStyle(),
+  brightness: Brightness.dark,
+  textTheme: TextTheme(
+    bodySmall: TextStyle(
+      color: Colors.grey[800],
+    ),
+    bodyMedium: TextStyle(color: Colors.grey[800]),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(elevation: 0.0),
@@ -92,16 +100,17 @@ ThemeData darkTheme = ThemeData(
     backgroundColor: Constants.primaryColor2,
     foregroundColor: Constants.primaryColor2,
   ),
-  progressIndicatorTheme:
-      const ProgressIndicatorThemeData(circularTrackColor: Colors.white),
-  colorScheme: ThemeData()
-      .colorScheme
-      .copyWith(
-        primary: Constants.primaryColor2,
-        secondary: const Color(0xFF64EE85),
-        brightness: Brightness.light,
-      )
-      .copyWith(
-        secondary: const Color(0xFF64EE85),
-      ),
+  progressIndicatorTheme: const ProgressIndicatorThemeData(
+    circularTrackColor: Colors.white,
+  ),
+  colorScheme: const ColorScheme.dark(
+    primary: Color(0xFF1F1F1F),
+    secondary: Colors.white70,
+    background: Color(0xDD080808),
+    tertiary: Colors.white,
+    inversePrimary: Color(0xFF4C4C4C),
+    primaryContainer: Color(0xFF1F1F1F),
+    surface: Color(0xFF1F1F1F),
+    inverseSurface: Colors.white,
+  ),
 );

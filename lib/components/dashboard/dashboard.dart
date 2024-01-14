@@ -80,53 +80,56 @@ class _DashboardState extends State<Dashboard> {
                     currentIndex: _controller.selectedIndex.value,
                     onTap: _onItemTapped,
                     showUnselectedLabels: true,
-                    selectedItemColor: Constants.primaryColor,
-                    unselectedItemColor: Colors.grey,
-                    unselectedLabelStyle: const TextStyle(color: Colors.grey),
+                    selectedItemColor: Theme.of(context).colorScheme.secondary,
+                    unselectedItemColor:
+                        Theme.of(context).colorScheme.inversePrimary,
+                    unselectedLabelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                    ),
                     type: BottomNavigationBarType.fixed,
                     items: <BottomNavigationBarItem>[
                       BottomNavigationBarItem(
                         icon: SvgPicture.asset(
                           "assets/images/home_icon.svg",
-                          color: Colors.grey,
+                          color: Theme.of(context).colorScheme.inversePrimary,
                         ),
                         label: 'Home',
                         activeIcon: SvgPicture.asset(
                           "assets/images/home_icon.svg",
-                          color: Constants.primaryColor,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                       BottomNavigationBarItem(
                         icon: SvgPicture.asset(
                           "assets/images/voucher_icon.svg",
-                          color: Colors.grey,
+                          color: Theme.of(context).colorScheme.inversePrimary,
                         ),
                         label: 'My Vouchers',
                         activeIcon: SvgPicture.asset(
                           "assets/images/voucher_icon.svg",
-                          color: Constants.primaryColor,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                       BottomNavigationBarItem(
                         icon: SvgPicture.asset(
                           "assets/images/profile_icon.svg",
-                          color: Colors.grey,
+                          color: Theme.of(context).colorScheme.inversePrimary,
                         ),
                         label: 'Profile',
                         activeIcon: SvgPicture.asset(
                           "assets/images/profile_icon.svg",
-                          color: Constants.primaryColor,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                       BottomNavigationBarItem(
                         icon: SvgPicture.asset(
                           "assets/images/settings_icon.svg",
-                          color: Colors.grey,
+                          color: Theme.of(context).colorScheme.inversePrimary,
                         ),
                         label: 'Settings',
                         activeIcon: SvgPicture.asset(
                           "assets/images/settings_icon.svg",
-                          color: Constants.primaryColor,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ],

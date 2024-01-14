@@ -40,7 +40,10 @@ class _CableTvFormState extends State<CableTvForm> {
       child: ListView(
         padding: const EdgeInsets.all(10.0),
         children: [
-          TextSmall(text: "Smartcard Number"),
+          TextSmall(
+            text: "Smartcard Number",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           const SizedBox(
             height: 4.0,
           ),
@@ -58,7 +61,10 @@ class _CableTvFormState extends State<CableTvForm> {
           const SizedBox(
             height: 24.0,
           ),
-          TextSmall(text: "${widget.network.name} Packages"),
+          TextSmall(
+            text: "${widget.network.name} Packages",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           const SizedBox(
             height: 4.0,
           ),
@@ -84,7 +90,10 @@ class _CableTvFormState extends State<CableTvForm> {
           const SizedBox(
             height: 8.0,
           ),
-          TextSmall(text: "Amount"),
+          TextSmall(
+            text: "Amount",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           const SizedBox(
             height: 4.0,
           ),
@@ -114,6 +123,7 @@ class _CableTvFormState extends State<CableTvForm> {
             width: double.infinity,
             child: PrimaryButton(
               buttonText: "Proceed",
+              bgColor: Theme.of(context).colorScheme.primaryContainer,
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   Get.bottomSheet(_confirmBottomSheetContent);
@@ -130,12 +140,12 @@ class _CableTvFormState extends State<CableTvForm> {
   Container get _bottomSheetContent => Container(
         padding: const EdgeInsets.all(10.0),
         height: MediaQuery.of(context).size.height * 0.70,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(21),
             topRight: Radius.circular(21),
           ),
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.background,
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -146,7 +156,7 @@ class _CableTvFormState extends State<CableTvForm> {
                 children: [
                   TextBody1(
                     text: "Select a Package",
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.tertiary,
                     fontWeight: FontWeight.w600,
                   ),
                   IconButton(
@@ -200,11 +210,13 @@ class _CableTvFormState extends State<CableTvForm> {
                               children: [
                                 TextBody1(
                                   text: widget.network.packages![index].name,
+                                  color: Theme.of(context).colorScheme.tertiary,
                                 ),
                                 Text(
                                   "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(widget.network.packages![index].amount)}",
-                                  style: const TextStyle(
-                                    color: Colors.black54,
+                                  style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
                                     fontSize: 14,
                                   ),
                                 ),
@@ -212,7 +224,7 @@ class _CableTvFormState extends State<CableTvForm> {
                             ),
                           ),
                           Radio(
-                            activeColor: Colors.black87,
+                            activeColor: Theme.of(context).colorScheme.tertiary,
                             value: widget.network.packages![index].amount,
                             groupValue: _controller.cableTvAmount.value,
                             onChanged: (value) {
@@ -236,6 +248,7 @@ class _CableTvFormState extends State<CableTvForm> {
                   child: PrimaryButton(
                     buttonText: "Done",
                     fontSize: 15,
+                    bgColor: Theme.of(context).colorScheme.primaryContainer,
                     onPressed: () {
                       Get.back();
                     },
@@ -281,6 +294,7 @@ class _CableTvFormState extends State<CableTvForm> {
               Center(
                 child: TextHeading(
                   text: "Customer Details",
+                  color: Theme.of(context).colorScheme.tertiary,
                   align: TextAlign.center,
                   fontWeight: FontWeight.w600,
                 ),
@@ -316,6 +330,7 @@ class _CableTvFormState extends State<CableTvForm> {
                   child: PrimaryButton(
                     buttonText: "Confirm",
                     fontSize: 15,
+                    bgColor: Theme.of(context).colorScheme.primaryContainer,
                     onPressed: () {
                       Get.to(
                         const PayNow(
@@ -340,9 +355,11 @@ class _CableTvFormState extends State<CableTvForm> {
       children: [
         TextBody1(
           text: title,
+          color: Theme.of(context).colorScheme.tertiary,
         ),
         TextBody1(
           text: value,
+          color: Theme.of(context).colorScheme.tertiary,
         ),
       ],
     );
