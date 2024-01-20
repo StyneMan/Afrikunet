@@ -29,7 +29,7 @@ class _VoucherTypeState extends State<VoucherType> {
         Text(
           "Voucher Type",
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.tertiary,
               fontFamily: 'OpenSans',
               fontWeight: FontWeight.w600),
         ),

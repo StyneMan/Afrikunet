@@ -1,4 +1,4 @@
-class GiftCard {
+class Card {
   final String bgImage;
   final String status;
   final String logo;
@@ -6,8 +6,9 @@ class GiftCard {
   final String code;
   final String type;
   final String? event;
+  final String cardType;
 
-  GiftCard({
+  Card({
     required this.unit,
     required this.bgImage,
     required this.code,
@@ -15,40 +16,46 @@ class GiftCard {
     required this.logo,
     required this.status,
     required this.type,
+    required this.cardType,
   });
 }
 
-List<GiftCard> tempGiftCards = [
-  GiftCard(
-      unit: 4,
-      bgImage: "assets/images/giftcard_bg.png",
-      code: "XDT12IUNWpo1HN",
-      logo: "giftcard_wedding.svg",
-      status: "used",
-      type: "blue",
-      event: "Happy marriage"),
-  GiftCard(
+List<Card> tempMyCards = [
+  Card(
     unit: 4,
     bgImage: "assets/images/giftcard_bg.png",
-    code: "XDT12IUNWpo1HN",
+    code: "XDT1IUNo1HN",
+    logo: "giftcard_wedding.svg",
+    status: "used",
+    type: "blue",
+    cardType: "voucher",
+    event: "Happy marriage",
+  ),
+  Card(
+    unit: 4,
+    bgImage: "assets/images/giftcard_bg.png",
+    code: "XDT12IUNWpHN",
     logo: "giftcard_birthday.svg",
     status: "used",
     type: "white",
+    cardType: "gift card",
   ),
-  GiftCard(
+  Card(
     unit: 4,
     bgImage: "assets/images/giftcard_bg.png",
-    code: "XDT12IUNWpo1HN",
+    code: "XDT12IUo1HN",
     logo: "giftcard_wedding.svg",
     status: "used",
     type: "white",
+    cardType: "voucher",
   ),
-  GiftCard(
+  Card(
     unit: 4,
     bgImage: "assets/images/giftcard_bg.png",
-    code: "XDT12IUNWpo1HN",
+    code: "XDT12IUNHN",
     logo: "giftcard_birthday.svg",
     status: "used",
     type: "blue",
+    cardType: "gift card",
   ),
 ];

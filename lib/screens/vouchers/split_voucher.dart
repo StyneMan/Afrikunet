@@ -18,9 +18,8 @@ class _SplitVoucherState extends State<SplitVoucher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0.0,
         automaticallyImplyLeading: false,
         title: Row(
@@ -31,15 +30,15 @@ class _SplitVoucherState extends State<SplitVoucher> {
                 onTap: () {
                   Get.back();
                 },
-                child: const Icon(
+                child: Icon(
                   CupertinoIcons.back,
-                  color: Constants.primaryColor,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
               ),
             ),
             TextMedium(
               text: "Split Voucher",
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ],
         ),
@@ -57,14 +56,14 @@ class _SplitVoucherState extends State<SplitVoucher> {
                   TextLarge(
                     text: "Welcome to Split Voucher",
                     align: TextAlign.center,
-                    color: const Color(0xFF262626),
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   const SizedBox(height: 10.0),
                   TextBody1(
                     text:
                         "Users can divide vouchers into multiple parts, allowing for greater flexibility and customization in how the voucher is used.",
                     align: TextAlign.center,
-                    color: const Color(0xFF5D5D5D),
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                   SizedBox(
@@ -72,6 +71,7 @@ class _SplitVoucherState extends State<SplitVoucher> {
                     child: PrimaryButton(
                       buttonText: "Proceed",
                       fontSize: 15,
+                      bgColor: Theme.of(context).colorScheme.primaryContainer,
                       onPressed: () {
                         Get.to(
                           const SelectSplitVoucher(),

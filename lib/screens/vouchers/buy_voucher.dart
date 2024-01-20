@@ -71,8 +71,9 @@ class _BuyVoucherState extends State<BuyVoucher> {
               16.0,
             ),
             child: PrimaryButton(
-              fontSize: 18,
+              fontSize: 16,
               buttonText: "Pay  ₦100,000",
+              bgColor: Theme.of(context).colorScheme.primaryContainer,
               onPressed: () {
                 Get.to(
                   const ConfirmPurchase(),
@@ -93,9 +94,10 @@ class _BuyVoucherState extends State<BuyVoucher> {
           Text(
             "Amount",
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Colors.black,
-                fontFamily: 'OpenSans',
-                fontWeight: FontWeight.w600),
+                  color: Theme.of(context).colorScheme.tertiary,
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.w600,
+                ),
           ),
           const SizedBox(
             height: 6.0,
@@ -109,6 +111,8 @@ class _BuyVoucherState extends State<BuyVoucher> {
                 });
               }
             },
+            strokeColor:
+                Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
             controller: _amountController,
             validator: (value) {
               if (value.toString().contains("-")) {

@@ -8,6 +8,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 
+import 'pdf/pdf_preview.dart';
+
 class SuccessPage extends StatelessWidget {
   final bool isVoucher;
   const SuccessPage({
@@ -47,7 +49,7 @@ class SuccessPage extends StatelessWidget {
                   ),
                   TextLarge(
                     text: "Congratulations",
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   const SizedBox(
                     height: 5.0,
@@ -55,7 +57,7 @@ class SuccessPage extends StatelessWidget {
                   !isVoucher
                       ? TextSmall(
                           text: "Your voucher purchase is successful",
-                          color: const Color(0xFF7D7D7D),
+                          color: Theme.of(context).colorScheme.tertiary,
                         )
                       : Padding(
                           padding: const EdgeInsets.symmetric(
@@ -64,78 +66,84 @@ class SuccessPage extends StatelessWidget {
                           child: TextSmall(
                             text:
                                 "You have successfully redeemed your voucher to GTB with account number 23347***90",
-                            color: const Color(0xFF7D7D7D),
+                            color: Theme.of(context).colorScheme.tertiary,
                             align: TextAlign.center,
                           ),
                         ),
                 ],
               ),
             ),
-            isVoucher
-                ? Expanded(
-                    flex: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: PrimaryButton(
-                            onPressed: () {
-                              Get.off(
-                                Dashboard(),
-                                transition: Transition.cupertino,
-                              );
-                            },
-                            fontSize: 16,
-                            buttonText: "Done",
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : Expanded(
-                    flex: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        PrimaryButton(
-                          fontSize: 18,
-                          buttonText: "Share",
-                          onPressed: () {
-                            Share.share('$sharedText\n$imageUrl');
-                            // Share.share(
-                            //     'Visit our site:: https://afrikunet.com/');
-                          },
-                        ),
-                        const SizedBox(
-                          height: 16.0,
-                        ),
-                        SecondaryButton(
-                          fontSize: 18,
-                          buttonText: "Download",
-                          onPressed: () {},
-                        ),
-                        const SizedBox(
-                          height: 16.0,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Get.off(
-                              Dashboard(),
-                              transition: Transition.cupertino,
-                            );
-                          },
-                          child: TextMedium(
-                            text: "Done",
-                            fontWeight: FontWeight.w600,
-                            color: Constants.primaryColor,
-                          ),
-                        ),
-                      ],
+            // isVoucher
+            //     ? Expanded(
+            //         flex: 2,
+            //         child: Column(
+            //           mainAxisAlignment: MainAxisAlignment.center,
+            //           crossAxisAlignment: CrossAxisAlignment.center,
+            //           children: [
+            //             SizedBox(
+            //               width: double.infinity,
+            //               child: PrimaryButton(
+            //                 onPressed: () {
+            //                   Get.off(
+            //                     Dashboard(),
+            //                     transition: Transition.cupertino,
+            //                   );
+            //                 },
+            //                 fontSize: 16,
+            //                 buttonText: "Done",
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       )
+            //     :
+            Expanded(
+              flex: 2,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  PrimaryButton(
+                    fontSize: 18,
+                    buttonText: "Share",
+                    onPressed: () {
+                      Share.share('$sharedText\n$imageUrl');
+                      // Share.share(
+                      //     'Visit our site:: https://afrikunet.com/');
+                    },
+                  ),
+                  const SizedBox(
+                    height: 16.0,
+                  ),
+                  SecondaryButton(
+                    fontSize: 18,
+                    buttonText: "Download",
+                    onPressed: () {
+                      Get.to(
+                        const PDFPreview(),
+                        transition: Transition.cupertino,
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    height: 16.0,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Get.off(
+                        Dashboard(),
+                        transition: Transition.cupertino,
+                      );
+                    },
+                    child: TextMedium(
+                      text: "Done",
+                      fontWeight: FontWeight.w600,
+                      color: Constants.primaryColor,
                     ),
                   ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

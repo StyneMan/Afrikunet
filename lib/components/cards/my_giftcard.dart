@@ -3,11 +3,11 @@ import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../data/giftcards.dart';
+import '../../data/giftcards.dart' as GiftCard;
 
 class MyGiftCard extends StatelessWidget {
   final double height;
-  final GiftCard data;
+  final GiftCard.Card data;
   const MyGiftCard({
     Key? key,
     required this.data,
@@ -54,7 +54,9 @@ class MyGiftCard extends StatelessWidget {
                   const SizedBox(height: 2.0),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 1.0, vertical: 16.0),
+                      horizontal: 1.0,
+                      vertical: 16.0,
+                    ),
                     decoration: BoxDecoration(
                       border: Border.all(
                         color:
@@ -104,7 +106,7 @@ class MyGiftCard extends StatelessWidget {
                     data.event != null
                         ? Expanded(
                             child: TextBody1(
-                              text: "${data.event ?? ""}",
+                              text: data.event ?? "",
                               align: TextAlign.center,
                               color: data.type == "blue"
                                   ? Colors.white

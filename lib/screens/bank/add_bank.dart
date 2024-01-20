@@ -3,7 +3,6 @@ import 'package:afrikunet/components/inputfield/bank_dropdown.dart';
 import 'package:afrikunet/components/inputfield/textfield.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/data/banks/banks.dart';
-import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,9 +21,8 @@ class _AddBankState extends State<AddBank> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0.0,
         automaticallyImplyLeading: false,
         title: Row(
@@ -35,15 +33,15 @@ class _AddBankState extends State<AddBank> {
                 onTap: () {
                   Get.back();
                 },
-                child: const Icon(
+                child: Icon(
                   CupertinoIcons.back,
-                  color: Constants.primaryColor,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
               ),
             ),
             TextMedium(
               text: "Add Bank",
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ],
         ),
@@ -54,7 +52,10 @@ class _AddBankState extends State<AddBank> {
           padding: const EdgeInsets.all(16.0),
           children: [
             const SizedBox(height: 24.0),
-            TextSmall(text: "Select Bank"),
+            TextSmall(
+              text: "Select Bank",
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
             const SizedBox(height: 4.0),
             BankCustomDropdown(
               items: banks,
@@ -66,7 +67,10 @@ class _AddBankState extends State<AddBank> {
               },
             ),
             const SizedBox(height: 24.0),
-            TextSmall(text: "Account Number"),
+            TextSmall(
+              text: "Account Number",
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
             const SizedBox(height: 4.0),
             CustomTextField(
               hintText: "",
@@ -88,6 +92,7 @@ class _AddBankState extends State<AddBank> {
             PrimaryButton(
               buttonText: "Save",
               fontSize: 15,
+              bgColor: Theme.of(context).colorScheme.primaryContainer,
               onPressed:
                   _accController.text.isNotEmpty && _selectedBank.isNotEmpty
                       ? () {}

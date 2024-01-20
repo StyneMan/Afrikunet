@@ -36,9 +36,8 @@ class _ConfirmPurchaseState extends State<ConfirmPurchase> {
         progressIndicator: const CircularProgressIndicator.adaptive(),
         backgroundColor: Colors.black54,
         child: Scaffold(
-          backgroundColor: Colors.white,
           appBar: AppBar(
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             automaticallyImplyLeading: false,
             elevation: 0.0,
             title: Row(
@@ -77,7 +76,7 @@ class _ConfirmPurchaseState extends State<ConfirmPurchase> {
                 Text(
                   "Purchase Info",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Colors.black,
+                      color: Theme.of(context).colorScheme.tertiary,
                       fontFamily: 'OpenSans',
                       fontWeight: FontWeight.w600),
                 ),
@@ -98,7 +97,7 @@ class _ConfirmPurchaseState extends State<ConfirmPurchase> {
                 Text(
                   "Alt email for 2FA",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Colors.black,
+                        color: Theme.of(context).colorScheme.tertiary,
                         fontFamily: 'OpenSans',
                         fontWeight: FontWeight.w600,
                       ),
@@ -146,8 +145,9 @@ class _ConfirmPurchaseState extends State<ConfirmPurchase> {
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.15),
                 PrimaryButton(
-                  fontSize: 18,
+                  fontSize: 16,
                   buttonText: "Confirm",
+                  bgColor: Theme.of(context).colorScheme.primaryContainer,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       Get.to(
