@@ -1,6 +1,6 @@
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
-import 'package:afrikunet/model/home-slide/home_slide.dart';
+import 'package:afrikunet/model/home/home_slide.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 

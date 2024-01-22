@@ -25,16 +25,4 @@ final List<AccountModel> tempAccounts = [
     bankName: "First Bank",
     bankLogo: "assets/images/firstbank_logo.png",
   ),
-  AccountModel(
-    accName: "Precious Wen",
-    accNumber: "11234***78",
-    bankName: "GT bank",
-    bankLogo: "assets/images/gtb_logo.png",
-  ),
-  AccountModel(
-    accName: "Precious Wen",
-    accNumber: "23498***43",
-    bankName: "UBA",
-    bankLogo: "assets/images/uba_logo.png",
-  ),
 ];

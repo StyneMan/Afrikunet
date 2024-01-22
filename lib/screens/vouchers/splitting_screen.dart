@@ -24,9 +24,8 @@ class VoucherSplittingScreen extends StatelessWidget {
         progressIndicator: const CircularProgressIndicator.adaptive(),
         backgroundColor: Colors.black54,
         child: Scaffold(
-          backgroundColor: Colors.white,
           appBar: AppBar(
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             elevation: 0.0,
             automaticallyImplyLeading: false,
             title: Row(
@@ -38,15 +37,11 @@ class VoucherSplittingScreen extends StatelessWidget {
                     onTap: () {
                       Get.back();
                     },
-                    child: const Icon(
+                    child: Icon(
                       CupertinoIcons.back,
-                      color: Constants.primaryColor,
+                      color: Theme.of(context).colorScheme.tertiary,
                     ),
                   ),
-                ),
-                TextMedium(
-                  text: "",
-                  color: Colors.black,
                 ),
               ],
             ),

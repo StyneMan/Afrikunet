@@ -1,5 +1,6 @@
 import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/dialog/info_dialog.dart';
+import 'package:afrikunet/components/dividers/dotted_divider.dart';
 import 'package:afrikunet/components/inputfield/textfield.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
@@ -13,7 +14,7 @@ import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'widgets/bottom_sheet_content.dart';
 
 class VoucherCode extends StatefulWidget {
-  VoucherCode({Key? key}) : super(key: key);
+  const VoucherCode({Key? key}) : super(key: key);
 
   @override
   State<VoucherCode> createState() => _VoucherCodeState();
@@ -61,21 +62,22 @@ class _VoucherCodeState extends State<VoucherCode> {
                       children: [
                         const SizedBox(height: 40.0),
                         _inputController.text == alreadyUsed
-                            ? const Icon(
+                            ? Icon(
                                 CupertinoIcons.info_circle,
                                 size: 84,
-                                color: Constants.primaryColor,
+                                color: Theme.of(context).colorScheme.secondary,
                               )
-                            : const Icon(
+                            : Icon(
                                 CupertinoIcons.xmark_circle_fill,
                                 size: 84,
-                                color: Constants.primaryColor,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                         const SizedBox(height: 10.0),
                         TextMedium(
                           text: _inputController.text == alreadyUsed
                               ? "This voucher has already been used"
                               : "Invalid Voucher",
+                          color: Theme.of(context).colorScheme.tertiary,
                           fontWeight: FontWeight.w400,
                         ),
                         const SizedBox(
@@ -159,7 +161,7 @@ class _VoucherCodeState extends State<VoucherCode> {
                         },
                         padding: const EdgeInsets.all(0.0),
                         initialSelection: 'NG',
-                        favorite: ['+234', 'NG'],
+                        favorite: const ['+234', 'NG'],
                         showCountryOnly: true,
                         showFlag: true,
                         showDropDownButton: true,
@@ -186,20 +188,25 @@ class _VoucherCodeState extends State<VoucherCode> {
                 ),
                 const SizedBox(height: 10.0),
                 Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.info,
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                      ),
-                      const SizedBox(width: 8.0),
-                      TextBody1(
-                        text: "Only redeemable in Africa",
-                        color: Theme.of(context).colorScheme.tertiary,
-                      ),
-                    ],
+                  child: TextButton(
+                    onPressed: () {
+                      Get.bottomSheet(_redeemableBottomSheetContent);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.info,
+                          color: Theme.of(context).colorScheme.primaryContainer,
+                        ),
+                        const SizedBox(width: 8.0),
+                        TextBody1(
+                          text: "Only redeemable in Africa",
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.18),
@@ -222,4 +229,61 @@ class _VoucherCodeState extends State<VoucherCode> {
       ),
     );
   }
+
+  Container get _redeemableBottomSheetContent => Container(
+        padding: const EdgeInsets.all(10.0),
+        height: MediaQuery.of(context).size.height * 0.45,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(21),
+            topRight: Radius.circular(21),
+          ),
+          color: Theme.of(context).colorScheme.background,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(
+                      CupertinoIcons.xmark_circle,
+                      size: 24,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8.0),
+              DottedDivider(),
+              const SizedBox(height: 24.0),
+              Center(
+                child: TextHeading(
+                  text: "Title",
+                  color: Theme.of(context).colorScheme.tertiary,
+                  align: TextAlign.center,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 24.0),
+              TextBody1(
+                text:
+                    "Lörem ipsum transception besosamma er, liksom plass, även om luda. Doten mossgraffiti kvasir. Teotion bes. Krost for. Ryggsäcksmodellen samäskade. Stenotesk öliga, poktig fastän däst gång. Diasade ör. ",
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
+              const SizedBox(height: 16.0),
+              TextBody1(
+                text:
+                    "Bekärar lass dide susk. Krosm makrokovis. Laligt dere, nyhetsundvikare. Antefonade operates nyv oaktat seminat. Bekos jaledes. Ologi popp digen pokysk. Viling nihyl i fadylig. ",
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
+              const SizedBox(height: 21.0),
+            ],
+          ),
+        ),
+      );
 }

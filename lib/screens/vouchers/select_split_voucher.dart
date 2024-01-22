@@ -22,9 +22,8 @@ class _SelectSplitVoucherState extends State<SelectSplitVoucher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0.0,
         automaticallyImplyLeading: false,
         title: Row(
@@ -35,15 +34,15 @@ class _SelectSplitVoucherState extends State<SelectSplitVoucher> {
                 onTap: () {
                   Get.back();
                 },
-                child: const Icon(
+                child: Icon(
                   CupertinoIcons.back,
-                  color: Constants.primaryColor,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
               ),
             ),
             TextMedium(
               text: "Select voucher to split",
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ],
         ),
@@ -52,38 +51,42 @@ class _SelectSplitVoucherState extends State<SelectSplitVoucher> {
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-          InkWell(
-            onTap: () {
-              setState(() {
-                _type = "blue";
-              });
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 225,
-                  child: GiftCardItem(
-                    amount: "1000",
-                    bgImage: "assets/images/giftcard_bg.png",
-                    code: "XDT12IUNWpo1HN",
-                    logo: "assets/images/afrikunet_logo_white.png",
-                    type: "blue",
+          SizedBox(
+            width: double.infinity,
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  _type = "blue";
+                });
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 225,
+                    child: GiftCardItem(
+                      amount: "1000",
+                      bgImage: "assets/images/giftcard_bg.png",
+                      code: "XDT12IUNWpo1HN",
+                      logo: "assets/images/afrikunet_logo_white.png",
+                      type: "blue",
+                      width: double.infinity,
+                    ),
                   ),
-                ),
-                Radio(
-                  activeColor: Constants.primaryColor,
-                  value: "blue",
-                  groupValue: _type,
-                  onChanged: (value) {
-                    setState(() {
-                      _type = (value as String?)!;
-                    });
-                    // _controller.cableTvAmount.value = (value as double?)!;
-                  },
-                ),
-              ],
+                  Radio(
+                    activeColor: Constants.primaryColor,
+                    value: "blue",
+                    groupValue: _type,
+                    onChanged: (value) {
+                      setState(() {
+                        _type = (value as String?)!;
+                      });
+                      // _controller.cableTvAmount.value = (value as double?)!;
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(
@@ -107,6 +110,7 @@ class _SelectSplitVoucherState extends State<SelectSplitVoucher> {
                     code: "XDT12IUNWpo1HN",
                     logo: "assets/images/logo_blue.png",
                     type: "white",
+                    width: double.infinity,
                   ),
                 ),
                 Radio(
@@ -131,6 +135,7 @@ class _SelectSplitVoucherState extends State<SelectSplitVoucher> {
             child: PrimaryButton(
               buttonText: "Continue",
               fontSize: 15,
+              bgColor: Theme.of(context).colorScheme.primaryContainer,
               onPressed: () {
                 Get.to(
                   VoucherSplittingScreen(type: _type),

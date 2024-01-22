@@ -76,9 +76,10 @@ class _ConfirmPurchaseState extends State<ConfirmPurchase> {
                 Text(
                   "Purchase Info",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      fontFamily: 'OpenSans',
-                      fontWeight: FontWeight.w600),
+                        color: Theme.of(context).colorScheme.tertiary,
+                        fontFamily: 'OpenSans',
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 32.0),
                 const SizedBox(

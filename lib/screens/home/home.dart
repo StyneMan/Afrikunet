@@ -3,6 +3,7 @@ import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/drawer/custom_drawer.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/model/home/home_action.dart';
 import 'package:afrikunet/screens/airtime/airtime.dart';
 import 'package:afrikunet/screens/bank/add_bank.dart';
 import 'package:afrikunet/screens/bills/billpay.dart';
@@ -219,7 +220,81 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
+            const SizedBox(
+              height: 10.0,
+            ),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 100,
+                childAspectRatio: 2 / 2,
+                crossAxisSpacing: 0.5,
+                mainAxisSpacing: 0.5,
+              ),
+              itemBuilder: (context, index) {
+                return _itemCard(homeActions[index], context);
+              },
+              itemCount: homeActions.length,
+            ),
+            TextButton(
+              onPressed: () {},
+              child: Column(
+                children: [
+                  TextSmall(
+                    text: "Show All",
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    color: Theme.of(context).colorScheme.secondary,
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 36.0,
+            ),
+            const HomeSlider()
+          ],
+        ),
+      );
+
+  Widget _itemCard(HomeAction data, context) {
+    return Card(
+      child: TextButton(
+        onPressed: () {
+          Get.to(
+            data.widget,
+            transition: Transition.cupertino,
+          );
+        },
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                "assets/images/${data.icon}",
+                color: Theme.of(context).colorScheme.secondary,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(height: 4.0),
+              TextBody2(
+                text: data.title,
+                align: TextAlign.center,
+                color: Theme.of(context).colorScheme.secondary,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/* 
+ Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -354,11 +429,4 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 36.0,
-            ),
-            const HomeSlider()
-          ],
-        ),
-      );
-}
+*/

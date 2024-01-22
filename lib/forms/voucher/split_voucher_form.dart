@@ -75,13 +75,17 @@ class SplitVoucherForm extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextSmall(text: "Amount to split"),
+          TextSmall(
+            text: "Amount to split",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           const SizedBox(
             height: 4.0,
           ),
           RoundedInputMoney(
             hintText: "Amount",
             enabled: true,
+            strokeColor: Theme.of(context).colorScheme.tertiary,
             onChanged: (value) {
               if (value.toString().contains("-")) {
                 // setState(() {
@@ -103,13 +107,17 @@ class SplitVoucherForm extends StatelessWidget {
           const SizedBox(
             height: 16.0,
           ),
-          TextSmall(text: "Amount I'm Paying"),
+          TextSmall(
+            text: "Amount I'm Paying",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           const SizedBox(
             height: 4.0,
           ),
           RoundedInputMoney(
             hintText: "Amount",
             enabled: true,
+            strokeColor: Theme.of(context).colorScheme.tertiary,
             onChanged: (value) {
               if (value.toString().contains("-")) {
                 // setState(() {
@@ -131,7 +139,10 @@ class SplitVoucherForm extends StatelessWidget {
           const SizedBox(
             height: 16.0,
           ),
-          TextSmall(text: "Purpose of Split"),
+          TextSmall(
+            text: "Purpose of Split",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           const SizedBox(
             height: 4.0,
           ),
@@ -166,10 +177,14 @@ class SplitVoucherForm extends StatelessWidget {
                 children: [
                   TextSmall(
                     text: "Add User ",
-                    color: Constants.primaryColor,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                   const SizedBox(width: 3.0),
-                  const Icon(CupertinoIcons.add, size: 14)
+                  Icon(
+                    CupertinoIcons.add,
+                    size: 14,
+                    color: Theme.of(context).colorScheme.secondary,
+                  )
                 ],
               ),
             ),
@@ -217,6 +232,7 @@ class SplitVoucherForm extends StatelessWidget {
             width: double.infinity,
             child: PrimaryButton(
               buttonText: "Proceed",
+              bgColor: Theme.of(context).colorScheme.primaryContainer,
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _splitNow(context);

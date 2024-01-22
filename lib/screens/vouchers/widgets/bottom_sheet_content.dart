@@ -24,70 +24,101 @@ class _VoucherBottomSheetState extends State<VoucherBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(18),
           topRight: Radius.circular(18),
         ),
       ),
-      child: ListView(
-        padding: const EdgeInsets.all(8.0),
+      child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: () {
-                  Get.back();
-                },
-                icon: const Icon(
-                  CupertinoIcons.xmark_circle,
-                  size: 16,
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(8.0),
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      icon: const Icon(
+                        CupertinoIcons.xmark_circle,
+                        size: 21,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8.0),
-          DottedDivider(),
-          const SizedBox(height: 16.0),
-          Column(
-            children: [
-              TextMedium(
-                text: "Your voucher is valid and worth",
-                fontWeight: FontWeight.w500,
-                color: const Color(0xFF131313),
-              ),
-              const SizedBox(height: 8.0),
-              Text(
-                "${Constants.nairaSign(context).currencySymbol}1,000,000",
-                style: const TextStyle(
-                  fontSize: 30,
-                  color: Color(0xFF161616),
-                  fontWeight: FontWeight.w600,
+                const SizedBox(height: 5.0),
+                DottedDivider(),
+                const SizedBox(height: 10.0),
+                Column(
+                  children: [
+                    TextMedium(
+                      text: "Your voucher is valid and worth",
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.tertiary,
+                    ),
+                    const SizedBox(height: 6.0),
+                    Text(
+                      "${Constants.nairaSign(context).currencySymbol}1,000,000",
+                      style: TextStyle(
+                        fontSize: 30,
+                        color: Theme.of(context).colorScheme.tertiary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 10.0),
+                    TextBody1(
+                      text: "Choose a redeeming bank account",
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.tertiary,
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 16.0),
-              TextBody1(
-                text: "Choose a redeeming bank account",
-                fontWeight: FontWeight.w500,
-                color: const Color(0xFF505050),
-              ),
-            ],
+                const SizedBox(height: 16.0),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (var i = 0; i < tempAccounts.length; i++)
+                      _accountRow(tempAccounts[i], i)
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (context) {
+                            return Container(
+                              height: 900,
+                              width: double.infinity,
+                              color: Colors.red,
+                            );
+                          },
+                        );
+                      },
+                      child: const Text('Add Bank +'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 24.0),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (var i = 0; i < tempAccounts.length; i++)
-                _accountRow(tempAccounts[i], i)
-            ],
-          ),
-          const SizedBox(height: 24.0),
-          PrimaryButton(
-              fontSize: 17,
+          Container(
+            width: double.infinity,
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
+            child: PrimaryButton(
+              fontSize: 16,
               buttonText: "Continue",
               onPressed: () {
                 Get.back();
@@ -102,8 +133,9 @@ class _VoucherBottomSheetState extends State<VoucherBottomSheet> {
                     transition: Transition.cupertino,
                   );
                 });
-              }),
-          const SizedBox(height: 24.0),
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -128,15 +160,24 @@ class _VoucherBottomSheetState extends State<VoucherBottomSheet> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Image.asset(data.bankLogo),
-                  TextSmall(text: data.bankName),
+                  TextSmall(
+                    text: data.bankName,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
                 ],
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  TextMedium(text: data.accName),
-                  TextSmall(text: data.accNumber),
+                  TextMedium(
+                    text: data.accName,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                  TextSmall(
+                    text: data.accNumber,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
                 ],
               ),
               _currIndex == index
