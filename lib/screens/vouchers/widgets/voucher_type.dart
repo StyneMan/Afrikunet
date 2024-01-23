@@ -175,6 +175,7 @@ class _VoucherTypeState extends State<VoucherType> {
                 code: "XDT12IUNWpo1HN",
                 logo: "assets/images/afrikunet_logo_white.png",
                 type: "blue",
+                width: 300,
               ),
               SizedBox(width: 16.0),
               GiftCardItem(
@@ -183,6 +184,7 @@ class _VoucherTypeState extends State<VoucherType> {
                 code: "XDT12IUNWpo1HN",
                 logo: "assets/images/logo_blue.png",
                 type: "white",
+                width: 300,
               ),
               SizedBox(width: 16.0),
             ],

@@ -28,6 +28,10 @@ class PreferenceManager {
     prefs.setString('fcmToken', token);
   }
 
+  void setThemeMode(String themeMode) {
+    prefs.setString('themeMode', themeMode);
+  }
+
   String getFCMToken() => prefs != null ? prefs!.getString('fcmToken') : '';
 
   void setIsLoggedIn(bool loggenIn) {

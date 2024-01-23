@@ -1,6 +1,7 @@
 import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/buttons/secondary.dart';
 import 'package:afrikunet/components/dialog/info_dialog.dart';
+import 'package:afrikunet/components/dialog/success_dialog.dart';
 import 'package:afrikunet/components/inputfield/rounded_money_input.dart';
 import 'package:afrikunet/components/inputfield/textarea2.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
@@ -25,45 +26,7 @@ class SplitVoucherForm extends StatelessWidget {
     _controller.setLoading(true);
     Future.delayed(const Duration(seconds: 3), () {
       _controller.setLoading(false);
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) => InfoDialog(
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.all(10.0),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 24.0),
-                  SvgPicture.asset("assets/images/check_all.svg"),
-                  const SizedBox(height: 10.0),
-                  TextSmall(
-                    text: " again.",
-                    align: TextAlign.center,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(10.0),
-                    width: double.infinity,
-                    child: PrimaryButton(
-                      buttonText: "Done",
-                      fontSize: 15,
-                      onPressed: () {
-                        Get.back();
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
+      Dialogs.showSuccessDialog(context: context, message: " again ");
     });
   }
 

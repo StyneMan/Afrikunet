@@ -101,7 +101,7 @@ Future<void> main() async {
   );
 }
 
-class MyApp extends StatefulWidget  {
+class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
 
   @override
@@ -115,11 +115,22 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   bool _authenticated = false;
 
   _init() async {
-    // print("FROM MAIN DART ::::");
+    //
     try {
       final _prefs = await SharedPreferences.getInstance();
       _authenticated = _prefs.getBool("loggedIn") ?? false;
-    } catch (e) {}
+      final _currentThemeMode = _prefs.getString("themeMode") ?? "";
+      if (_currentThemeMode == "dark") {
+        _controller.currentThemeMode.value = "dark";
+      } else if (_currentThemeMode == "system default") {
+        _controller.currentThemeMode.value = "system default";
+      } else {
+        _controller.currentThemeMode.value = "light";
+      }
+      print("MAIN THEME HERE ::::   $_currentThemeMode");
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   void _connectSocket() async {
@@ -173,29 +184,41 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       builder: (context, AsyncSnapshot snapshot) {
         // Show splash screen while waiting for app resources to load:
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'AfriKunet',
-            theme: appTheme,
-            home: Scaffold(
-              body: Splash(
-                controller: _controller,
+          return Obx(
+            () => GetMaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'AfriKunet',
+              theme: _controller.currentThemeMode.value == "dark"
+                  ? darkTheme
+                  : appTheme,
+              home: Scaffold(
+                body: Splash(
+                  controller: _controller,
+                ),
               ),
             ),
           );
         } else {
           // Loading is done, return the app:
-          return GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'AfriKunet',
-            theme: appTheme,
-            darkTheme: darkTheme,
-            themeMode: ThemeMode.system,
-            home: _controller.hasInternetAccess.value
-                ? !_authenticated
-                    ? const Onboarding()
-                    : Dashboard()
-                : const NoInternet(),
+          // print("CurrentTheme :: $_currentThemeMode");
+
+          return Obx(
+            () => GetMaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'AfriKunet',
+              theme: appTheme,
+              darkTheme: darkTheme,
+              themeMode: _controller.currentThemeMode.value == "dark"
+                  ? ThemeMode.dark
+                  : _controller.currentThemeMode.value == "system default"
+                      ? ThemeMode.system
+                      : ThemeMode.light,
+              home: _controller.hasInternetAccess.value
+                  ? !_authenticated
+                      ? const Onboarding()
+                      : Dashboard()
+                  : const NoInternet(),
+            ),
           );
         }
       },
@@ -246,7 +269,8 @@ class Init {
   static final instance = Init._();
 
   Future initialize() async {
-    await Future.delayed(const Duration(seconds: 3));
+    final _prefs = await SharedPreferences.getInstance();
+    // await Future.delayed(const Duration(seconds: 3));
   }
 }
 

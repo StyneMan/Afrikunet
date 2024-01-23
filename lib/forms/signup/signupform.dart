@@ -2,6 +2,7 @@ import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/screens/auth/login/login.dart';
 import 'package:afrikunet/screens/auth/otp/verifyotp.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -116,6 +117,22 @@ class _SignupFormState extends State<SignupForm> {
               }
               return null;
             },
+            prefix: CountryCodePicker(
+              alignLeft: true,
+              onChanged: (val) {
+                setState(() {
+                  _countryCode = val as String;
+                });
+              },
+              padding: const EdgeInsets.all(0.0),
+              initialSelection: 'NG',
+              favorite: ['+234', 'NG'],
+              showCountryOnly: true,
+              showFlag: true,
+              showDropDownButton: false,
+              hideMainText: true,
+              showOnlyCountryWhenClosed: false,
+            ),
           ),
           const SizedBox(
             height: 16.0,

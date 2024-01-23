@@ -88,12 +88,12 @@ class _State extends State<VerifyOTP> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               width: double.infinity,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/bg.png'),
-                  fit: BoxFit.cover,
-                ),
-              ),
+              // decoration: const BoxDecoration(
+              //   image: DecorationImage(
+              //     image: AssetImage('assets/images/bg.png'),
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -109,7 +109,10 @@ class _State extends State<VerifyOTP> {
                         onPressed: () {
                           Get.back();
                         },
-                        icon: const Icon(Icons.arrow_back_ios),
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
                       ),
                     ],
                   ),
@@ -127,7 +130,7 @@ class _State extends State<VerifyOTP> {
                                 ? "A verification code has been sent to ${widget.email}"
                                 : "Enter the code sent to ${widget.email}",
                             align: TextAlign.center,
-                            color: Colors.black87,
+                            color: Theme.of(context).colorScheme.tertiary,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -145,7 +148,7 @@ class _State extends State<VerifyOTP> {
                               text:
                                   ' ${_pluralizer(time.min ?? 0) ?? "0"} : ${_pluralizer(time.sec ?? 0)}',
                               align: TextAlign.center,
-                              color: const Color(0xFF1D1C1C),
+                              color: Theme.of(context).colorScheme.tertiary,
                             );
                           },
                         ),
@@ -157,10 +160,15 @@ class _State extends State<VerifyOTP> {
                             width: 320,
                             child: PinCodeTextField(
                               appContext: context,
-                              backgroundColor: Colors.white,
-                              pastedTextStyle: const TextStyle(
-                                color: Constants.primaryColor,
+                              backgroundColor: Colors.transparent,
+                              pastedTextStyle: TextStyle(
+                                color: Theme.of(context).colorScheme.tertiary,
                                 fontWeight: FontWeight.bold,
+                              ),
+                              textStyle: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inverseSurface,
                               ),
                               length: 4,
                               autoFocus: true,
@@ -180,11 +188,15 @@ class _State extends State<VerifyOTP> {
                                     const EdgeInsets.symmetric(horizontal: 8.0),
                                 fieldHeight: 60,
                                 fieldWidth: 56,
-                                activeFillColor: Colors.white,
-                                activeColor: Constants.primaryColor,
+                                activeFillColor:
+                                    Theme.of(context).colorScheme.tertiary,
+                                activeColor: Theme.of(context)
+                                    .colorScheme
+                                    .inverseSurface,
                                 inactiveColor: Colors.black45,
                               ),
-                              cursorColor: Colors.black,
+                              cursorColor:
+                                  Theme.of(context).colorScheme.tertiary,
                               animationDuration:
                                   const Duration(milliseconds: 300),
                               // enableActiveFill: true,
@@ -272,7 +284,11 @@ class _State extends State<VerifyOTP> {
                                                         height: 24.0,
                                                       ),
                                                       SvgPicture.asset(
-                                                          "assets/images/check_all.svg"),
+                                                        "assets/images/check_all.svg",
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .inverseSurface,
+                                                      ),
                                                       const SizedBox(
                                                         height: 10.0,
                                                       ),
@@ -282,6 +298,9 @@ class _State extends State<VerifyOTP> {
                                                         align: TextAlign.center,
                                                         fontWeight:
                                                             FontWeight.w400,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .tertiary,
                                                       ),
                                                       const SizedBox(
                                                         height: 24,
@@ -330,7 +349,7 @@ class _State extends State<VerifyOTP> {
                           children: [
                             TextSmall(
                               text: "Didn't receive?",
-                              color: Colors.black,
+                              color: Theme.of(context).colorScheme.tertiary,
                             ),
                             // _timerController.currentRemainingTime == null
                             //     ?
@@ -349,7 +368,9 @@ class _State extends State<VerifyOTP> {
                               child: TextSmall(
                                 text: "Resend Code ",
                                 fontWeight: FontWeight.w600,
-                                color: Constants.primaryColor,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inverseSurface,
                               ),
                             ),
                             // : const SizedBox(),

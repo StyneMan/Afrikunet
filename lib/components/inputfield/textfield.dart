@@ -14,22 +14,24 @@ class CustomTextField extends StatelessWidget {
   final Widget endIcon;
   final String? placeholder;
   final FocusNode? focusNode;
+  final Widget? prefix;
 
-  CustomTextField({
-    Key? key,
-    this.hintText = "",
-    this.icon = Icons.person,
-    this.isEnabled = true,
-    this.capitalization = TextCapitalization.none,
-    required this.onChanged,
-    required this.controller,
-    required this.validator,
-    required this.inputType,
-    this.borderRadius = 6.0,
-    this.endIcon = const SizedBox(),
-    this.placeholder = "",
-    this.focusNode,
-  }) : super(key: key);
+  CustomTextField(
+      {Key? key,
+      this.hintText = "",
+      this.icon = Icons.person,
+      this.isEnabled = true,
+      this.capitalization = TextCapitalization.none,
+      required this.onChanged,
+      required this.controller,
+      required this.validator,
+      required this.inputType,
+      this.borderRadius = 6.0,
+      this.endIcon = const SizedBox(),
+      this.placeholder = "",
+      this.focusNode,
+      this.prefix})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +82,7 @@ class CustomTextField extends StatelessWidget {
           fontWeight: FontWeight.w400,
         ),
         suffixIcon: endIcon,
+        prefixIcon: prefix,
       ),
       keyboardType: inputType,
       textCapitalization: capitalization,

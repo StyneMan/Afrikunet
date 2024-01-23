@@ -1,15 +1,10 @@
-import 'package:afrikunet/components/buttons/action.dart';
 import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/drawer/custom_drawer.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/model/home/home_action.dart';
-import 'package:afrikunet/screens/airtime/airtime.dart';
-import 'package:afrikunet/screens/bank/add_bank.dart';
-import 'package:afrikunet/screens/bills/billpay.dart';
 import 'package:afrikunet/screens/vouchers/buy_voucher.dart';
 import 'package:afrikunet/screens/vouchers/redeem_voucher.dart';
-import 'package:afrikunet/screens/vouchers/split_voucher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -235,10 +230,66 @@ class HomePage extends StatelessWidget {
               itemBuilder: (context, index) {
                 return _itemCard(homeActions[index], context);
               },
-              itemCount: homeActions.length,
+              itemCount: 8,
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                double sheetHeight = MediaQuery.of(context).size.height * 0.99;
+
+                showModalBottomSheet(
+                  context: context,
+                  isDismissible: false,
+                  builder: (context) {
+                    return SizedBox(
+                      height: sheetHeight,
+                      width: double.infinity,
+                      child: Container(
+                        color: Theme.of(context).colorScheme.surface,
+                        padding: const EdgeInsets.all(16.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: const Icon(Icons.close_outlined),
+                                color: Theme.of(context).colorScheme.tertiary,
+                              ),
+                              const SizedBox(
+                                height: 24.0,
+                              ),
+                              GridView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                gridDelegate:
+                                    const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 100,
+                                  childAspectRatio: 2 / 2,
+                                  crossAxisSpacing: 0.5,
+                                  mainAxisSpacing: 0.5,
+                                ),
+                                itemBuilder: (context, index) {
+                                  return _itemCard(homeActions[index], context);
+                                },
+                                itemCount: homeActions.length,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(24),
+                      topRight: Radius.circular(24),
+                    ),
+                  ),
+                );
+              },
               child: Column(
                 children: [
                   TextSmall(
@@ -253,7 +304,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 36.0,
+              height: 21.0,
             ),
             const HomeSlider()
           ],
@@ -283,6 +334,7 @@ class HomePage extends StatelessWidget {
               TextBody2(
                 text: data.title,
                 align: TextAlign.center,
+                lineHeight: 1.0,
                 color: Theme.of(context).colorScheme.secondary,
               )
             ],
@@ -292,141 +344,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
-/* 
- Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ActionButton(
-                        icon: SvgPicture.asset(
-                          "assets/images/bill_pay.svg",
-                          color: Theme.of(context).colorScheme.secondary,
-                          height: 19,
-                          fit: BoxFit.cover,
-                        ),
-                        bgColor: Theme.of(context)
-                            .colorScheme
-                            .background
-                            .withOpacity(0.8),
-                        strokeColor: Theme.of(context).colorScheme.secondary,
-                        onPressed: () {
-                          Get.to(
-                            const BillPay(),
-                            transition: Transition.cupertino,
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 8.0),
-                      TextBody2(
-                        text: "Bill Pay",
-                        color: Theme.of(context).colorScheme.secondary,
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ActionButton(
-                        icon: SvgPicture.asset(
-                          "assets/images/airtime.svg",
-                          color: Theme.of(context).colorScheme.secondary,
-                          fit: BoxFit.cover,
-                        ),
-                        bgColor: Theme.of(context)
-                            .colorScheme
-                            .background
-                            .withOpacity(0.8),
-                        strokeColor: Theme.of(context).colorScheme.secondary,
-                        onPressed: () {
-                          Get.to(
-                            const Airtime(),
-                            transition: Transition.cupertino,
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 8.0),
-                      TextBody2(
-                        text: "Airtime",
-                        color: Theme.of(context).colorScheme.secondary,
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ActionButton(
-                        icon: SvgPicture.asset(
-                          "assets/images/add_bank.svg",
-                          color: Theme.of(context).colorScheme.secondary,
-                          fit: BoxFit.cover,
-                        ),
-                        bgColor: Theme.of(context)
-                            .colorScheme
-                            .background
-                            .withOpacity(0.8),
-                        strokeColor: Theme.of(context).colorScheme.secondary,
-                        onPressed: () {
-                          Get.to(
-                            AddBank(),
-                            transition: Transition.cupertino,
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 8.0),
-                      TextBody2(
-                        text: "Add Bank",
-                        color: Theme.of(context).colorScheme.secondary,
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ActionButton(
-                        icon: SvgPicture.asset(
-                          "assets/images/split_voucher.svg",
-                          color: Theme.of(context).colorScheme.secondary,
-                          fit: BoxFit.cover,
-                        ),
-                        bgColor: Theme.of(context)
-                            .colorScheme
-                            .background
-                            .withOpacity(0.8),
-                        strokeColor: Theme.of(context).colorScheme.secondary,
-                        onPressed: () {
-                          Get.to(
-                            const SplitVoucher(),
-                            transition: Transition.cupertino,
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 8.0),
-                      TextBody2(
-                        text: "Split Voucher",
-                        align: TextAlign.center,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-*/

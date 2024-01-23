@@ -32,7 +32,10 @@ class _DataTabState extends State<DataTab> {
         shrinkWrap: true,
         padding: const EdgeInsets.all(5.0),
         children: [
-          TextSmall(text: "Select your preferred network"),
+          TextSmall(
+            text: "Select your preferred network",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           SizedBox(
             height: 100,
             child: Row(
@@ -47,7 +50,7 @@ class _DataTabState extends State<DataTab> {
                         border: Border.all(
                           width: 1.0,
                           color: _current == i
-                              ? Constants.primaryColor
+                              ? Theme.of(context).colorScheme.secondary
                               : Colors.transparent,
                         ),
                       ),
@@ -65,7 +68,11 @@ class _DataTabState extends State<DataTab> {
             ),
           ),
           const SizedBox(height: 18.0),
-          TextSmall(text: "Phone number"),
+          TextSmall(
+            text: "Phone number",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
+          const SizedBox(height: 4.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -81,7 +88,7 @@ class _DataTabState extends State<DataTab> {
                   },
                   padding: const EdgeInsets.all(0.0),
                   initialSelection: 'NG',
-                  favorite: ['+234', 'NG'],
+                  favorite: const ['+234', 'NG'],
                   showCountryOnly: true,
                   showFlag: true,
                   showDropDownButton: true,
@@ -108,12 +115,14 @@ class _DataTabState extends State<DataTab> {
           const SizedBox(height: 24.0),
           TextSmall(
             text: "Select a data bundle for ${networksAirtime[_current].name}",
+            color: Theme.of(context).colorScheme.tertiary,
           ),
           const SizedBox(height: 24.0),
           const PaymentMethod(),
           const SizedBox(height: 16.0),
           PrimaryButton(
             fontSize: 15,
+            bgColor: Theme.of(context).colorScheme.primaryContainer,
             buttonText: "Pay",
             onPressed: () {
               if (_formKey.currentState!.validate()) {
@@ -121,12 +130,12 @@ class _DataTabState extends State<DataTab> {
                   Container(
                     padding: const EdgeInsets.all(10.0),
                     height: MediaQuery.of(context).size.height * 0.8,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(21),
                         topRight: Radius.circular(21),
                       ),
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.surface,
                     ),
                     child: Column(
                       children: [
@@ -140,7 +149,7 @@ class _DataTabState extends State<DataTab> {
                               },
                               icon: const Icon(
                                 CupertinoIcons.xmark_circle,
-                                size: 16,
+                                size: 21,
                               ),
                             ),
                           ],
@@ -155,10 +164,12 @@ class _DataTabState extends State<DataTab> {
                             children: [
                               Column(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     CupertinoIcons.exclamationmark_circle,
                                     size: 75,
-                                    color: Constants.primaryColor,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .inverseSurface,
                                   ),
                                   const SizedBox(height: 16.0),
                                   SizedBox(
@@ -166,6 +177,11 @@ class _DataTabState extends State<DataTab> {
                                     child: Text(
                                       "You are about to recharge  from access bank to this phone number ${_phoneController.text}.",
                                       textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
+                                      ),
                                     ),
                                   )
                                 ],
@@ -175,9 +191,11 @@ class _DataTabState extends State<DataTab> {
                                 width: double.infinity,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
+                                    horizontal: 8.0,
+                                  ),
                                   child: PrimaryButton(
                                     buttonText: "Confirm",
+                                    fontSize: 15,
                                     onPressed: () {
                                       Get.back();
                                       Get.to(

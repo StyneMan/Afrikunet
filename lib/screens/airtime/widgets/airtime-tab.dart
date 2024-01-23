@@ -72,8 +72,9 @@ class _AirtimeTabState extends State<AirtimeTab> {
           ),
           const SizedBox(height: 18.0),
           TextSmall(
-              text: "Phone number",
-              color: Theme.of(context).colorScheme.tertiary),
+            text: "Phone number",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,

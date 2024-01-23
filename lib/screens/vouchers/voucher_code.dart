@@ -238,7 +238,7 @@ class _VoucherCodeState extends State<VoucherCode> {
             topLeft: Radius.circular(21),
             topRight: Radius.circular(21),
           ),
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.surface,
         ),
         child: SingleChildScrollView(
           child: Column(

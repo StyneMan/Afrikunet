@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -27,6 +28,19 @@ class _ProfilePageState extends State<ProfilePage> {
       _croppedFile = file;
     });
     print("VALUIE::: :: $file");
+  }
+
+  Future<void> _launchInBrowser(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
@@ -234,10 +248,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         TextButton(
                           onPressed: () {
-                            // Get.to(
-                            //   const WalletScreen(),
-                            //   transition: Transition.cupertino,
-                            // );
+                            _launchInBrowser("https://afrikunet.com");
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -275,6 +286,55 @@ class _ProfilePageState extends State<ProfilePage> {
                                         color: Theme.of(context)
                                             .colorScheme
                                             .tertiary,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const Icon(
+                                Icons.chevron_right,
+                                size: 21,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 2.0,
+                        ),
+                        const Divider(),
+                        const SizedBox(
+                          height: 2.0,
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    CupertinoIcons.delete,
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
+                                    size: 23,
+                                  ),
+                                  const SizedBox(
+                                    width: 16.0,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      TextMedium(
+                                        text: "Delete Account",
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
+                                        fontWeight: FontWeight.w400,
                                       ),
                                     ],
                                   ),

@@ -1,20 +1,18 @@
 import 'package:afrikunet/components/text/textComponents.dart';
-import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/screens/airtime/widgets/data-tab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'widgets/airtime-tab.dart';
-import 'widgets/data-tab.dart';
-
-class Airtime extends StatefulWidget {
-  const Airtime({Key? key}) : super(key: key);
+class InternetData extends StatefulWidget {
+  const InternetData({Key? key}) : super(key: key);
 
   @override
-  State<Airtime> createState() => _AirtimeState();
+  State<InternetData> createState() => _InternetDataState();
 }
 
-class _AirtimeState extends State<Airtime> with SingleTickerProviderStateMixin {
+class _InternetDataState extends State<InternetData>
+    with SingleTickerProviderStateMixin {
   late TabController tabController;
 
   @override
@@ -51,7 +49,7 @@ class _AirtimeState extends State<Airtime> with SingleTickerProviderStateMixin {
               ),
             ),
             TextMedium(
-              text: "Airtime",
+              text: "Internet Data",
               color: Theme.of(context).colorScheme.tertiary,
             ),
           ],
@@ -61,7 +59,7 @@ class _AirtimeState extends State<Airtime> with SingleTickerProviderStateMixin {
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.all(16.0),
-          child: const AirtimeTab(),
+          child: const DataTab(),
         ),
       ),
     );

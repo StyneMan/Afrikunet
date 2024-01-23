@@ -120,7 +120,7 @@ class GiftCardItem extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: type == "blue" ? Colors.white : Colors.black,
-                    fontSize: 11,
+                    fontSize: 10,
                     fontFamily: "OpenSans",
                     fontWeight: FontWeight.w400,
                   ),
@@ -148,7 +148,7 @@ class GiftCardItem extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: type == "blue" ? Colors.white : Colors.black,
-                  fontSize: 11,
+                  fontSize: 10,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
                 ),
@@ -165,7 +165,7 @@ class GiftCardItem extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: type == "blue" ? Colors.white : Colors.black,
-                  fontSize: 11,
+                  fontSize: 10,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
                 ),
@@ -182,7 +182,7 @@ class GiftCardItem extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: type == "blue" ? Colors.white : Colors.black,
-                  fontSize: 11,
+                  fontSize: 10,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
                 ),
@@ -199,7 +199,7 @@ class GiftCardItem extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: type == "blue" ? Colors.white : Colors.black,
-                  fontSize: 11,
+                  fontSize: 10,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
                 ),
@@ -216,7 +216,7 @@ class GiftCardItem extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: type == "blue" ? Colors.white : Colors.black,
-                  fontSize: 11,
+                  fontSize: 10,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
                 ),
@@ -233,7 +233,7 @@ class GiftCardItem extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: type == "blue" ? Colors.white : Colors.black,
-                  fontSize: 12,
+                  fontSize: 10,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
                 ),

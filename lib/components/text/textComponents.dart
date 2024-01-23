@@ -154,12 +154,14 @@ class TextBody2 extends StatelessWidget {
   late final String? text;
   late final Color color;
   late final FontWeight fontWeight;
+  late final double lineHeight;
   late final TextAlign? align;
 
   TextBody2({
     required this.text,
     this.color = Colors.black,
     this.fontWeight = FontWeight.w400,
+    this.lineHeight = 1.25,
     this.align,
   });
 
@@ -170,10 +172,11 @@ class TextBody2 extends StatelessWidget {
     return Text(
       text!,
       textAlign: align,
-      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: color,
-            fontFamily: fontFamily,
-          ),
+      softWrap: true,
+      style: Theme.of(context)
+          .textTheme
+          .bodySmall
+          ?.copyWith(color: color, fontFamily: fontFamily, height: lineHeight),
     );
   }
 }

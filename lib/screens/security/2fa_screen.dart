@@ -36,6 +36,7 @@ class TwoFactorAuthScreen extends StatelessWidget {
                         ),
                         TextHeading(
                           text: "Welcome to the 2FA Authentication",
+                          color: Theme.of(context).colorScheme.tertiary,
                           align: TextAlign.center,
                         ),
                         const SizedBox(
@@ -44,6 +45,7 @@ class TwoFactorAuthScreen extends StatelessWidget {
                         TextBody1(
                           text:
                               "The primary purpose of 2FA is to add an extra layer of security beyond just a password.",
+                          color: Theme.of(context).colorScheme.tertiary,
                           align: TextAlign.center,
                         ),
                       ],
@@ -54,6 +56,7 @@ class TwoFactorAuthScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.80,
                   child: PrimaryButton(
                     buttonText: "Get Started",
+                    bgColor: Theme.of(context).colorScheme.primaryContainer,
                     onPressed: () {
                       Get.to(
                         const PreferredMethod(),

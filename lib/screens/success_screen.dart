@@ -104,8 +104,9 @@ class SuccessPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   PrimaryButton(
-                    fontSize: 18,
+                    fontSize: 16,
                     buttonText: "Share",
+                    bgColor: Theme.of(context).colorScheme.primaryContainer,
                     onPressed: () {
                       Share.share('$sharedText\n$imageUrl');
                       // Share.share(
@@ -116,8 +117,9 @@ class SuccessPage extends StatelessWidget {
                     height: 16.0,
                   ),
                   SecondaryButton(
-                    fontSize: 18,
+                    fontSize: 15,
                     buttonText: "Download",
+                    foreColor: Theme.of(context).colorScheme.inverseSurface,
                     onPressed: () {
                       Get.to(
                         const PDFPreview(),
@@ -137,8 +139,8 @@ class SuccessPage extends StatelessWidget {
                     },
                     child: TextMedium(
                       text: "Done",
-                      fontWeight: FontWeight.w600,
-                      color: Constants.primaryColor,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.inverseSurface,
                     ),
                   ),
                 ],

@@ -50,6 +50,8 @@ class StateController extends GetxController {
   var city = "".obs;
   var country = "".obs;
 
+  RxString currentThemeMode = "light".obs;
+
   ScrollController transactionsScrollController = ScrollController();
   ScrollController messagesScrollController = ScrollController();
 

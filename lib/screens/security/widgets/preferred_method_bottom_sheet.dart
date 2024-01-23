@@ -35,9 +35,12 @@ class _PreferredMethodBottomSheetState
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
+      height: widget.caller == "phone"
+          ? MediaQuery.of(context).size.height * 0.45
+          : MediaQuery.of(context).size.height * 0.85,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(18),
           topRight: Radius.circular(18),
         ),
@@ -55,9 +58,10 @@ class _PreferredMethodBottomSheetState
                   onPressed: () {
                     Get.back();
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     CupertinoIcons.xmark_circle,
                     size: 21,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                 ),
               ],
@@ -77,19 +81,20 @@ class _PreferredMethodBottomSheetState
                           text: widget.title,
                           align: TextAlign.center,
                           fontWeight: FontWeight.w500,
-                          color: Colors.black,
+                          color: Theme.of(context).colorScheme.tertiary,
                         )
                       : TextSmall(
                           text: widget.title,
                           align: TextAlign.center,
                           fontWeight: FontWeight.w500,
-                          color: Colors.black,
+                          color: Theme.of(context).colorScheme.tertiary,
                         ),
                   const SizedBox(height: 36.0),
                   TextBody1(
                     text: widget.caller == "phone"
-                        ? "Phone number"
+                        ? "WhatsApp number"
                         : "Enter Code",
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   SizedBox(height: widget.caller == "phone" ? 6.0 : 1.0),
                   widget.caller == "phone"

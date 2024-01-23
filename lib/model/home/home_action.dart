@@ -2,6 +2,7 @@ import 'package:afrikunet/data/bills.dart';
 import 'package:afrikunet/screens/airtime/airtime.dart';
 import 'package:afrikunet/screens/bank/add_bank.dart';
 import 'package:afrikunet/screens/cable_tv/cable_tv.dart';
+import 'package:afrikunet/screens/data/internet_data.dart';
 import 'package:afrikunet/screens/electricity/electricity.dart';
 import 'package:afrikunet/screens/vouchers/split_voucher.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,11 @@ List<HomeAction> homeActions = [
     widget: const Airtime(),
   ),
   HomeAction(
+    icon: "action_simcard.svg",
+    title: "Data",
+    widget: const InternetData(),
+  ),
+  HomeAction(
     icon: "action_cable_tv.svg",
     title: "Cable TV",
     widget: CableTV(
@@ -56,6 +62,11 @@ List<HomeAction> homeActions = [
   HomeAction(
     icon: "action_bank.svg",
     title: "Virtual card",
+    widget: const SizedBox(),
+  ),
+  HomeAction(
+    icon: "action_support.svg",
+    title: "Rewards",
     widget: const SizedBox(),
   ),
   HomeAction(

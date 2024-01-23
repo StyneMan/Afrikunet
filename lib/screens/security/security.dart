@@ -21,9 +21,8 @@ class _AppSecurityState extends State<AppSecurity> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0.0,
         automaticallyImplyLeading: false,
         title: Row(
@@ -34,15 +33,15 @@ class _AppSecurityState extends State<AppSecurity> {
                 onTap: () {
                   Get.back();
                 },
-                child: const Icon(
+                child: Icon(
                   CupertinoIcons.back,
-                  color: Constants.primaryColor,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
               ),
             ),
-            TextHeading(
+            TextMedium(
               text: "Security",
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ],
         ),
@@ -60,7 +59,7 @@ class _AppSecurityState extends State<AppSecurity> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              color: const Color(0xFFF2F2F2),
+              color: Theme.of(context).colorScheme.surface,
               child: Padding(
                 padding: const EdgeInsets.all(1.0),
                 child: Column(
@@ -87,15 +86,21 @@ class _AppSecurityState extends State<AppSecurity> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(4.0),
-                                child:
-                                    SvgPicture.asset("assets/images/twofa.svg"),
+                                child: SvgPicture.asset(
+                                  "assets/images/twofa.svg",
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                ),
                               ),
                               const SizedBox(width: 8.0),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  TextSmall(text: "Two Factor Authentication"),
+                                  TextSmall(
+                                    text: "Two Factor Authentication",
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
+                                  ),
                                   TextBody1(
                                     text: "Not enabled",
                                     color: Colors.red,
@@ -104,9 +109,10 @@ class _AppSecurityState extends State<AppSecurity> {
                               ),
                             ],
                           ),
-                          const Icon(
+                          Icon(
                             Icons.chevron_right,
                             size: 21,
+                            color: Theme.of(context).colorScheme.tertiary,
                           ),
                         ],
                       ),
@@ -126,14 +132,20 @@ class _AppSecurityState extends State<AppSecurity> {
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Padding(
-                                padding: EdgeInsets.all(4.0),
-                                child: Icon(Icons.lock_outline_rounded),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Icon(
+                                  Icons.lock_outline_rounded,
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                ),
                               ),
                               const SizedBox(width: 8.0),
-                              TextSmall(text: "App Lock"),
+                              TextSmall(
+                                text: "App Lock",
+                                color: Theme.of(context).colorScheme.tertiary,
+                              ),
                             ],
                           ),
                           CupertinoSwitch(
@@ -166,10 +178,15 @@ class _AppSecurityState extends State<AppSecurity> {
                               Padding(
                                 padding: const EdgeInsets.all(4.0),
                                 child: SvgPicture.asset(
-                                    "assets/images/open_touch_id.svg"),
+                                  "assets/images/biometric.svg",
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                ),
                               ),
                               const SizedBox(width: 8.0),
-                              TextSmall(text: "Open app with touch ID"),
+                              TextSmall(
+                                text: "Enable Biometric",
+                                color: Theme.of(context).colorScheme.tertiary,
+                              ),
                             ],
                           ),
                           CupertinoSwitch(
@@ -207,15 +224,21 @@ class _AppSecurityState extends State<AppSecurity> {
                               Padding(
                                 padding: const EdgeInsets.all(4.0),
                                 child: SvgPicture.asset(
-                                    "assets/images/biometric.svg"),
+                                  "assets/images/open_touch_id.svg",
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                ),
                               ),
                               const SizedBox(width: 8.0),
-                              TextSmall(text: "Change Password"),
+                              TextSmall(
+                                text: "Change Password",
+                                color: Theme.of(context).colorScheme.tertiary,
+                              ),
                             ],
                           ),
-                          const Icon(
+                          Icon(
                             Icons.chevron_right,
                             size: 21,
+                            color: Theme.of(context).colorScheme.tertiary,
                           ),
                         ],
                       ),

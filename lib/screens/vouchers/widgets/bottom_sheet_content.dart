@@ -2,6 +2,7 @@ import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/dividers/dotted_divider.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/data/temp_accounts.dart';
+import 'package:afrikunet/forms/bank/add_bank.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/screens/auth/otp/verifyotp.dart';
@@ -94,16 +95,30 @@ class _VoucherBottomSheetState extends State<VoucherBottomSheet> {
                   children: [
                     TextButton(
                       onPressed: () {
+                        // final RenderBox renderBox =
+                        //     key.currentContext.findRenderObject();
+                        // final componentPosition =
+                        //     renderBox.localToGlobal(Offset.zero);
+
+                        double sheetHeight =
+                            MediaQuery.of(context).size.height * 0.75;
+
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
                           builder: (context) {
-                            return Container(
-                              height: 900,
+                            return SizedBox(
+                              height: sheetHeight,
                               width: double.infinity,
-                              color: Colors.red,
+                              child: const AddBankForm(),
                             );
                           },
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(24),
+                              topRight: Radius.circular(24),
+                            ),
+                          ),
                         );
                       },
                       child: const Text('Add Bank +'),
