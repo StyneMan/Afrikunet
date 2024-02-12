@@ -1,5 +1,5 @@
 import 'package:afrikunet/components/text/textComponents.dart';
-import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,7 +8,9 @@ import 'widgets/airtime-tab.dart';
 import 'widgets/data-tab.dart';
 
 class Airtime extends StatefulWidget {
-  const Airtime({Key? key}) : super(key: key);
+  const Airtime({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<Airtime> createState() => _AirtimeState();
@@ -16,9 +18,11 @@ class Airtime extends StatefulWidget {
 
 class _AirtimeState extends State<Airtime> with SingleTickerProviderStateMixin {
   late TabController tabController;
+  PreferenceManager? _manager;
 
   @override
   void initState() {
+    _manager = PreferenceManager(context);
     tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
@@ -61,7 +65,9 @@ class _AirtimeState extends State<Airtime> with SingleTickerProviderStateMixin {
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.all(16.0),
-          child: const AirtimeTab(),
+          child: AirtimeTab(
+            manager: _manager!,
+          ),
         ),
       ),
     );

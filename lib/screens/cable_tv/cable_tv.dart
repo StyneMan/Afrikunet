@@ -1,6 +1,7 @@
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/data/bills.dart';
 import 'package:afrikunet/forms/bills/cabletv_form.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:flutter/material.dart';
 
 class CableTV extends StatefulWidget {
@@ -15,9 +16,12 @@ class CableTV extends StatefulWidget {
 }
 
 class _CableTVState extends State<CableTV> {
+  PreferenceManager? _manager;
+
   @override
   void initState() {
     super.initState();
+    _manager = PreferenceManager(context);
   }
 
   @override
@@ -57,6 +61,7 @@ class _CableTVState extends State<CableTV> {
               const SizedBox(height: 24.0),
               Expanded(
                 child: CableTvForm(
+                  manager: _manager!,
                   network: widget.bill.networks![0],
                 ),
               ),

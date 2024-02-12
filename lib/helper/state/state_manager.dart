@@ -31,24 +31,12 @@ class StateController extends GetxController {
   var croppedPic = "".obs;
   var customSearchBar = [].obs;
   var usersVoucherSplit = [].obs;
+  var userHistory = [].obs;
+  var banks = [].obs;
   var selectedContact = {}.obs;
   var productsData = "".obs;
 
   var userData = {}.obs;
-
-  // ****** PROFILE SETUP STEP ONE *******
-  var firstname = "".obs;
-  var middlename = "".obs;
-  var lastname = "".obs;
-  var email = "".obs;
-  var phone = "".obs;
-  var address = "".obs;
-  var gender = "".obs;
-  var state = "".obs;
-  var maritalStatus = "".obs;
-  var dob = "".obs;
-  var city = "".obs;
-  var country = "".obs;
 
   RxString currentThemeMode = "light".obs;
 
@@ -87,6 +75,7 @@ class StateController extends GetxController {
     final _prefs = await SharedPreferences.getInstance();
     var user = _prefs.getString("user") ?? "{}";
     var _token = _prefs.getString("accessToken") ?? "";
+    print("ACCCESS TOKENN ::: $_token");
     Map<String, dynamic> map = jsonDecode(user);
     // debugDebugPrintdebugPrint("US EMIA >> ${map['email']}");
 
@@ -94,13 +83,26 @@ class StateController extends GetxController {
 
     if (_token.isNotEmpty) {
       //Get User Profile
-      APIService().getProfile(_token, map['email']).then((value) {
+      APIService().getProfile(_token).then((value) {
         // debugDebugPrintdebugPrint("STATE GET PROFILE >>> ${value.body}");
         Map<String, dynamic> data = jsonDecode(value.body);
-        userData.value = data['data'];
-        _prefs.setString("user", jsonEncode(data['data']));
+        print("USER PROFILE  ::: ${data['user']}");
+        userData.value = data['user'];
+        _prefs.setString("user", jsonEncode(data['user']));
 
         //Update preference here
+      }).catchError((onError) {
+        debugPrint("STATE GET PROFILE ERROR >>> $onError");
+        if (onError.toString().contains("rk is unreachable")) {
+          hasInternetAccess.value = false;
+        }
+      });
+
+      //Get User Profile
+      APIService().getHistory(_token).then((value) {
+        Map<String, dynamic> data = jsonDecode(value.body);
+        print("HISTORY  ::: ${data['data']}");
+        userHistory.value = data['data'];
       }).catchError((onError) {
         debugPrint("STATE GET PROFILE ERROR >>> $onError");
         if (onError.toString().contains("rk is unreachable")) {
@@ -158,19 +160,7 @@ class StateController extends GetxController {
     }
   }
 
-  clearTempProfile() {
-    dob.value = "";
-    address.value = "";
-    gender.value = "";
-    phone.value = "";
-    email.value = "";
-    firstname.value = "";
-    middlename.value = "";
-    lastname.value = "";
-    city.value = "";
-    state.value = "";
-    country.value = "";
-  }
+  clearTempProfile() {}
 
   void setAccessToken(String token) {
     accessToken.value = token;

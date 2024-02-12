@@ -1,17 +1,13 @@
-import 'dart:convert';
-
 import 'package:afrikunet/components/buttons/google.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/forms/login/loginform.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:afrikunet/components/dashboard/dashboard.dart';
 import 'package:afrikunet/components/dividers/horz_text_divider.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
-import 'package:afrikunet/helper/service/api_service.dart';
 
 import '../../../helper/state/state_manager.dart';
 
@@ -39,18 +35,45 @@ class _LoginState extends State<Login> {
     try {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await GoogleSignIn(
-        scopes: [
-          'email',
-          // 'https://www.googleapis.com/auth/contacts.readonly',
-        ],
+        scopes: ['email'],
       ).signIn();
 
-      // debugPrint("GOOGLE USER RESP >> ${googleUser}");
+      debugPrint("GOOGLE USER RESP >> ${googleUser}");
+      debugPrint("GOOGLE USER RESP >> ${googleUser?.displayName}");
+      debugPrint("GOOGLE USER RESP >> ${googleUser?.email}");
+
+      if (googleUser != null) {
+        final auth = await googleUser.authentication;
+        String? idToken = auth.idToken;
+        if (idToken != null) {
+          // call the server with ID token
+        }
+        // final _redirectResponse = await APIService().googleAuthRedirect(
+        //   authHeaders: authHeaders,
+        // );
+
+        // debugPrint("REDIRECT RESPONSE ::: ${_redirectResponse.body}");
+        // final response = await http.get(
+        //   Uri.parse('http://your-nestjs-backend/auth/google/callback'),
+        //   headers: authHeaders,
+        // );
+      } else {
+        // Operation failed right here
+      }
 
       // Obtain the auth details from the request
-      final googleAuth = await googleUser?.authentication;
-      debugPrint("Google ID TOKEN >> ${googleAuth?.idToken}");
-      // final resp = await APIService().googleAuth("${googleAuth?.idToken}");
+      // final googleAuth = await googleUser?.authentication;
+      // debugPrint("Google ID TOKEN >> ${googleAuth?.idToken}");
+      // debugPrint("Google ID TOKEN >> ${googleAuth?.}");
+
+      // Map _payload = {
+      //   "first_name": googleUser?.displayName?.split(' ')[0].toLowerCase(),
+      //   "last_name": googleUser?.displayName?.split(' ')[1].toLowerCase(),
+      //   "email_address": googleUser?.email,
+      //   "photo": '${googleUser?.photoUrl}',
+      // };
+
+      // final resp = await APIService().googleAuth(_payload);
 
       // debugPrint("Google Server Respone >> ${resp.body}");
     } catch (e) {
@@ -79,9 +102,10 @@ class _LoginState extends State<Login> {
               child: ListView(
                 padding: const EdgeInsets.all(10.0),
                 children: [
-                  TextLarge(
+                  TextHeading(
                     text: "Login",
                     align: TextAlign.center,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   const SizedBox(
                     height: 32.0,
@@ -91,7 +115,7 @@ class _LoginState extends State<Login> {
                     onPressed: () {
                       _signInWithGoogle();
                     },
-                    foreColor: Colors.black87,
+                    foreColor: Theme.of(context).colorScheme.tertiary,
                   ),
                   const SizedBox(
                     height: 10.0,
@@ -101,7 +125,7 @@ class _LoginState extends State<Login> {
                         EdgeInsets.symmetric(horizontal: 32.0, vertical: 2.0),
                     child: HorzTextDivider(text: 'or'),
                   ),
-                  LoginForm(),
+                  LoginForm(manager: _manager!),
                 ],
               ),
             ),

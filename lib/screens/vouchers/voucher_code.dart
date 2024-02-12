@@ -3,7 +3,7 @@ import 'package:afrikunet/components/dialog/info_dialog.dart';
 import 'package:afrikunet/components/dividers/dotted_divider.dart';
 import 'package:afrikunet/components/inputfield/textfield.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
-import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,7 +14,11 @@ import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'widgets/bottom_sheet_content.dart';
 
 class VoucherCode extends StatefulWidget {
-  const VoucherCode({Key? key}) : super(key: key);
+  final PreferenceManager manager;
+  const VoucherCode({
+    Key? key,
+    required this.manager,
+  }) : super(key: key);
 
   @override
   State<VoucherCode> createState() => _VoucherCodeState();
@@ -41,7 +45,9 @@ class _VoucherCodeState extends State<VoucherCode> {
           _controller.setLoading(false);
           if (_inputController.text == validCode) {
             Get.bottomSheet(
-              const VoucherBottomSheet(),
+              VoucherBottomSheet(
+                manager: widget.manager,
+              ),
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(24),

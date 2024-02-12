@@ -173,7 +173,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.initState();
     _manager = PreferenceManager(context);
     _init();
-    _connectSocket();
+    // _connectSocket();
   }
 
   // This widget is the root of your application.
@@ -216,7 +216,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               home: _controller.hasInternetAccess.value
                   ? !_authenticated
                       ? const Onboarding()
-                      : Dashboard()
+                      : Dashboard(
+                          manager: _manager!,
+                        )
                   : const NoInternet(),
             ),
           );

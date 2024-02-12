@@ -3,16 +3,18 @@ import 'package:afrikunet/data/bills.dart';
 import 'package:afrikunet/forms/bills/cabletv_form.dart';
 import 'package:afrikunet/forms/bills/electricity_form.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class BillItem extends StatefulWidget {
   final String title;
   final Bills bill;
+  final PreferenceManager manager;
   const BillItem({
     Key? key,
     required this.title,
     required this.bill,
+    required this.manager,
   }) : super(key: key);
 
   @override
@@ -104,17 +106,21 @@ class _BillItemState extends State<BillItem>
                       ? [
                           ElectricityForm(
                             networks: widget.bill.networks!,
+                            manager: widget.manager,
                           ),
                           ElectricityForm(
                             networks: widget.bill.networks!,
+                            manager: widget.manager,
                           ),
                         ]
                       : [
                           CableTvForm(
                             network: widget.bill.networks![0],
+                            manager: widget.manager,
                           ),
                           CableTvForm(
                             network: widget.bill.networks![1],
+                            manager: widget.manager,
                           ),
                         ],
                 ),

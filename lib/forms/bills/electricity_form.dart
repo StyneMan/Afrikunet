@@ -7,6 +7,7 @@ import 'package:afrikunet/components/inputfield/textfield.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/data/bills.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/screens/bills/pay.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,9 +16,11 @@ import 'package:get/get.dart';
 
 class ElectricityForm extends StatefulWidget {
   final List<BillNetwork> networks;
+  final PreferenceManager manager;
   const ElectricityForm({
     Key? key,
     required this.networks,
+    required this.manager,
   }) : super(key: key);
 
   @override
@@ -378,8 +381,9 @@ class _ElectricityFormState extends State<ElectricityForm> {
                     bgColor: Theme.of(context).colorScheme.primaryContainer,
                     onPressed: () {
                       Get.to(
-                        const PayNow(
+                        PayNow(
                           title: 'Electricity Bill',
+                          manager: widget.manager,
                         ),
                         transition: Transition.cupertino,
                       );

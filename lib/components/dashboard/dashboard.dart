@@ -1,13 +1,13 @@
 import 'dart:io';
 
 // import 'package:shared_preferences/shared_preferences.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/screens/home/home.dart';
 import 'package:afrikunet/screens/profile/profile.dart';
 import 'package:afrikunet/screens/settings/settings.dart';
 import 'package:afrikunet/screens/vouchers/my_vouchers.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -16,7 +16,12 @@ import 'package:afrikunet/screens/network/no_internet.dart';
 
 class Dashboard extends StatefulWidget {
   final bool showProfile;
-  Dashboard({Key? key, this.showProfile = false}) : super(key: key);
+  final PreferenceManager manager;
+  Dashboard({
+    Key? key,
+    this.showProfile = false,
+    required this.manager,
+  }) : super(key: key);
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -112,23 +117,23 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       BottomNavigationBarItem(
                         icon: SvgPicture.asset(
-                          "assets/images/profile_icon.svg",
-                          color: Theme.of(context).colorScheme.inversePrimary,
-                        ),
-                        label: 'Profile',
-                        activeIcon: SvgPicture.asset(
-                          "assets/images/profile_icon.svg",
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                      ),
-                      BottomNavigationBarItem(
-                        icon: SvgPicture.asset(
                           "assets/images/settings_icon.svg",
                           color: Theme.of(context).colorScheme.inversePrimary,
                         ),
                         label: 'Settings',
                         activeIcon: SvgPicture.asset(
                           "assets/images/settings_icon.svg",
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                      BottomNavigationBarItem(
+                        icon: SvgPicture.asset(
+                          "assets/images/profile_icon.svg",
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                        ),
+                        label: 'Profile',
+                        activeIcon: SvgPicture.asset(
+                          "assets/images/profile_icon.svg",
                           color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
@@ -142,10 +147,10 @@ class _DashboardState extends State<Dashboard> {
 
   List<Widget> _buildScreens() {
     return [
-      HomePage(),
+      HomePage(manager: widget.manager),
       const MyVouchersPage(),
-      const ProfilePage(),
-      SettingsPage(),
+      SettingsPage(manager: widget.manager),
+      ProfilePage(manager: widget.manager),
     ];
   }
 }

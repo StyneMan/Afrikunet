@@ -1,12 +1,17 @@
 import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'preferred_method.dart';
 
 class TwoFactorAuthScreen extends StatelessWidget {
-  const TwoFactorAuthScreen({Key? key}) : super(key: key);
+  final PreferenceManager manager;
+  const TwoFactorAuthScreen({
+    Key? key,
+    required this.manager,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +64,9 @@ class TwoFactorAuthScreen extends StatelessWidget {
                     bgColor: Theme.of(context).colorScheme.primaryContainer,
                     onPressed: () {
                       Get.to(
-                        const PreferredMethod(),
+                        PreferredMethod(
+                          manager: manager,
+                        ),
                         transition: Transition.cupertino,
                       );
                     },

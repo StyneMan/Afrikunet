@@ -1,6 +1,7 @@
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/data/bills.dart';
 import 'package:afrikunet/forms/bills/electricity_form.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:flutter/material.dart';
 
 class Electricity extends StatefulWidget {
@@ -15,9 +16,11 @@ class Electricity extends StatefulWidget {
 }
 
 class _ElectricityState extends State<Electricity> {
+  PreferenceManager? _manager;
   @override
   void initState() {
     super.initState();
+    _manager = PreferenceManager(context);
   }
 
   @override
@@ -57,6 +60,7 @@ class _ElectricityState extends State<Electricity> {
               const SizedBox(height: 24.0),
               Expanded(
                 child: ElectricityForm(
+                  manager: _manager!,
                   networks: widget.bill.networks!,
                 ),
               ),

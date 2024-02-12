@@ -6,6 +6,7 @@ import 'package:afrikunet/helper/card/card_utils.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/helper/formatters/card_date_formatter.dart';
 import 'package:afrikunet/helper/formatters/card_number_formatter.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/screens/success_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,7 +28,11 @@ enum CardType {
 }
 
 class PaymentOptions extends StatefulWidget {
-  const PaymentOptions({Key? key}) : super(key: key);
+  final PreferenceManager manager;
+  const PaymentOptions({
+    Key? key,
+    required this.manager,
+  }) : super(key: key);
 
   @override
   State<PaymentOptions> createState() => _PaymentOptionsState();
@@ -439,7 +444,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                           _controller.isLoading.value = false;
 
                           Get.to(
-                            const SuccessPage(),
+                            SuccessPage(manager: widget.manager),
                             transition: Transition.cupertino,
                           );
                         });

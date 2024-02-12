@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/dashboard/dashboard.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
+import 'package:afrikunet/screens/auth/otp/verifyotp.dart';
 import 'package:afrikunet/screens/auth/register/register.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,9 +19,10 @@ import '../../helper/constants/constants.dart';
 import '../../screens/auth/forgotPass/forgotPass.dart';
 
 class LoginForm extends StatefulWidget {
-  // final PreferenceManager manager;
-  LoginForm({
+  final PreferenceManager manager;
+  const LoginForm({
     Key? key,
+    required this.manager,
   }) : super(key: key);
 
   @override
@@ -39,21 +45,50 @@ class _LoginFormState extends State<LoginForm> {
   _login() async {
     FocusManager.instance.primaryFocus?.unfocus();
     _controller.setLoading(true);
-    // Map _payload = {
-    //   "email": _emailController.text,
-    //   "password": _passwordController.text,
-    // };
+    Map _payload = {
+      "email_address": _emailController.text,
+      "password": _passwordController.text,
+    };
+
     try {
       final _prefs = await SharedPreferences.getInstance();
+      final _response = await APIService().login(_payload);
+      _controller.setLoading(false);
+      debugPrint("LOGIN RESPONSE :: ${_response.body}");
+      if (_response.statusCode >= 200 && _response.statusCode <= 299) {
+        // Successful
+        Map<String, dynamic> _mapper = jsonDecode(_response.body);
+        //Save user data and preferences
+        String userData = jsonEncode(_mapper['user']);
+        _prefs.setString("userData", userData);
+        _controller.setUserData(_mapper['user']);
+        widget.manager.setUserData(userData);
 
-      Future.delayed(const Duration(seconds: 3), () {
-        _controller.setLoading(false);
-        _prefs.setBool("loggedIn", true);
-        Get.to(
-          Dashboard(),
-          transition: Transition.cupertino,
-        );
-      });
+        if (_mapper['user']['is_email_verified'] == false) {
+          Get.to(
+            VerifyOTP(
+              email: _emailController.text,
+              caller: "signup",
+              manager: widget.manager,
+            ),
+            transition: Transition.cupertino,
+          );
+        } else {
+          // Save accesstoken
+          _prefs.setString("accessToken", _mapper['accessToken']);
+
+          Constants.toast("${_mapper['message']}");
+          _prefs.setBool("loggedIn", true);
+          _controller.onInit();
+          Get.to(
+            Dashboard(manager: widget.manager),
+            transition: Transition.cupertino,
+          );
+        }
+      } else {
+        Map<String, dynamic> _errorMapper = jsonDecode(_response.body);
+        Constants.toast("${_errorMapper['message']}");
+      }
     } catch (e) {
       _controller.setLoading(false);
       // print(e.message);
@@ -76,7 +111,10 @@ class _LoginFormState extends State<LoginForm> {
               const SizedBox(
                 height: 16.0,
               ),
-              TextBody1(text: "Email"),
+              TextBody1(
+                text: "Email",
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
               const SizedBox(
                 height: 4.0,
               ),
@@ -99,7 +137,10 @@ class _LoginFormState extends State<LoginForm> {
               const SizedBox(
                 height: 16.0,
               ),
-              TextBody1(text: "Password"),
+              TextBody1(
+                text: "Password",
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
               const SizedBox(
                 height: 4.0,
               ),
@@ -111,12 +152,7 @@ class _LoginFormState extends State<LoginForm> {
                   if (value.toString().length < 8) {
                     return "Password must be at least 8 characters!";
                   }
-                  if (!_isNumberOk ||
-                      !_isCapitalOk ||
-                      !_isLowercaseOk ||
-                      !_isSpecialCharOk) {
-                    return 'Password is too weak!';
-                  }
+
                   return null;
                 },
                 controller: _passwordController,
@@ -198,6 +234,7 @@ class _LoginFormState extends State<LoginForm> {
                 child: PrimaryButton(
                   buttonText: "Login",
                   foreColor: Colors.white,
+                  bgColor: Theme.of(context).colorScheme.primaryContainer,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _login();
@@ -214,7 +251,7 @@ class _LoginFormState extends State<LoginForm> {
                 children: [
                   TextSmall(
                     text: "New Here?",
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   TextButton(
                     onPressed: () {

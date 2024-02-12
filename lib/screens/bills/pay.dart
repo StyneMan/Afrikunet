@@ -2,18 +2,20 @@ import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/dividers/dotted_divider.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/screens/payment/payment_method_full.dart';
 import 'package:afrikunet/screens/success_screen.dart';
-import 'package:afrikunet/screens/payment/payment_method.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PayNow extends StatelessWidget {
   final String title;
+  final PreferenceManager manager;
   const PayNow({
     Key? key,
     required this.title,
+    required this.manager,
   }) : super(key: key);
 
   @override
@@ -117,8 +119,9 @@ class PayNow extends StatelessWidget {
                                         onPressed: () {
                                           Get.back();
                                           Get.to(
-                                            const SuccessPage(
+                                            SuccessPage(
                                               isVoucher: true,
+                                              manager: manager,
                                             ),
                                             transition: Transition.cupertino,
                                           );

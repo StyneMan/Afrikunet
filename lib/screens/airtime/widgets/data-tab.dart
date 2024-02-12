@@ -3,7 +3,7 @@ import 'package:afrikunet/components/dividers/dotted_divider.dart';
 import 'package:afrikunet/components/inputfield/textfield.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/data/networks.dart';
-import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/screens/success_screen.dart';
 import 'package:afrikunet/screens/payment/payment_method.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -12,7 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class DataTab extends StatefulWidget {
-  const DataTab({Key? key}) : super(key: key);
+  final PreferenceManager manager;
+  const DataTab({
+    Key? key,
+    required this.manager,
+  }) : super(key: key);
 
   @override
   State<DataTab> createState() => _DataTabState();
@@ -199,8 +203,9 @@ class _DataTabState extends State<DataTab> {
                                     onPressed: () {
                                       Get.back();
                                       Get.to(
-                                        const SuccessPage(
+                                        SuccessPage(
                                           isVoucher: false,
+                                          manager: widget.manager,
                                         ),
                                         transition: Transition.cupertino,
                                       );

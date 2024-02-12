@@ -73,7 +73,9 @@ class _OnboardingState extends State<Onboarding> {
                                   : 12.0,
                           height: 10.0,
                           margin: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 4.0),
+                            vertical: 8.0,
+                            horizontal: 4.0,
+                          ),
                           decoration: BoxDecoration(
                             color:
                                 (Theme.of(context).brightness == Brightness.dark

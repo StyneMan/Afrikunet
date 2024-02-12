@@ -6,14 +6,13 @@ import "package:intl/intl.dart";
 import 'package:money_formatter/money_formatter.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
-// import 'package:logger/logger.dart';
 
 class Constants {
   static const Color primaryColor = Color(0xFF015AB1);
   static const Color accentColor = Color(0xFF6ABB02);
   static const Color secondaryColor = Color(0xFF06396A);
 
-  static const Color primaryColor2 =Color(0xFF111111);
+  static const Color primaryColor2 = Color(0xFF111111);
   static const Color accentColor2 = Color(0xFF6ABB02);
   static const Color secondaryColor2 = Color(0xFF000000);
 
@@ -26,12 +25,9 @@ class Constants {
   static const Color shimmerBaseColor = Color.fromARGB(255, 203, 203, 203);
   static const Color shimmerHighlightColor = Colors.white;
 
-  static const baseURL = "https://my-prohelp-server.vercel.app";
-  //   "http://192.168.1.26:8082";
-
-  //  "https://pro-help-api.vercel.app"; //"http://192.168.1.103:8080";
+  static const baseURL =
+    "http://192.168.165.247:3000/bkapi"; //  "https://afrikunet-api-orcin.vercel.app/bkapi"; // 
   static String pstk = "pk_test_40f544aec0415695c9fae0ba0819ee5bebcb6a5e";
-  // "pk_test_40f544aec0415695c9fae0ba0819ee5bebcb6a5e"; //"pk_test_043683268da92cd71e0d30f9d72396396f2dfb1f";
 
   static String formatMoney(int amt) {
     MoneyFormatter fmf = MoneyFormatter(

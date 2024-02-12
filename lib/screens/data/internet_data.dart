@@ -1,11 +1,14 @@
 import 'package:afrikunet/components/text/textComponents.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/screens/airtime/widgets/data-tab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class InternetData extends StatefulWidget {
-  const InternetData({Key? key}) : super(key: key);
+  const InternetData({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<InternetData> createState() => _InternetDataState();
@@ -14,9 +17,11 @@ class InternetData extends StatefulWidget {
 class _InternetDataState extends State<InternetData>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
+  PreferenceManager? _manager;
 
   @override
   void initState() {
+    _manager = PreferenceManager(context);
     tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
@@ -59,7 +64,9 @@ class _InternetDataState extends State<InternetData>
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.all(16.0),
-          child: const DataTab(),
+          child: DataTab(
+            manager: _manager!,
+          ),
         ),
       ),
     );

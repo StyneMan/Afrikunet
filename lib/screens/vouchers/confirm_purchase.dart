@@ -2,6 +2,7 @@ import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/cards/giftcard_item.dart';
 import 'package:afrikunet/components/inputfield/textfield.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/screens/payment/payment_options.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +11,11 @@ import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 class ConfirmPurchase extends StatefulWidget {
-  const ConfirmPurchase({Key? key}) : super(key: key);
+  final PreferenceManager manager;
+  const ConfirmPurchase({
+    Key? key,
+    required this.manager,
+  }) : super(key: key);
 
   @override
   State<ConfirmPurchase> createState() => _ConfirmPurchaseState();
@@ -152,7 +157,9 @@ class _ConfirmPurchaseState extends State<ConfirmPurchase> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       Get.to(
-                        const PaymentOptions(),
+                        PaymentOptions(
+                          manager: widget.manager,
+                        ),
                         transition: Transition.cupertino,
                       );
                       // _showOTPDialog();

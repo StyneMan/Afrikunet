@@ -21,7 +21,7 @@ class HorzTextDivider extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: TextBody2(
               text: text,
-              color: Colors.black54,
+              color: Theme.of(context).colorScheme.tertiary,
               fontWeight: FontWeight.w400,
             ),
           ),

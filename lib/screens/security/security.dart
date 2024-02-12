@@ -1,5 +1,6 @@
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/screens/security/2fa_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,11 @@ import 'package:get/get.dart';
 import 'change_password.dart';
 
 class AppSecurity extends StatefulWidget {
-  const AppSecurity({Key? key}) : super(key: key);
+  final PreferenceManager manager;
+  const AppSecurity({
+    Key? key,
+    required this.manager,
+  }) : super(key: key);
 
   @override
   State<AppSecurity> createState() => _AppSecurityState();
@@ -72,7 +77,9 @@ class _AppSecurityState extends State<AppSecurity> {
                     TextButton(
                       onPressed: () {
                         Get.to(
-                          const TwoFactorAuthScreen(),
+                          TwoFactorAuthScreen(
+                            manager: widget.manager,
+                          ),
                           transition: Transition.cupertino,
                         );
                       },

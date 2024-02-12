@@ -1,7 +1,6 @@
 import 'package:afrikunet/components/text/textComponents.dart';
-import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
-import 'package:afrikunet/helper/state/theme_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,7 +8,11 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
-  SettingsPage({Key? key}) : super(key: key);
+  final PreferenceManager manager;
+  const SettingsPage({
+    Key? key,
+    required this.manager,
+  }) : super(key: key);
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();

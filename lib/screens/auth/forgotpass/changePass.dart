@@ -7,8 +7,10 @@ import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import '../../../helper/state/state_manager.dart';
 
 class ChangePassword extends StatefulWidget {
+  final String emailAddress;
   const ChangePassword({
     Key? key,
+    required this.emailAddress,
   }) : super(key: key);
 
   @override
@@ -51,6 +53,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   TextLarge(
                     text: "Change Password",
                     align: TextAlign.center,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   const SizedBox(
                     height: 16.0,
@@ -58,7 +61,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.15,
                   ),
-                  ChangePasswordForm(),
+                  ChangePasswordForm(
+                    emailAddress: widget.emailAddress,
+                  ),
                 ],
               ),
             ),

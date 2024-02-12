@@ -2,17 +2,20 @@ import 'package:afrikunet/components/buttons/action.dart';
 import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/inputfield/rounded_money_input.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
-import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'confirm_purchase.dart';
-import '../payment/payment_method.dart';
 import 'widgets/voucher_type.dart';
 
 class BuyVoucher extends StatefulWidget {
-  const BuyVoucher({Key? key}) : super(key: key);
+  final PreferenceManager manager;
+  const BuyVoucher({
+    Key? key,
+    required this.manager,
+  }) : super(key: key);
 
   @override
   State<BuyVoucher> createState() => _BuyVoucherState();
@@ -76,7 +79,9 @@ class _BuyVoucherState extends State<BuyVoucher> {
               bgColor: Theme.of(context).colorScheme.primaryContainer,
               onPressed: () {
                 Get.to(
-                  const ConfirmPurchase(),
+                  ConfirmPurchase(
+                    manager: widget.manager,
+                  ),
                   transition: Transition.cupertino,
                 );
               },

@@ -1,4 +1,5 @@
 import 'package:afrikunet/data/bills.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/screens/airtime/airtime.dart';
 import 'package:afrikunet/screens/bank/add_bank.dart';
 import 'package:afrikunet/screens/cable_tv/cable_tv.dart';
@@ -30,7 +31,7 @@ List<HomeAction> homeActions = [
   HomeAction(
     icon: "action_simcard.svg",
     title: "Airtime",
-    widget: const Airtime(),
+    widget: Airtime(),
   ),
   HomeAction(
     icon: "action_simcard.svg",
@@ -56,7 +57,7 @@ List<HomeAction> homeActions = [
   ),
   HomeAction(
     icon: "action_bank.svg",
-    title: "Bank",
+    title: "Payment",
     widget: AddBank(),
   ),
   HomeAction(

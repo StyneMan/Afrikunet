@@ -80,15 +80,17 @@ class _RegisterState extends State<Register> {
               ),
               child: ListView(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6.0),
                 children: [
-                  TextLarge(
+                  TextHeading(
                     text: "Create Account",
                     align: TextAlign.center,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   TextBody1(
                     text: "Exchange Made Easy",
                     align: TextAlign.center,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   const SizedBox(
                     height: 16.0,
@@ -98,16 +100,16 @@ class _RegisterState extends State<Register> {
                     onPressed: () {
                       _signInWithGoogle();
                     },
-                    foreColor: Colors.black87,
+                    foreColor: Theme.of(context).colorScheme.tertiary,
                   ),
                   const SizedBox(
-                    height: 10.0,
+                    height: 6.0,
                   ),
                   const HorzTextDivider(text: 'or sign up with email'),
                   const SizedBox(
-                    height: 4.0,
+                    height: 3.0,
                   ),
-                  SignupForm(),
+                  SignupForm(manager: _manager!),
                 ],
               ),
             ),

@@ -71,10 +71,10 @@ class _PasswordFieldState extends State<PasswordField> {
         ),
         filled: false,
         focusColor: Constants.strokeColor,
-        hintStyle: const TextStyle(
+        hintStyle: TextStyle(
           fontFamily: "OpenSans",
           fontWeight: FontWeight.w400,
-          color: Colors.black38,
+          color: Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
           fontSize: 12,
         ),
         isDense: true,

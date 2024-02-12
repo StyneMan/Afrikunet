@@ -4,7 +4,7 @@ import 'package:afrikunet/helper/constants/constants.dart';
 class InfoDialog extends StatelessWidget {
   final Widget body;
   // final String title;
-  InfoDialog({
+  const InfoDialog({
     required this.body,
     // required this.title,
   });
@@ -25,31 +25,14 @@ class InfoDialog extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Container(
-          // padding: const EdgeInsets.only(
-          //   left: Constants.padding,
-          //   top: Constants.padding,
-          //   right: Constants.padding,
-          //   bottom: Constants.padding,
-          // ),
-          // margin: const EdgeInsets.only(top: Constants.avatarRadius),
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(Constants.padding),
             boxShadow: null,
-            // const [
-            //   BoxShadow(
-            //       color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
-            // ],
           ),
           child: body,
         ),
-        // Positioned(
-        //   left: Constants.padding,
-        //   right: Constants.padding,
-        //   top: Constants.avatarRadius,
-        //   child: ripple,
-        // ),
       ],
     );
   }

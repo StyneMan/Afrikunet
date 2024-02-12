@@ -1,5 +1,6 @@
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/forms/forgotpassword/passwordform.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
@@ -18,12 +19,12 @@ class ForgotPassword extends StatefulWidget {
 class _ForgotPasswordState extends State<ForgotPassword> {
   final _controller = Get.find<StateController>();
 
-  // PreferenceManager? _manager;
+  PreferenceManager? _manager;
 
   @override
   void initState() {
     super.initState();
-    // _manager = PreferenceManager(context);
+    _manager = PreferenceManager(context);
   }
 
   @override
@@ -54,6 +55,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   TextLarge(
                     text: "Forgot password?",
                     align: TextAlign.center,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   const SizedBox(
                     height: 24.0,
@@ -62,12 +64,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     text:
                         "Enter email you used in signing up and we will help you reset your password",
                     align: TextAlign.center,
-                    color: Colors.black87,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.15,
                   ),
-                  const PasswordForm(),
+                  PasswordForm(
+                    manager: _manager!,
+                  ),
                 ],
               ),
             ),

@@ -4,6 +4,7 @@ import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/data/temp_accounts.dart';
 import 'package:afrikunet/forms/bank/add_bank.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/screens/auth/otp/verifyotp.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +13,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class VoucherBottomSheet extends StatefulWidget {
-  const VoucherBottomSheet({Key? key}) : super(key: key);
+  final PreferenceManager manager;
+  const VoucherBottomSheet({
+    Key? key,
+    required this.manager,
+  }) : super(key: key);
 
   @override
   State<VoucherBottomSheet> createState() => _VoucherBottomSheetState();
@@ -144,6 +149,7 @@ class _VoucherBottomSheetState extends State<VoucherBottomSheet> {
                     VerifyOTP(
                       caller: 'voucher',
                       email: 'wenprecious@gamail.com',
+                      manager: widget.manager,
                     ),
                     transition: Transition.cupertino,
                   );

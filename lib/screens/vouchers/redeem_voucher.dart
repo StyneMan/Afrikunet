@@ -1,7 +1,7 @@
 import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/buttons/secondary.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
-import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,7 +9,11 @@ import 'package:get/get.dart';
 import 'voucher_code.dart';
 
 class RedeemVoucher extends StatefulWidget {
-  const RedeemVoucher({Key? key}) : super(key: key);
+  final PreferenceManager manager;
+  const RedeemVoucher({
+    Key? key,
+    required this.manager,
+  }) : super(key: key);
 
   @override
   State<RedeemVoucher> createState() => _RedeemVoucherState();
@@ -85,7 +89,9 @@ class _RedeemVoucherState extends State<RedeemVoucher> {
                           foreColor: Theme.of(context).colorScheme.secondary,
                           onPressed: () {
                             Get.to(
-                              VoucherCode(),
+                              VoucherCode(
+                                manager: widget.manager,
+                              ),
                               transition: Transition.cupertino,
                             );
                           },

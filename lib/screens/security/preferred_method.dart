@@ -1,6 +1,6 @@
 import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
-import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,7 +9,11 @@ import 'barcode_screen.dart';
 import 'widgets/preferred_method_bottom_sheet.dart';
 
 class PreferredMethod extends StatefulWidget {
-  const PreferredMethod({Key? key}) : super(key: key);
+  final PreferenceManager manager;
+  const PreferredMethod({
+    Key? key,
+    required this.manager,
+  }) : super(key: key);
 
   @override
   State<PreferredMethod> createState() => _PreferredMethodState();
@@ -106,6 +110,7 @@ class _PreferredMethodState extends State<PreferredMethod> {
                 if (_isPhoneChecked) {
                   Get.bottomSheet(
                     PreferredMethodBottomSheet(
+                      manager: widget.manager,
                       caller: _isPhoneChecked ? "phone" : "auth-app",
                       title: _isPhoneChecked
                           ? "Enter your whatsapp number"

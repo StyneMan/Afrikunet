@@ -1,5 +1,6 @@
 import 'package:afrikunet/components/dividers/dotted_divider.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/screens/airtime/airtime.dart';
 import 'package:afrikunet/screens/bank/add_bank.dart';
 import 'package:afrikunet/screens/bills/billpay.dart';
@@ -9,14 +10,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/model/drawer/drawermodel.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomDrawer extends StatefulWidget {
+  final PreferenceManager manager;
   const CustomDrawer({
     Key? key,
+    required this.manager,
   }) : super(key: key);
 
   @override
@@ -35,13 +37,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
           icon: 'assets/images/profile_icon.svg',
           title: 'Profile',
           isAction: false,
-          widget: const ProfilePage(),
+          widget: ProfilePage(manager: widget.manager),
         ),
         DrawerModel(
           icon: 'assets/images/bill_pay.svg',
           title: 'Bill Pay',
           isAction: false,
-          widget: const BillPay(),
+          widget: BillPay(manager: widget.manager),
         ),
         DrawerModel(
           icon: 'assets/images/airtime.svg',
@@ -100,6 +102,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    print("JKS KJKS KJS ${widget.manager.getUser()['photo']}");
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -113,7 +116,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           children: [
             Container(
               padding: const EdgeInsets.only(
-                top: 42,
+                top: 45,
                 left: 18,
                 right: 18,
                 bottom: 16,
@@ -124,8 +127,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const CircleAvatar(
-                    foregroundImage: AssetImage("assets/images/developer.jpg"),
+                  ClipOval(
+                    child: Image.network(
+                      "${widget.manager.getUser()['photo']}",
+                      errorBuilder: (context, url, error) => SvgPicture.asset(
+                        "assets/images/personal_icon.svg",
+                        fit: BoxFit.cover,
+                        width: 44,
+                        height: 44,
+                      ),
+                      fit: BoxFit.cover,
+                      width: 48,
+                      height: 48,
+                    ),
                   ),
                   const SizedBox(
                     width: 6.0,
@@ -135,13 +149,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextSmall(
-                        text: "Stanley Brown",
+                        text:
+                            "${widget.manager.getUser()['first_name']} ${widget.manager.getUser()['last_name']}"
+                                .capitalize,
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
                       ),
-                      const Text(
-                        "stanleynyekpeye@gmail.com",
-                        style: TextStyle(
+                      Text(
+                        "${widget.manager.getUser()['email_address']}",
+                        style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           color: Colors.white,
@@ -199,7 +215,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 onTap: () async {
                                   if (i == 0) {
                                     Get.back();
-                                    _controller.selectedIndex.value = 2;
+                                    _controller.selectedIndex.value = 3;
                                   } else if (i == 1) {
                                     Get.back();
                                     Get.to(

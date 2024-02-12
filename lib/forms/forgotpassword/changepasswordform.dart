@@ -1,15 +1,20 @@
+import 'dart:convert';
+
 import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/inputfield/passwordfield.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/screens/auth/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ChangePasswordForm extends StatefulWidget {
-  ChangePasswordForm({
+  final String emailAddress;
+  const ChangePasswordForm({
     Key? key,
+    required this.emailAddress,
   }) : super(key: key);
 
   @override
@@ -18,11 +23,8 @@ class ChangePasswordForm extends StatefulWidget {
 
 class _ChangePasswordFormState extends State<ChangePasswordForm> {
   final _passwordController = TextEditingController();
-
   final _confirmPasswordController = TextEditingController();
-
   final _controller = Get.find<StateController>();
-
   final _formKey = GlobalKey<FormState>();
 
   bool _isNumberOk = false,
@@ -33,13 +35,31 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
   _resetPass() async {
     FocusManager.instance.primaryFocus?.unfocus();
     _controller.setLoading(true);
-    Future.delayed(const Duration(seconds: 3), () {
+    try {
+      Map _payload = {
+        "email_address": widget.emailAddress,
+        "new_password": _passwordController.text,
+        "confirm_password": _confirmPasswordController.text
+      };
+
+      final _response = await APIService().resetPass(_payload);
+      debugPrint("CHANGE PASSWORD RESPONSE :: ${_response.body}");
       _controller.setLoading(false);
-      Get.to(
-        const Login(),
-        transition: Transition.cupertino,
-      );
-    });
+
+      if (_response.statusCode >= 200 && _response.statusCode <= 299) {
+        Map<String, dynamic> _mapper = jsonDecode(_response.body);
+        Constants.toast("${_mapper['message']}");
+        Get.to(
+          const Login(),
+          transition: Transition.cupertino,
+        );
+      } else {
+        Map<String, dynamic> _errorMapper = jsonDecode(_response.body);
+        Constants.toast("${_errorMapper['message']}");
+      }
+    } catch (e) {
+      _controller.setLoading(false);
+    }
   }
 
   @override
@@ -52,7 +72,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
         children: [
           TextBody1(
             text: "New Password",
-            color: const Color(0xFF010101),
+            color: Theme.of(context).colorScheme.tertiary,
           ),
           const SizedBox(
             height: 4.0,
@@ -120,37 +140,37 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
             height: 10.0,
           ),
           RichText(
-            text: const TextSpan(
+            text: TextSpan(
               text: "Use at least one ",
               style: TextStyle(
-                color: Color(0xFF3B3B3B),
+                color: Theme.of(context).colorScheme.tertiary,
               ),
               children: [
-                TextSpan(
-                  text: "uppercase",
+                const TextSpan(
+                  text: "uppercase,",
                   style: TextStyle(
                     color: Constants.primaryColor,
                   ),
                 ),
                 TextSpan(
-                  text: ", one ",
+                  text: " one ",
                   style: TextStyle(
-                    color: Color(0xFF3B3B3B),
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                 ),
-                TextSpan(
-                  text: "lowercase",
+                const TextSpan(
+                  text: "lowercase,",
                   style: TextStyle(
                     color: Constants.primaryColor,
                   ),
                 ),
                 TextSpan(
-                  text: ", one ",
+                  text: " one ",
                   style: TextStyle(
-                    color: Color(0xFF3B3B3B),
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                 ),
-                TextSpan(
+                const TextSpan(
                   text: "numeric digit",
                   style: TextStyle(
                     color: Constants.primaryColor,
@@ -159,19 +179,13 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
                 TextSpan(
                   text: " and one ",
                   style: TextStyle(
-                    color: Color(0xFF3B3B3B),
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                 ),
-                TextSpan(
-                  text: "special character",
+                const TextSpan(
+                  text: "special character.",
                   style: TextStyle(
                     color: Constants.primaryColor,
-                  ),
-                ),
-                TextSpan(
-                  text: ". ",
-                  style: TextStyle(
-                    color: Color(0xFF3B3B3B),
                   ),
                 ),
               ],
@@ -180,7 +194,10 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
           const SizedBox(
             height: 24.0,
           ),
-          TextBody1(text: "Verify Password"),
+          TextBody1(
+            text: "Verify Password",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           const SizedBox(
             height: 4.0,
           ),

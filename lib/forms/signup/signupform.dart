@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
 import 'package:afrikunet/screens/auth/login/login.dart';
 import 'package:afrikunet/screens/auth/otp/verifyotp.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -8,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:afrikunet/components/inputfield/passwordfield.dart';
 import 'package:afrikunet/components/inputfield/textfield.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../helper/constants/constants.dart';
 import '../../helper/state/state_manager.dart';
@@ -16,10 +19,10 @@ import '../../helper/state/state_manager.dart';
 typedef InitCallback(bool params);
 
 class SignupForm extends StatefulWidget {
-  // final PreferenceManager manager;
+  final PreferenceManager manager;
   SignupForm({
     Key? key,
-    // required this.manager,
+    required this.manager,
   }) : super(key: key);
 
   @override
@@ -49,21 +52,34 @@ class _SignupFormState extends State<SignupForm> {
     _controller.setLoading(true);
 
     Map _payload = {
-      "email": _emailController.text,
+      "email_address": _emailController.text,
       "password": _passwordController.text,
+      "first_name": _nameController.text.split(' ')[0],
+      "last_name": _nameController.text.split(' ')[1] ?? "",
+      "international_phone_format": "$_countryCode ${_phoneController.text}"
     };
 
     try {
-      Future.delayed(const Duration(seconds: 3), () {
-        _controller.setLoading(false);
+      final _response = await APIService().signup(_payload);
+      _controller.setLoading(false);
+      debugPrint("SIGUP RESPONSE :: ${_response.body}");
+      if (_response.statusCode >= 200 && _response.statusCode <= 299) {
+        // Successful
+        Map<String, dynamic> _mapper = jsonDecode(_response.body);
+        Constants.toast("${_mapper['message']}");
+
         Get.to(
           VerifyOTP(
             email: _emailController.text,
             caller: "signup",
+            manager: widget.manager,
           ),
           transition: Transition.cupertino,
         );
-      });
+      } else {
+        Map<String, dynamic> _errorMapper = jsonDecode(_response.body);
+        Constants.toast("${_errorMapper['message']}");
+      }
     } catch (e) {
       debugPrint("ERROR: $e");
       _controller.setLoading(false);
@@ -81,6 +97,7 @@ class _SignupFormState extends State<SignupForm> {
           TextBody1(
             text: "Name",
             fontWeight: FontWeight.w400,
+            color: Theme.of(context).colorScheme.tertiary,
           ),
           const SizedBox(
             height: 4.0,
@@ -102,7 +119,10 @@ class _SignupFormState extends State<SignupForm> {
           const SizedBox(
             height: 16.0,
           ),
-          TextBody1(text: "Phone Number"),
+          TextBody1(
+            text: "Phone Number",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           const SizedBox(
             height: 4.0,
           ),
@@ -137,7 +157,10 @@ class _SignupFormState extends State<SignupForm> {
           const SizedBox(
             height: 16.0,
           ),
-          TextBody1(text: "Email"),
+          TextBody1(
+            text: "Email",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           const SizedBox(
             height: 4.0,
           ),
@@ -161,7 +184,10 @@ class _SignupFormState extends State<SignupForm> {
           const SizedBox(
             height: 16.0,
           ),
-          TextBody1(text: "Password"),
+          TextBody1(
+            text: "Password",
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           const SizedBox(
             height: 4.0,
           ),
@@ -228,13 +254,14 @@ class _SignupFormState extends State<SignupForm> {
             height: 6.0,
           ),
           RichText(
-            text: const TextSpan(
+            text: TextSpan(
               text: "Use at least one ",
               style: TextStyle(
-                color: Color(0xFF3B3B3B),
+                color: Theme.of(context).colorScheme.tertiary,
+                fontSize: 12,
               ),
               children: [
-                TextSpan(
+                const TextSpan(
                   text: "uppercase",
                   style: TextStyle(
                     color: Constants.primaryColor,
@@ -243,10 +270,10 @@ class _SignupFormState extends State<SignupForm> {
                 TextSpan(
                   text: ", one ",
                   style: TextStyle(
-                    color: Color(0xFF3B3B3B),
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                 ),
-                TextSpan(
+                const TextSpan(
                   text: "lowercase",
                   style: TextStyle(
                     color: Constants.primaryColor,
@@ -255,10 +282,10 @@ class _SignupFormState extends State<SignupForm> {
                 TextSpan(
                   text: ", one ",
                   style: TextStyle(
-                    color: Color(0xFF3B3B3B),
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                 ),
-                TextSpan(
+                const TextSpan(
                   text: "numeric digit",
                   style: TextStyle(
                     color: Constants.primaryColor,
@@ -267,10 +294,10 @@ class _SignupFormState extends State<SignupForm> {
                 TextSpan(
                   text: " and one ",
                   style: TextStyle(
-                    color: Color(0xFF3B3B3B),
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                 ),
-                TextSpan(
+                const TextSpan(
                   text: "special character",
                   style: TextStyle(
                     color: Constants.primaryColor,
@@ -279,31 +306,14 @@ class _SignupFormState extends State<SignupForm> {
                 TextSpan(
                   text: ". ",
                   style: TextStyle(
-                    color: Color(0xFF3B3B3B),
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                 ),
               ],
             ),
           ),
           const SizedBox(
-            height: 24.0,
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: PrimaryButton(
-              buttonText: 'Create',
-              foreColor: Colors.white,
-              onPressed: _isChecked
-                  ? () {
-                      if (_formKey.currentState!.validate()) {
-                        _register();
-                      }
-                    }
-                  : null,
-            ),
-          ),
-          const SizedBox(
-            height: 8.0,
+            height: 12.0,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -311,6 +321,7 @@ class _SignupFormState extends State<SignupForm> {
             children: [
               Checkbox(
                 value: _isChecked,
+                splashRadius: 2.0,
                 onChanged: (e) {
                   setState(() {
                     _isChecked = !_isChecked;
@@ -319,20 +330,20 @@ class _SignupFormState extends State<SignupForm> {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0, top: 8.0),
+                  padding: const EdgeInsets.only(right: 2.0, top: 8.0),
                   child: RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
                       text: "By continuing you accept our standard ",
-                      style: const TextStyle(
-                        color: Colors.black54,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.tertiary,
+                        fontSize: 12,
                       ),
                       children: [
                         TextSpan(
                           text: "terms and conditions",
                           style: const TextStyle(
                             fontWeight: FontWeight.w400,
-                            fontSize: 14,
                             color: Constants.accentColor,
                           ),
                           recognizer: TapGestureRecognizer()
@@ -344,7 +355,6 @@ class _SignupFormState extends State<SignupForm> {
                           text: "privacy policy",
                           style: const TextStyle(
                             fontWeight: FontWeight.w400,
-                            fontSize: 14,
                             color: Constants.accentColor,
                           ),
                           recognizer: TapGestureRecognizer()
@@ -359,7 +369,22 @@ class _SignupFormState extends State<SignupForm> {
             ],
           ),
           const SizedBox(
-            height: 2.0,
+            height: 16.0,
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: PrimaryButton(
+              buttonText: 'Create',
+              foreColor: Colors.white,
+              bgColor: Theme.of(context).colorScheme.primaryContainer,
+              onPressed: _isChecked
+                  ? () {
+                      if (_formKey.currentState!.validate()) {
+                        _register();
+                      }
+                    }
+                  : null,
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -367,11 +392,11 @@ class _SignupFormState extends State<SignupForm> {
             children: [
               TextSmall(
                 text: "Already have an account?",
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.tertiary,
               ),
               TextButton(
                 onPressed: () {
-                  Get.to(Login(), transition: Transition.cupertino);
+                  Get.to(const Login(), transition: Transition.cupertino);
                 },
                 child: TextSmall(
                   text: "Log In ",

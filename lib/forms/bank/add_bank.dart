@@ -72,7 +72,7 @@ class _AddBankFormState extends State<AddBankForm> {
               });
             },
           ),
-          const SizedBox(height: 16.0),
+          const SizedBox(height: 24.0),
           TextBody1(
             text: "Account Number",
             color: Theme.of(context).colorScheme.tertiary,
@@ -114,12 +114,12 @@ class _AddBankFormState extends State<AddBankForm> {
                   color: Theme.of(context).colorScheme.tertiary,
                 )
               : const SizedBox(),
-          const SizedBox(height: 48.0),
+          const SizedBox(height: 56.0),
           SizedBox(
             width: double.infinity,
             child: PrimaryButton(
-              buttonText: "Save Account",
-              fontSize: 16,
+              buttonText: "Save",
+              fontSize: 15,
               bgColor: Theme.of(context).colorScheme.primaryContainer,
               onPressed: () {},
             ),

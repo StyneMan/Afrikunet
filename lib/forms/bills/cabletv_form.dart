@@ -6,6 +6,7 @@ import 'package:afrikunet/components/inputfield/rounded_money_input.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/data/bills.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/screens/bills/pay.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,9 +15,11 @@ import 'package:get/get.dart';
 
 class CableTvForm extends StatefulWidget {
   final BillNetwork network;
+  final PreferenceManager manager;
   const CableTvForm({
     Key? key,
     required this.network,
+    required this.manager,
   }) : super(key: key);
 
   @override
@@ -333,8 +336,9 @@ class _CableTvFormState extends State<CableTvForm> {
                     bgColor: Theme.of(context).colorScheme.primaryContainer,
                     onPressed: () {
                       Get.to(
-                        const PayNow(
+                        PayNow(
                           title: 'Cable TV',
+                          manager: widget.manager,
                         ),
                         transition: Transition.cupertino,
                       );

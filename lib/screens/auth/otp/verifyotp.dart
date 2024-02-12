@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:afrikunet/components/buttons/primary.dart';
+import 'package:afrikunet/components/dashboard/dashboard.dart';
 import 'package:afrikunet/components/dialog/info_dialog.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
-import 'package:afrikunet/layout/appbar/appbar.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
 import 'package:afrikunet/screens/success_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
@@ -13,6 +17,7 @@ import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/screens/auth/forgotpass/changePass.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../helper/state/state_manager.dart';
 
@@ -21,8 +26,13 @@ typedef void InitCallback(params);
 class VerifyOTP extends StatefulWidget {
   String email;
   String caller;
-  VerifyOTP({Key? key, required this.email, required this.caller})
-      : super(key: key);
+  final PreferenceManager manager;
+  VerifyOTP({
+    Key? key,
+    required this.email,
+    required this.caller,
+    required this.manager,
+  }) : super(key: key);
 
   @override
   State<VerifyOTP> createState() => _State();
@@ -33,7 +43,7 @@ class _State extends State<VerifyOTP> {
   final _otpController = TextEditingController();
   // final _phoneController = TextEditingController();
   String _code = '';
-  bool _shouldContinue = false;
+  bool _shouldContinue = false, _showResend = false;
   CountdownTimerController? _timerController;
   int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 1;
 
@@ -46,25 +56,133 @@ class _State extends State<VerifyOTP> {
     // });
   }
 
-  // _resendCode() async {
-  //   _controller.setLoading(true);
-  //   try {
-  //     final resp =
-  //         await APIService().resendOTP(email: widget.email, type: "register");
-  //     debugPrint("RESEND OTP RESPONSE:: ${resp.body}");
-  //     _controller.setLoading(false);
-  //     if (resp.statusCode == 200) {
-  //       Map<String, dynamic> map = jsonDecode(resp.body);
-  //       Constants.toast(map['message']);
-  //     } else {
-  //       Map<String, dynamic> map = jsonDecode(resp.body);
-  //       Constants.toast(map['message']);
-  //     }
-  //   } catch (e) {
-  //     _controller.setLoading(false);
-  //   }
-  //   // }
-  // }
+  _resendOtp() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    _controller.setLoading(true);
+    try {
+      final Map _payload = {"email_address": widget.email};
+      final resp = await APIService().resendOTP(_payload);
+      debugPrint("RESEND OTP RESPONSE:: ${resp.body}");
+      _controller.setLoading(false);
+      if (resp.statusCode >= 200 && resp.statusCode <= 299) {
+        Map<String, dynamic> map = jsonDecode(resp.body);
+        Constants.toast(map['message']);
+        setState(() {
+          _showResend = false;
+        });
+      } else {
+        Map<String, dynamic> map = jsonDecode(resp.body);
+        Constants.toast(map['message']);
+      }
+    } catch (e) {
+      _controller.setLoading(false);
+    }
+    // }
+  }
+
+  _verifyOtp() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    _controller.setLoading(true);
+    Map _payload = {
+      "email_address": widget.email,
+      "code": int.parse(_otpController.text),
+    };
+
+    try {
+      final _prefs = await SharedPreferences.getInstance();
+      final _response = await APIService().verifyOTP(_payload);
+      _controller.setLoading(false);
+      debugPrint("VERIFY RESPONSE :: ${_response.body}");
+      if (_response.statusCode >= 200 && _response.statusCode <= 299) {
+        Map<String, dynamic> _mapper = jsonDecode(_response.body);
+        //Save user data and preferences
+        String userData = jsonEncode(_mapper['user']);
+        _prefs.setString("userData", userData);
+        _controller.setUserData(_mapper['user']);
+        widget.manager.setUserData(userData);
+        widget.manager.saveAccessToken(_mapper['accessToken']);
+        _prefs.setString("accessToken", _mapper['accessToken']);
+        _controller.onInit();
+
+        if (widget.caller == "signup") {
+          _prefs.setBool("loggedIn", true);
+          Get.to(
+            Dashboard(manager: widget.manager),
+            transition: Transition.cupertino,
+          );
+        } else if (widget.caller == "voucher") {
+          Get.to(
+            SuccessPage(
+              isVoucher: true,
+              manager: widget.manager,
+            ),
+            transition: Transition.cupertino,
+          );
+        } else if (widget.caller == "2fa") {
+          // Show dialog here ...
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) => InfoDialog(
+              body: SingleChildScrollView(
+                padding: const EdgeInsets.all(10.0),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        height: 24.0,
+                      ),
+                      SvgPicture.asset(
+                        "assets/images/check_all.svg",
+                        color: Theme.of(context).colorScheme.inverseSurface,
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      TextSmall(
+                        text:
+                            "2FA successfully enabled. You can now login with 2FA.",
+                        align: TextAlign.center,
+                        fontWeight: FontWeight.w400,
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10.0),
+                        width: double.infinity,
+                        child: PrimaryButton(
+                          buttonText: "Done",
+                          fontSize: 15,
+                          onPressed: () {
+                            Get.back();
+                            Get.back();
+                            Get.back();
+                            Get.back();
+                            Get.back();
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        } else {
+          Get.to(
+            ChangePassword(emailAddress: widget.email),
+            transition: Transition.cupertino,
+          );
+        }
+      }
+    } catch (e) {
+      _controller.setLoading(false);
+    }
+  }
 
   @override
   void dispose() {
@@ -150,6 +268,11 @@ class _State extends State<VerifyOTP> {
                               align: TextAlign.center,
                               color: Theme.of(context).colorScheme.tertiary,
                             );
+                          },
+                          onEnd: () {
+                            setState(() {
+                              _showResend = true;
+                            });
                           },
                         ),
                         const SizedBox(
@@ -244,98 +367,7 @@ class _State extends State<VerifyOTP> {
                             buttonText: "Continue",
                             onPressed: _shouldContinue
                                 ? () {
-                                    _controller.setLoading(true);
-                                    Future.delayed(
-                                      const Duration(seconds: 3),
-                                      () {
-                                        _controller.setLoading(false);
-                                        if (widget.caller == "signup") {
-                                          Get.to(
-                                            const Dashbboard(),
-                                            transition: Transition.cupertino,
-                                          );
-                                        } else if (widget.caller == "voucher") {
-                                          Get.to(
-                                            const SuccessPage(
-                                              isVoucher: true,
-                                            ),
-                                            transition: Transition.cupertino,
-                                          );
-                                        } else if (widget.caller == "2fa") {
-                                          // Show dialog here ...
-                                          showDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            builder: (BuildContext context) =>
-                                                InfoDialog(
-                                              body: SingleChildScrollView(
-                                                padding:
-                                                    const EdgeInsets.all(10.0),
-                                                child: Center(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      const SizedBox(
-                                                        height: 24.0,
-                                                      ),
-                                                      SvgPicture.asset(
-                                                        "assets/images/check_all.svg",
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .inverseSurface,
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 10.0,
-                                                      ),
-                                                      TextSmall(
-                                                        text:
-                                                            "2FA successfully enabled. You can now login with 2FA.",
-                                                        align: TextAlign.center,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .tertiary,
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 24,
-                                                      ),
-                                                      Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(10.0),
-                                                        width: double.infinity,
-                                                        child: PrimaryButton(
-                                                          buttonText: "Done",
-                                                          fontSize: 15,
-                                                          onPressed: () {
-                                                            Get.back();
-                                                            Get.back();
-                                                            Get.back();
-                                                            Get.back();
-                                                            Get.back();
-                                                          },
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        } else {
-                                          Get.to(
-                                            const ChangePassword(),
-                                            transition: Transition.cupertino,
-                                          );
-                                        }
-                                      },
-                                    );
+                                    _verifyOtp();
                                   }
                                 : null,
                           ),
@@ -343,39 +375,34 @@ class _State extends State<VerifyOTP> {
                         const SizedBox(
                           height: 8.0,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            TextSmall(
-                              text: "Didn't receive?",
-                              color: Theme.of(context).colorScheme.tertiary,
-                            ),
-                            // _timerController.currentRemainingTime == null
-                            //     ?
-                            TextButton(
-                              onPressed: () {
-                                _controller.setLoading(true);
-                                Future.delayed(
-                                  const Duration(seconds: 3),
-                                  () {
-                                    _controller.setLoading(false);
-                                    Constants.toast(
-                                        "OTP has been resent to ${widget.email}");
-                                  },
-                                );
-                              },
-                              child: TextSmall(
-                                text: "Resend Code ",
-                                fontWeight: FontWeight.w600,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .inverseSurface,
+                        !_showResend
+                            ? const SizedBox()
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  TextSmall(
+                                    text: "Didn't receive?",
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
+                                  ),
+                                  // _timerController.currentRemainingTime == null
+                                  //     ?
+                                  TextButton(
+                                    onPressed: () {
+                                      _resendOtp();
+                                    },
+                                    child: TextSmall(
+                                      text: "Resend Code ",
+                                      fontWeight: FontWeight.w600,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .inverseSurface,
+                                    ),
+                                  ),
+                                  // : const SizedBox(),
+                                ],
                               ),
-                            ),
-                            // : const SizedBox(),
-                          ],
-                        ),
                       ],
                     ),
                   ),

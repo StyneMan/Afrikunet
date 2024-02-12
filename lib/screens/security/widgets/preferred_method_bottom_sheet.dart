@@ -3,6 +3,7 @@ import 'package:afrikunet/components/dialog/info_dialog.dart';
 import 'package:afrikunet/components/dividers/dotted_divider.dart';
 import 'package:afrikunet/components/inputfield/textfield.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/screens/auth/otp/verifyotp.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -14,10 +15,12 @@ import 'package:get/get.dart';
 class PreferredMethodBottomSheet extends StatefulWidget {
   final String title;
   final String caller;
-  PreferredMethodBottomSheet({
+  final PreferenceManager manager;
+  const PreferredMethodBottomSheet({
     Key? key,
     required this.title,
     required this.caller,
+    required this.manager,
   }) : super(key: key);
 
   @override
@@ -194,6 +197,7 @@ class _PreferredMethodBottomSheetState
               VerifyOTP(
                 email: _inputController.text,
                 caller: "2fa",
+                manager: widget.manager,
               ),
               transition: Transition.cupertino,
             );

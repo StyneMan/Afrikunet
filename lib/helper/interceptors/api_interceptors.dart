@@ -1,6 +1,7 @@
 import 'dart:io';
 
 // import 'package:zema/helper/state/state_controller.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/screens/auth/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,10 +11,8 @@ import 'package:http_interceptor/http_interceptor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 
-// import '../../util/preference_manager.dart';
-
 class MyApiInterceptor implements InterceptorContract {
-  // late PreferenceManager manager;
+  late PreferenceManager manager;
 
   final _controller = Get.find<StateController>();
 
@@ -22,6 +21,7 @@ class MyApiInterceptor implements InterceptorContract {
     try {
       final cache = await SharedPreferences.getInstance();
 
+      data.headers[HttpHeaders.acceptHeader] = "*";
       data.headers[HttpHeaders.contentTypeHeader] = "application/json";
       data.headers[HttpHeaders.authorizationHeader] =
           "Bearer " + cache.getString("accessToken")!;
@@ -51,7 +51,7 @@ class MyApiInterceptor implements InterceptorContract {
       final _pref = await SharedPreferences.getInstance();
       _pref.clear();
 
-      Get.offAll(const Login());
+      Get.offAll(Login());
     }
     return data;
   }

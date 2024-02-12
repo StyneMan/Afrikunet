@@ -24,7 +24,7 @@ class APIService {
 
   Future<http.Response> signup(Map body) async {
     return await http.post(
-      Uri.parse('${Constants.baseURL}/api/register'),
+      Uri.parse('${Constants.baseURL}/auth/signup'),
       headers: {
         "Content-type": "application/json",
       },
@@ -34,7 +34,7 @@ class APIService {
 
   Future<http.Response> login(Map body) async {
     return await http.post(
-      Uri.parse('${Constants.baseURL}/api/login'),
+      Uri.parse('${Constants.baseURL}/auth/login'),
       headers: {
         "Content-type": "application/json",
       },
@@ -42,9 +42,25 @@ class APIService {
     );
   }
 
+  Future<http.Response> googleAuth(Map body) async {
+    return await http.post(
+      Uri.parse('${Constants.baseURL}/auth/google/login'),
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: jsonEncode(body),
+    );
+  }
+
+  Future<http.Response> googleAuthRedirect({var authHeaders}) async {
+    return await http.get(
+        Uri.parse('${Constants.baseURL}/auth/google/redirect'),
+        headers: authHeaders);
+  }
+
   Future<http.Response> forgotPass(Map body) async {
     return await http.post(
-      Uri.parse('${Constants.baseURL}/api/forgotPassword'),
+      Uri.parse('${Constants.baseURL}/auth/send-password-reset'),
       headers: {
         "Content-type": "application/json",
       },
@@ -54,7 +70,7 @@ class APIService {
 
   Future<http.Response> resetPass(Map body) async {
     return await http.put(
-      Uri.parse('${Constants.baseURL}/api/resetPassword'),
+      Uri.parse('${Constants.baseURL}/auth/reset-password'),
       headers: {
         "Content-type": "application/json",
       },
@@ -63,27 +79,38 @@ class APIService {
   }
 
   Future<http.Response> verifyOTP(Map body) async {
-    return await http.get(
-      Uri.parse(
-          '${Constants.baseURL}/api/verifyOTP?email=${body['email']}&code=${body['code']}'),
+    return await http.post(
+      Uri.parse('${Constants.baseURL}/auth/verify'),
       headers: {
         "Content-type": "application/json",
       },
+      body: jsonEncode(body),
     );
   }
 
-  Future<http.Response> resendOTP({var email, var type}) async {
-    return await http.get(
-      Uri.parse('${Constants.baseURL}/api/resendOTP?email=$email&type=$type'),
+  Future<http.Response> resendOTP(Map body) async {
+    return await http.post(
+      Uri.parse('${Constants.baseURL}/auth/resend-otp'),
       headers: {
         "Content-type": "application/json",
       },
+      body: jsonEncode(body),
     );
   }
 
-  Future<http.Response> getProfile(String accessToken, String email) async {
+  Future<http.Response> getProfile(String accessToken) async {
     return await client.get(
-      Uri.parse('${Constants.baseURL}/api/user/$email'),
+      Uri.parse('${Constants.baseURL}/users/profile'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+    );
+  }
+
+  Future<http.Response> getHistory(String accessToken) async {
+    return await client.get(
+      Uri.parse('${Constants.baseURL}/history/user'),
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
@@ -92,22 +119,22 @@ class APIService {
   }
 
   Future<http.Response> logout(String accessToken, String email) async {
-    return await client.get(
-      Uri.parse('${Constants.baseURL}/api/logout/$email'),
+    return await client.post(
+      Uri.parse('${Constants.baseURL}/auth/logout/'),
       headers: {
         "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
+        // "Authorization": "Bearer " + accessToken,
       },
     );
   }
 
   Future<http.Response> updateProfile(
-      {var body, var accessToken, var email}) async {
+      {var body, var accessToken, var id}) async {
     return await client.put(
-      Uri.parse('${Constants.baseURL}/api/updateuser/$email'),
+      Uri.parse('${Constants.baseURL}/users/$id/update'),
       headers: {
         "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
+        // "Authorization": "Bearer " + accessToken,
       },
       body: jsonEncode(body),
     );
@@ -143,16 +170,6 @@ class APIService {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
       },
-    );
-  }
-
-  Future<http.Response> googleAuth(String idToken) async {
-    return await http.post(
-      Uri.parse('${Constants.baseURL}/api/auth/google'),
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: jsonEncode({"token": idToken}),
     );
   }
 

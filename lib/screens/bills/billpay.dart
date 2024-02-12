@@ -2,6 +2,7 @@ import 'package:afrikunet/components/dialog/info_dialog.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/data/bills.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,8 +11,10 @@ import 'package:get/get.dart';
 import 'bill_item.dart';
 
 class BillPay extends StatelessWidget {
+  final PreferenceManager manager;
   const BillPay({
     Key? key,
+    required this.manager,
   }) : super(key: key);
 
   @override
@@ -116,7 +119,11 @@ class BillPay extends StatelessWidget {
       onPressed: () {
         if (!text.toString().toLowerCase().startsWith("water")) {
           Get.to(
-            BillItem(title: text, bill: bill),
+            BillItem(
+              title: text,
+              bill: bill,
+              manager: manager,
+            ),
             transition: Transition.cupertino,
           );
         } else {

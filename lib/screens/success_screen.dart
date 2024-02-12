@@ -2,7 +2,7 @@ import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/buttons/secondary.dart';
 import 'package:afrikunet/components/dashboard/dashboard.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
-import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -11,10 +11,12 @@ import 'package:share_plus/share_plus.dart';
 import 'pdf/pdf_preview.dart';
 
 class SuccessPage extends StatelessWidget {
+  final PreferenceManager manager;
   final bool isVoucher;
   const SuccessPage({
     Key? key,
     this.isVoucher = false,
+    required this.manager,
   }) : super(key: key);
 
   final String imageUrl = 'assets/images/temp_giftcard.png';
@@ -133,7 +135,9 @@ class SuccessPage extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       Get.off(
-                        Dashboard(),
+                        Dashboard(
+                          manager: manager,
+                        ),
                         transition: Transition.cupertino,
                       );
                     },
