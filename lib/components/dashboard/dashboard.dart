@@ -17,7 +17,7 @@ import 'package:afrikunet/screens/network/no_internet.dart';
 class Dashboard extends StatefulWidget {
   final bool showProfile;
   final PreferenceManager manager;
-  Dashboard({
+  const Dashboard({
     Key? key,
     this.showProfile = false,
     required this.manager,
@@ -40,6 +40,12 @@ class _DashboardState extends State<Dashboard> {
 
   void _onItemTapped(int index) {
     _controller.selectedIndex.value = index;
+  }
+
+  @override
+  void didChangeDependencies() {
+    _controller.onInit();
+    super.didChangeDependencies();
   }
 
   @override

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:io';
 
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:afrikunet/helper/state/payment_manager.dart';
 import 'package:afrikunet/screens/onboarding/onboarding.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:afrikunet/components/dashboard/dashboard.dart';
@@ -18,6 +19,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -39,6 +41,7 @@ class GlobalBindings extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<StateController>(() => StateController(), fenix: true);
+    // Get.lazyPut<PaymentController>(() => PaymentController(), fenix: true);
     Get.lazyPut<ThemeController>(() => ThemeController(), fenix: true);
     // Get.put<StateController>(StateController(), permanent: true);
     // Get.put<LocalDataProvider>(_localDataProvider, permanent: true);
@@ -55,6 +58,10 @@ class AwaitBindings extends Bindings {
       Dao _dao = await Dao.createAsync();
       return StateController(myDao: _dao);
     });
+
+    // await Get.putAsync<PaymentController>(() async {
+    //   return PaymentController();
+    // });
 
     await Get.putAsync<ThemeController>(() async {
       return ThemeController();
@@ -110,12 +117,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final _controller = Get.put(StateController());
+
   Widget? component;
   PreferenceManager? _manager;
   bool _authenticated = false;
 
   _init() async {
-    //
     try {
       final _prefs = await SharedPreferences.getInstance();
       _authenticated = _prefs.getBool("loggedIn") ?? false;
@@ -213,13 +220,18 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                   : _controller.currentThemeMode.value == "system default"
                       ? ThemeMode.system
                       : ThemeMode.light,
-              home: _controller.hasInternetAccess.value
-                  ? !_authenticated
-                      ? const Onboarding()
-                      : Dashboard(
-                          manager: _manager!,
-                        )
-                  : const NoInternet(),
+              home: LoadingOverlayPro(
+                isLoading: _controller.isLoading.value,
+                progressIndicator: const CircularProgressIndicator.adaptive(),
+                backgroundColor: Colors.black54,
+                child: _controller.hasInternetAccess.value
+                    ? !_authenticated
+                        ? const Onboarding()
+                        : Dashboard(
+                            manager: _manager!,
+                          )
+                    : const NoInternet(),
+              ),
             ),
           );
         }

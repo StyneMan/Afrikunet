@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:afrikunet/helper/service/api_service.dart';
@@ -22,11 +21,27 @@ class StateController extends GetxController {
   var isAuthenticated = false.obs;
   var hideNavbar = false.obs;
   var hasInternetAccess = true.obs;
+  var isLoadingPackages = true.obs;
 
   var onboardingIndex = 0.obs;
   var cableTvAmount = 0.0.obs;
+  var internetDataAmount = 0.0.obs;
   var cableTvPackageName = "".obs;
   var electricityDistributorName = "".obs;
+
+  var vtus = [].obs;
+  var internetData = {}.obs;
+  var airtimeData = {}.obs;
+  var electricityData = {}.obs;
+  var cableData = {}.obs;
+
+  var selectedAirtimeNetwork = {}.obs;
+
+  var selectedDataNetwork = {}.obs;
+  var selectedDataPlan = {}.obs;
+
+  var selectedCableNetwork = {}.obs;
+  var selectedCableBouquet = {}.obs;
 
   var croppedPic = "".obs;
   var customSearchBar = [].obs;
@@ -34,7 +49,6 @@ class StateController extends GetxController {
   var userHistory = [].obs;
   var banks = [].obs;
   var selectedContact = {}.obs;
-  var productsData = "".obs;
 
   var userData = {}.obs;
 
@@ -57,11 +71,25 @@ class StateController extends GetxController {
 
   _init() async {
     try {
-      // final response = await APIService().getProfessions();
-      // debugPrint("RESPONSI UOT ==>> ${response.body}");
-      // Map<String, dynamic> map = jsonDecode(response.body);
-      // debugPrint("RESPONS  ==>> ${map['docs']}");
-      // allProfessions.value = map['docs'];
+      final response = await APIService().getVTUs();
+      debugPrint("PRODUCT RESP:: ${response.body}");
+      setHasInternet(true);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response.body);
+        // ProductResponse body = ProductResponse.fromJson(map);
+        setVtus(map['data']);
+
+        map['data']?.forEach((elem) => {
+              if (elem['name'].toString().toLowerCase() == "airtime")
+                {airtimeData.value = elem}
+              else if (elem['name'].toString().toLowerCase() == "data")
+                {internetData.value = elem}
+              else if (elem['name'].toString().toLowerCase() == "electricity")
+                {electricityData.value = elem}
+              else if (elem['name'].toString().toLowerCase() == "cable_tv")
+                {cableData.value = elem}
+            });
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -112,28 +140,6 @@ class StateController extends GetxController {
     }
   }
 
-  // void _updateConnectionStatus(ConnectivityResult connectivityResult) {
-  //   if (connectivityResult == ConnectivityResult.none) {
-  //     Get.rawSnackbar(
-  //         messageText: const Text('PLEASE CONNECT TO THE INTERNET',
-  //             style: TextStyle(color: Colors.white, fontSize: 14)),
-  //         isDismissible: false,
-  //         duration: const Duration(days: 1),
-  //         backgroundColor: Colors.red[400]!,
-  //         icon: const Icon(
-  //           Icons.wifi_off,
-  //           color: Colors.white,
-  //           size: 35,
-  //         ),
-  //         margin: EdgeInsets.zero,
-  //         snackStyle: SnackStyle.GROUNDED);
-  //   } else {
-  //     if (Get.isSnackbarOpen) {
-  //       Get.closeCurrentSnackbar();
-  //     }
-  //   }
-  // }
-
   Widget currentScreen = const SizedBox();
 
   var currentPage = "Home";
@@ -170,8 +176,8 @@ class StateController extends GetxController {
     hasInternetAccess.value = state;
   }
 
-  void setProductsData(String state) {
-    productsData.value = state;
+  void setVtus(var state) {
+    vtus.value = state;
   }
 
   void jumpTo(int pos) {

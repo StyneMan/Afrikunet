@@ -1,9 +1,11 @@
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
-import 'package:afrikunet/screens/airtime/widgets/data-tab.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
+import 'package:afrikunet/screens/data/widgets/data-tab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 class InternetData extends StatefulWidget {
   const InternetData({
@@ -14,21 +16,18 @@ class InternetData extends StatefulWidget {
   State<InternetData> createState() => _InternetDataState();
 }
 
-class _InternetDataState extends State<InternetData>
-    with SingleTickerProviderStateMixin {
-  late TabController tabController;
+class _InternetDataState extends State<InternetData> {
   PreferenceManager? _manager;
+  final _controller = Get.find<StateController>();
 
   @override
   void initState() {
     _manager = PreferenceManager(context);
-    tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
 
   @override
   void dispose() {
-    tabController.dispose();
     super.dispose();
   }
 

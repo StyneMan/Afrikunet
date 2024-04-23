@@ -13,10 +13,12 @@ import 'pdf/pdf_preview.dart';
 class SuccessPage extends StatelessWidget {
   final PreferenceManager manager;
   final bool isVoucher;
+  final String message;
   const SuccessPage({
     Key? key,
     this.isVoucher = false,
     required this.manager,
+    this.message = "",
   }) : super(key: key);
 
   final String imageUrl = 'assets/images/temp_giftcard.png';
@@ -58,7 +60,7 @@ class SuccessPage extends StatelessWidget {
                   ),
                   !isVoucher
                       ? TextSmall(
-                          text: "Your voucher purchase is successful",
+                          text: "Your purchase is successful",
                           color: Theme.of(context).colorScheme.tertiary,
                         )
                       : Padding(
@@ -66,8 +68,7 @@ class SuccessPage extends StatelessWidget {
                             horizontal: 24.0,
                           ),
                           child: TextSmall(
-                            text:
-                                "You have successfully redeemed your voucher to GTB with account number 23347***90",
+                            text: message,
                             color: Theme.of(context).colorScheme.tertiary,
                             align: TextAlign.center,
                           ),

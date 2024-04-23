@@ -70,6 +70,9 @@ class _State extends State<VerifyOTP> {
         setState(() {
           _showResend = false;
         });
+        Future.delayed(const Duration(seconds: 2), () {
+          _timerController?.start();
+        });
       } else {
         Map<String, dynamic> map = jsonDecode(resp.body);
         Constants.toast(map['message']);
@@ -178,6 +181,9 @@ class _State extends State<VerifyOTP> {
             transition: Transition.cupertino,
           );
         }
+      } else {
+        Map<String, dynamic> _errMap = jsonDecode(_response.body);
+        Constants.toast("${_errMap['message']}");
       }
     } catch (e) {
       _controller.setLoading(false);
@@ -327,13 +333,7 @@ class _State extends State<VerifyOTP> {
                               controller: _otpController,
                               keyboardType: TextInputType.number,
                               boxShadows: null,
-                              // const [
-                              //   BoxShadow(
-                              //     offset: Offset(0, 1),
-                              //     color: Colors.black12,
-                              //     blurRadius: 10,
-                              //   )
-                              // ],
+
                               onCompleted: (v) {
                                 setState(() {
                                   _shouldContinue = true;

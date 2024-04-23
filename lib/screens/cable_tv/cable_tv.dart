@@ -2,7 +2,10 @@ import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/data/bills.dart';
 import 'package:afrikunet/forms/bills/cabletv_form.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 class CableTV extends StatefulWidget {
   final Bills bill;
@@ -17,6 +20,7 @@ class CableTV extends StatefulWidget {
 
 class _CableTVState extends State<CableTV> {
   PreferenceManager? _manager;
+  final _controller = Get.find<StateController>();
 
   @override
   void initState() {

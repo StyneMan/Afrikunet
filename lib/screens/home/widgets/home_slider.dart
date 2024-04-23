@@ -76,11 +76,9 @@ class _HomeSliderState extends State<HomeSlider> {
                         ),
                         child: SizedBox(
                           width: 126,
-                          child: Expanded(
-                            child: TextSmall(
-                              text: sliderData.title,
-                              color: Colors.white,
-                            ),
+                          child: TextSmall(
+                            text: sliderData.title,
+                            color: Colors.white,
                           ),
                         ),
                       ),

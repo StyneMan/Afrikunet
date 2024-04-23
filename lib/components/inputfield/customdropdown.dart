@@ -51,37 +51,43 @@ class _CustomDropdownState extends State<CustomDropdown> {
           vertical: 12.0,
         ),
         border: OutlineInputBorder(
+          borderSide:
+              const BorderSide(color: Constants.strokeColor, width: 1.0),
           borderRadius: BorderRadius.all(
             Radius.circular(widget.borderRadius),
           ),
           gapPadding: 4.0,
         ),
         enabledBorder: OutlineInputBorder(
+          borderSide:
+              const BorderSide(color: Constants.strokeColor, width: 1.0),
           borderRadius: BorderRadius.all(
             Radius.circular(widget.borderRadius),
           ),
           gapPadding: 4.0,
         ),
         focusedBorder: OutlineInputBorder(
+          borderSide:
+              const BorderSide(color: Constants.strokeColor, width: 1.0),
           borderRadius: BorderRadius.all(
             Radius.circular(widget.borderRadius),
           ),
           gapPadding: 4.0,
         ),
         filled: false,
-        hintText: _hint,
-        labelText: widget.label ?? _hint,
+        // hintText: _hint,
+        // labelText: widget.label ?? _hint,
         focusColor: Constants.accentColor,
-        hintStyle: const TextStyle(
+        hintStyle: TextStyle(
           fontFamily: "OpenSans",
-          color: Colors.black38,
+          color: Theme.of(context).colorScheme.tertiary,
           fontSize: 14,
           fontWeight: FontWeight.w400,
         ),
         labelStyle: const TextStyle(
           fontFamily: "OpenSans",
           fontWeight: FontWeight.w500,
-          fontSize: 18,
+          fontSize: 14,
         ),
         // suffixIcon: endIcon,
       ),
@@ -91,7 +97,10 @@ class _CustomDropdownState extends State<CustomDropdown> {
           value: e,
           child: Text(
             e,
-            style: const TextStyle(fontSize: 18, color: Colors.black),
+            style: TextStyle(
+              fontSize: 14,
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
           ),
         );
       }).toList(),
@@ -109,7 +118,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
               );
             },
       icon: const Icon(Icons.keyboard_arrow_down_rounded),
-      iconSize: 30,
+      iconSize: 24,
       isExpanded: true,
     );
   }

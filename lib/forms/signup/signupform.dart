@@ -35,7 +35,7 @@ class _SignupFormState extends State<SignupForm> {
   final _passwordController = TextEditingController();
   final _phoneController = TextEditingController();
 
-  String _countryCode = "+234";
+  String _isoCode = "+234", _countryCode = "NG";
   bool _obscureText = true, _loading = false, _isChecked = false;
 
   bool _isNumberOk = false,
@@ -56,7 +56,10 @@ class _SignupFormState extends State<SignupForm> {
       "password": _passwordController.text,
       "first_name": _nameController.text.split(' ')[0],
       "last_name": _nameController.text.split(' ')[1] ?? "",
-      "international_phone_format": "$_countryCode ${_phoneController.text}"
+      "iso_code": _isoCode,
+      "country_code": _countryCode,
+      "phone_number": _phoneController.text,
+      "international_phone_format": "$_isoCode ${_phoneController.text}"
     };
 
     try {
@@ -66,6 +69,7 @@ class _SignupFormState extends State<SignupForm> {
       if (_response.statusCode >= 200 && _response.statusCode <= 299) {
         // Successful
         Map<String, dynamic> _mapper = jsonDecode(_response.body);
+
         Constants.toast("${_mapper['message']}");
 
         Get.to(
@@ -78,7 +82,11 @@ class _SignupFormState extends State<SignupForm> {
         );
       } else {
         Map<String, dynamic> _errorMapper = jsonDecode(_response.body);
-        Constants.toast("${_errorMapper['message']}");
+        Constants.showInfoDialog(
+          context: context,
+          message: _errorMapper['message'],
+          status: "error",
+        );
       }
     } catch (e) {
       debugPrint("ERROR: $e");
@@ -141,12 +149,15 @@ class _SignupFormState extends State<SignupForm> {
               alignLeft: true,
               onChanged: (val) {
                 setState(() {
-                  _countryCode = val as String;
+                  _countryCode = "${val.code}";
+                  _isoCode = "${val.dialCode}";
                 });
+                print("SELECTED CODE ::: ${val.code}");
+                print("SELECTED DIAL CODE ::: ${val.dialCode}");
               },
               padding: const EdgeInsets.all(0.0),
               initialSelection: 'NG',
-              favorite: ['+234', 'NG'],
+              favorite: const ['+234', 'NG'],
               showCountryOnly: true,
               showFlag: true,
               showDropDownButton: false,

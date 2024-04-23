@@ -186,6 +186,10 @@ PODS:
     - Flutter
   - flutter_downloader (0.0.1):
     - Flutter
+  - flutter_local_notifications (0.0.1):
+    - Flutter
+  - flutter_native_timezone (0.0.1):
+    - Flutter
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -338,6 +342,8 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_contacts (from `.symlinks/plugins/flutter_contacts/ios`)
   - flutter_downloader (from `.symlinks/plugins/flutter_downloader/ios`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - flutter_native_timezone (from `.symlinks/plugins/flutter_native_timezone/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/ios`)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
@@ -421,6 +427,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_contacts/ios"
   flutter_downloader:
     :path: ".symlinks/plugins/flutter_downloader/ios"
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  flutter_native_timezone:
+    :path: ".symlinks/plugins/flutter_native_timezone/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   google_sign_in_ios:
@@ -479,6 +489,8 @@ SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_contacts: edb1c5ce76aa433e20e6cb14c615f4c0b66e0983
   flutter_downloader: b7301ae057deadd4b1650dc7c05375f10ff12c39
+  flutter_local_notifications: 4cde75091f6327eb8517fa068a0a5950212d2086
+  flutter_native_timezone: 5f05b2de06c9776b4cc70e1839f03de178394d22
   fluttertoast: 48c57db1b71b0ce9e6bba9f31c940ff4b001293c
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_sign_in_ios: 1256ff9d941db546373826966720b0c24804bcdd

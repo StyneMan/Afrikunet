@@ -1,9 +1,13 @@
+import 'package:afrikunet/components/buttons/primary.dart';
+import 'package:afrikunet/components/buttons/secondary.dart';
+import 'package:afrikunet/components/dialog/info_dialog.dart';
 import 'package:afrikunet/components/dividers/dotted_divider.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/screens/airtime/airtime.dart';
 import 'package:afrikunet/screens/bank/add_bank.dart';
 import 'package:afrikunet/screens/bills/billpay.dart';
+import 'package:afrikunet/screens/getstarted/getstarted.dart';
 import 'package:afrikunet/screens/profile/profile.dart';
 import 'package:afrikunet/screens/vouchers/my_vouchers.dart';
 import 'package:flutter/cupertino.dart';
@@ -85,7 +89,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
     _initAuth();
   }
 
-  _logout() async {}
+  _logout() async {
+    _controller.setLoading(true);
+    Future.delayed(const Duration(seconds: 2), () {
+      _controller.setLoading(false);
+      widget.manager.clearProfile();
+      Get.offAll(const GetStarted());
+    });
+  }
 
   Future<void> _launchInBrowser(String url) async {
     if (await canLaunch(url)) {
@@ -336,7 +347,81 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ),
                             ],
                           ),
-                          onTap: () async {},
+                          onTap: () async {
+                            Get.back();
+                            showDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (BuildContext context) => InfoDialog(
+                                body: SingleChildScrollView(
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        const SizedBox(height: 40.0),
+                                        Icon(
+                                          CupertinoIcons.info_circle,
+                                          size: 48,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                        ),
+                                        const SizedBox(height: 10.0),
+                                        TextMedium(
+                                          text:
+                                              "Are you sure you want to logout?",
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        const SizedBox(
+                                          height: 21,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 21.0,
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Expanded(
+                                                child: SecondaryButton(
+                                                  buttonText: "Cancel",
+                                                  onPressed: () {
+                                                    Get.back();
+                                                  },
+                                                ),
+                                              ),
+                                              const SizedBox(width: 8.0),
+                                              Expanded(
+                                                child: PrimaryButton(
+                                                  buttonText: "Logout",
+                                                  onPressed: () {
+                                                    Get.back();
+                                                    _logout();
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ],

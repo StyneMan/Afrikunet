@@ -3,7 +3,6 @@ import 'package:afrikunet/components/buttons/secondary.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/screens/auth/login/login.dart';
 import 'package:afrikunet/screens/auth/register/register.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -7,8 +7,8 @@ import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/data/networks.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
-import 'package:afrikunet/screens/success_screen.dart';
-import 'package:afrikunet/screens/payment/payment_method.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
+import 'package:afrikunet/screens/bills/pay.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,205 +31,237 @@ class _AirtimeTabState extends State<AirtimeTab> {
   final _formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
   final _amountController = TextEditingController();
+  final _controller = Get.find<StateController>();
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize selected airtime network to the first item
+    if (_controller.airtimeData.isNotEmpty) {
+      _controller.selectedAirtimeNetwork.value =
+          _controller.airtimeData.value['networks'][0];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    print("AIRTIME ::: ${_controller.airtimeData.value}");
+
     return Form(
       key: _formKey,
-      child: ListView(
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(5.0),
-        children: [
-          TextSmall(
-            text: "Select your preferred network",
-            color: Theme.of(context).colorScheme.tertiary,
-          ),
-          SizedBox(
-            height: 100,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
+      child: _controller.airtimeData.isEmpty
+          ? const SizedBox()
+          : ListView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(5.0),
               children: [
-                for (var i = 0; i < networksAirtime.length; i++)
-                  Expanded(
-                    child: Container(
-                      height: 75,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1.0,
-                          color: _current == i
-                              ? Theme.of(context).colorScheme.secondary
-                              : Colors.transparent,
-                        ),
-                      ),
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() => _current = i);
-                        },
-                        child: Image.asset(
-                          "assets/images/${networksAirtime[i].icon}",
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 18.0),
-          TextSmall(
-            text: "Phone number",
-            color: Theme.of(context).colorScheme.tertiary,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 75,
-                child: CountryCodePicker(
-                  alignLeft: false,
-                  onChanged: (val) {
-                    setState(() {
-                      _countryCode = val as String;
-                    });
-                  },
-                  padding: const EdgeInsets.all(0.0),
-                  initialSelection: 'NG',
-                  favorite: ['+234', 'NG'],
-                  showCountryOnly: true,
-                  showFlag: true,
-                  showDropDownButton: true,
-                  hideMainText: true,
-                  showOnlyCountryWhenClosed: false,
+                TextSmall(
+                  text: "Select your preferred network",
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.60,
-                child: CustomTextField(
-                  onChanged: (val) {},
-                  controller: _phoneController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Phone number is required';
-                    }
-                    return null;
-                  },
-                  inputType: TextInputType.number,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24.0),
-          TextSmall(
-            text:
-                "How much ${networksAirtime[_current].name} airtime are you buying?",
-            color: Theme.of(context).colorScheme.tertiary,
-          ),
-          _amountSection(context),
-          const SizedBox(height: 24.0),
-          const PaymentMethod(),
-          const SizedBox(height: 16.0),
-          PrimaryButton(
-            fontSize: 15,
-            buttonText: "Pay",
-            bgColor: Theme.of(context).colorScheme.primaryContainer,
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                Get.bottomSheet(
-                  Container(
-                    padding: const EdgeInsets.all(10.0),
-                    height: MediaQuery.of(context).size.height * 0.8,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(21),
-                        topRight: Radius.circular(21),
-                      ),
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              icon: const Icon(
-                                CupertinoIcons.xmark_circle,
-                                size: 16,
+                SizedBox(
+                  height: 100,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      for (var i = 0;
+                          i < _controller.airtimeData.value['networks'].length;
+                          i++)
+                        Expanded(
+                          child: Container(
+                            height: 75,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1.0,
+                                color: _current == i
+                                    ? Theme.of(context).colorScheme.secondary
+                                    : Colors.transparent,
                               ),
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 8.0),
-                        DottedDivider(),
-                        const SizedBox(height: 16.0),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Column(
-                                children: [
-                                  const Icon(
-                                    CupertinoIcons.exclamationmark_circle,
-                                    size: 75,
-                                    color: Constants.primaryColor,
-                                  ),
-                                  const SizedBox(height: 16.0),
-                                  SizedBox(
-                                    width: 256,
-                                    child: Text(
-                                      "You are about to recharge ${_amountController.text} from access bank to this phone number ${_phoneController.text}.",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary,
-                                      ),
-                                    ),
-                                  )
-                                ],
+                            child: TextButton(
+                              onPressed: () {
+                                setState(() => _current = i);
+                                _controller.selectedAirtimeNetwork.value =
+                                    _controller.airtimeData.value['networks']
+                                        [i];
+                              },
+                              child: Image.network(
+                                "${_controller.airtimeData.value['networks'][i]['icon']}",
                               ),
-                              const SizedBox(height: 24.0),
-                              SizedBox(
-                                width: double.infinity,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0,
-                                  ),
-                                  child: PrimaryButton(
-                                    buttonText: "Confirm",
-                                    bgColor: Theme.of(context)
-                                        .colorScheme
-                                        .primaryContainer,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 18.0),
+                TextSmall(
+                  text: "Phone number",
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: CustomTextField(
+                    onChanged: (val) {},
+                    controller: _phoneController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Phone number is required';
+                      }
+                      return null;
+                    },
+                    inputType: TextInputType.number,
+                    prefix: CountryCodePicker(
+                      alignLeft: false,
+                      onChanged: null,
+                      padding: const EdgeInsets.all(0.0),
+                      initialSelection:
+                          '${widget.manager.getUser()['country_code']}',
+                      showCountryOnly: true,
+                      showFlag: true,
+                      showDropDownButton: false,
+                      hideMainText: true,
+                      showOnlyCountryWhenClosed: false,
+                      enabled: false,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24.0),
+                TextSmall(
+                  text:
+                      "How much ${networksAirtime[_current].name} airtime are you buying?",
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
+                const SizedBox(height: 16.0),
+                _amountSection(context),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.20),
+                PrimaryButton(
+                  fontSize: 15,
+                  buttonText: "Pay",
+                  bgColor: Theme.of(context).colorScheme.primaryContainer,
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      Get.bottomSheet(
+                        Container(
+                          padding: const EdgeInsets.all(10.0),
+                          height: MediaQuery.of(context).size.height * 0.8,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(21),
+                              topRight: Radius.circular(21),
+                            ),
+                            color: Colors.white,
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  IconButton(
                                     onPressed: () {
                                       Get.back();
-                                      Get.to(
-                                        SuccessPage(
-                                          isVoucher: false,
-                                          manager: widget.manager,
-                                        ),
-                                        transition: Transition.cupertino,
-                                      );
                                     },
+                                    icon: const Icon(
+                                      CupertinoIcons.xmark_circle,
+                                      size: 16,
+                                    ),
                                   ),
+                                ],
+                              ),
+                              const SizedBox(height: 8.0),
+                              DottedDivider(),
+                              const SizedBox(height: 16.0),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        const Icon(
+                                          CupertinoIcons.exclamationmark_circle,
+                                          size: 75,
+                                          color: Constants.primaryColor,
+                                        ),
+                                        const SizedBox(height: 16.0),
+                                        SizedBox(
+                                          width: 256,
+                                          child: Text(
+                                            "Your about to topup your mobile number (${_phoneController.text}) with ${_amountController.text} ${networksAirtime[_current].name} airtime.",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiary,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(height: 24.0),
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0,
+                                        ),
+                                        child: PrimaryButton(
+                                          buttonText: "Confirm",
+                                          bgColor: Theme.of(context)
+                                              .colorScheme
+                                              .primaryContainer,
+                                          onPressed: () {
+                                            var _filteredAmount =
+                                                _amountController.text
+                                                    .replaceAll(",", "");
+                                            var _removeSign = _filteredAmount
+                                                .replaceAll("₦", "");
+                                            Get.back();
+                                            Get.to(
+                                              PayNow(
+                                                title: 'Airtime Topup',
+                                                manager: widget.manager,
+                                                customerData: {},
+                                                payload: {
+                                                  "type": "airtime",
+                                                  "amount":
+                                                      double.parse(_removeSign),
+                                                  "product_type_id": int.parse(
+                                                      _controller.airtimeData
+                                                          .value['id']),
+                                                  "network_id": _controller
+                                                      .selectedAirtimeNetwork
+                                                      .value['id'],
+                                                  "phone":
+                                                      _phoneController.text,
+                                                  "name": _controller
+                                                      .selectedAirtimeNetwork
+                                                      .value['name']
+                                                      .toLowerCase()
+                                                },
+                                              ),
+                                              transition: Transition.cupertino,
+                                            );
+                                            // _sendRequest();
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                );
-              }
-            },
-          ),
-        ],
-      ),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
     );
   }
 

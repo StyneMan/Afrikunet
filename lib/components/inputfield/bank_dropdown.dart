@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 
 typedef void InitCallback(String value);

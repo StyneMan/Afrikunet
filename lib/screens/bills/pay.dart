@@ -1,146 +1,149 @@
+import 'dart:convert';
+
 import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/dividers/dotted_divider.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
+import 'package:afrikunet/helper/state/payment_manager.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/screens/payment/payment_method_full.dart';
+import 'package:afrikunet/screens/payment/payment_options.dart';
+import 'package:afrikunet/screens/payment/payment_view.dart';
 import 'package:afrikunet/screens/success_screen.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
-class PayNow extends StatelessWidget {
+class PayNow extends StatefulWidget {
   final String title;
   final PreferenceManager manager;
-  const PayNow({
+  var payload;
+  var customerData;
+  final String dataVal;
+  PayNow({
     Key? key,
     required this.title,
     required this.manager,
+    required this.payload,
+    this.dataVal = "",
+    required this.customerData,
   }) : super(key: key);
 
   @override
+  State<PayNow> createState() => _PayNowState();
+}
+
+class _PayNowState extends State<PayNow> {
+  final _controller = Get.find<StateController>();
+
+  bool _isChecked = false;
+  String _selectedPaymentName = "";
+
+  _onChecked(bool checked, String name) {
+    setState(() {
+      _isChecked = checked;
+      _selectedPaymentName = name;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Constants.secondaryColor,
-        automaticallyImplyLeading: true,
-        title: TextMedium(
-          text: title,
-          color: Colors.white,
-        ),
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          width: double.infinity,
-          height: double.infinity,
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 16.0,
+    return Obx(
+      () => LoadingOverlayPro(
+        isLoading: _controller.isLoading.value,
+        progressIndicator: const CircularProgressIndicator.adaptive(),
+        backgroundColor: Colors.black54,
+        child: Scaffold(
+          appBar: AppBar(
+            elevation: 0.0,
+            backgroundColor: Constants.secondaryColor,
+            automaticallyImplyLeading: true,
+            title: TextMedium(
+              text: widget.title,
+              color: Colors.white,
+            ),
+            centerTitle: true,
+          ),
+          body: SafeArea(
+            child: Container(
+              padding: const EdgeInsets.all(16.0),
+              width: double.infinity,
+              height: double.infinity,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 16.0,
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        FullPaymentMethod(onChecked: _onChecked),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: PrimaryButton(
+                      buttonText: "Pay",
+                      onPressed: !_isChecked
+                          ? null
+                          : () {
+                              // Get.to(page, arguments: )
+                              // Send Request for payment and trigger payment form
+                              var _payload = {
+                                "full_name":
+                                    "${widget.manager.getUser()['first_name']} ${widget.manager.getUser()['last_name']}",
+                                "phone":
+                                    widget.manager.getUser()['phone_number'],
+                                "email":
+                                    widget.manager.getUser()['email_address'],
+                                "amount": widget.payload['amount'],
+                                "merchant_id": '65d3404666a4d',
+                                "payment_type": 'card'
+                              };
+
+                              var _credentials = jsonEncode(_payload);
+
+                              if (kDebugMode) {
+                                print("$_credentials");
+                              }
+
+                              Codec<String, String> stringToBase64Url =
+                                  utf8.fuse(base64Url);
+                              String encoded =
+                                  stringToBase64Url.encode(_credentials);
+                              if (kDebugMode) {
+                                print("ENCODED BASE64 ::: $encoded");
+                              }
+
+                              // final _djks = Get.put(PaymentController());
+                              Get.lazyPut<PaymentController>(
+                                  () => PaymentController(),
+                                  fenix: true);
+
+                              Get.to(
+                                PaymentView(),
+                                arguments: {
+                                  'data': encoded,
+                                  'customerData': widget.customerData,
+                                  'payload': widget.payload,
+                                  'accessToken':
+                                      widget.manager.getAccessToken(),
+                                  'manager': widget.manager,
+                                  'selectedDataPlanName': widget.dataVal,
+                                },
+                              );
+                            },
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
               ),
-              const Expanded(
-                child: Column(
-                  children: [
-                    FullPaymentMethod(),
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: PrimaryButton(
-                  buttonText: "Pay",
-                  onPressed: () {
-                    Get.bottomSheet(
-                      Container(
-                        padding: const EdgeInsets.all(10.0),
-                        height: MediaQuery.of(context).size.height * 0.8,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(21),
-                            topRight: Radius.circular(21),
-                          ),
-                          color: Colors.white,
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                  icon: const Icon(
-                                    CupertinoIcons.xmark_circle,
-                                    size: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8.0),
-                            DottedDivider(),
-                            const SizedBox(height: 16.0),
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const Column(
-                                    children: [
-                                      Icon(
-                                        CupertinoIcons.exclamationmark_circle,
-                                        size: 75,
-                                        color: Constants.primaryColor,
-                                      ),
-                                      SizedBox(height: 16.0),
-                                      SizedBox(
-                                        width: 256,
-                                        child: Text(
-                                          "You are on the verge of acquiring prepaid electricity credits totaling 5700 for the meter with number 01348873****46.",
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(height: 24.0),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0,
-                                      ),
-                                      child: PrimaryButton(
-                                        buttonText: "Confirm",
-                                        onPressed: () {
-                                          Get.back();
-                                          Get.to(
-                                            SuccessPage(
-                                              isVoucher: true,
-                                              manager: manager,
-                                            ),
-                                            transition: Transition.cupertino,
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                  fontSize: 15,
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),

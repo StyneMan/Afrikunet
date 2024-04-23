@@ -60,10 +60,15 @@ class HistoryScreen extends StatelessWidget {
                             const SizedBox(
                               height: 4.0,
                             ),
-                            SvgPicture.asset(
-                              "assets/images/${tempHistory[index].icon}",
-                              color: index == 3 ? Colors.red : null,
-                            ),
+                            index == 2 || index == 5
+                                ? SvgPicture.asset(
+                                    "assets/images/${tempHistory[index].icon}",
+                                    color: index == 5 ? Colors.red : null,
+                                  )
+                                : SvgPicture.asset(
+                                    "assets/images/${tempHistory[0].icon}",
+                                    color: index == 3 ? Colors.red : null,
+                                  ),
                             const SizedBox(
                               width: 10.0,
                             ),

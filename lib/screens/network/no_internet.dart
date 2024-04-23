@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
-import 'package:afrikunet/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
@@ -28,9 +27,9 @@ class _NoInternetState extends State<NoInternet> {
       _controller.setLoading(false);
       _controller.hasInternetAccess.value = true;
       //Now go to where necessary from here...
-      Future.delayed(const Duration(milliseconds: 50), () {
-        Get.off(MyApp(), transition: Transition.cupertino);
-      });
+      // Future.delayed(const Duration(milliseconds: 50), () {
+      //   Get.off(MyApp(), transition: Transition.cupertino);
+      // });
     } on SocketException catch (e) {
       _controller.setLoading(false);
 

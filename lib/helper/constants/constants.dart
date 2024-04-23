@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:afrikunet/components/dialog/info_dialog.dart';
+import 'package:afrikunet/components/text/textComponents.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import "package:intl/intl.dart";
@@ -25,8 +28,9 @@ class Constants {
   static const Color shimmerBaseColor = Color.fromARGB(255, 203, 203, 203);
   static const Color shimmerHighlightColor = Colors.white;
 
-  static const baseURL =
-    "http://192.168.165.247:3000/bkapi"; //  "https://afrikunet-api-orcin.vercel.app/bkapi"; // 
+  static const baseURL = "https://afrikunet-api-orcin.vercel.app/bkapi";
+  // "http://192.168.1.35:3050/bkapi"; //
+
   static String pstk = "pk_test_40f544aec0415695c9fae0ba0819ee5bebcb6a5e";
 
   static String formatMoney(int amt) {
@@ -75,6 +79,50 @@ class Constants {
       backgroundColor: Colors.grey[800],
       textColor: Colors.white,
       fontSize: 16.0,
+    );
+  }
+
+  static showInfoDialog(
+      {required var context, required var message, required var status}) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) => InfoDialog(
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 40.0),
+                status == "success"
+                    ? Icon(
+                        CupertinoIcons.info_circle,
+                        size: 84,
+                        color: Theme.of(context).colorScheme.secondary,
+                      )
+                    : Icon(
+                        CupertinoIcons.xmark_circle_fill,
+                        size: 84,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                const SizedBox(height: 10.0),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextMedium(
+                    text: "$message".replaceAll("_", " "),
+                    color: Theme.of(context).colorScheme.tertiary,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 

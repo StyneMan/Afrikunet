@@ -140,10 +140,18 @@ class APIService {
     );
   }
 
-  Future<http.Response> contactSupport(
-      {var body, var accessToken, var email}) async {
+  Future getVTUs() async {
+    return await http.get(
+      Uri.parse('${Constants.baseURL}/vtu/all'),
+      headers: {
+        "Content-type": "application/json",
+      },
+    );
+  }
+
+  Future<http.Response> initVtuRequest(String accessToken, Map body) async {
     return await client.post(
-      Uri.parse('${Constants.baseURL}/api/support/$email'),
+      Uri.parse('${Constants.baseURL}/vtu/request/initiate'),
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
@@ -152,9 +160,10 @@ class APIService {
     );
   }
 
-  Future<http.Response> updatePassword(Map body, String accessToken) async {
-    return await client.put(
-      Uri.parse('${Constants.baseURL}/api/resetPassword'),
+  Future<http.Response> initElectricityRequest(
+      String accessToken, Map body) async {
+    return await client.post(
+      Uri.parse('${Constants.baseURL}/vtu/request/electricity/initiate'),
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
@@ -163,64 +172,34 @@ class APIService {
     );
   }
 
-  Future<http.Response> getConnections(String accessToken, String email) async {
-    return await client.get(
-      Uri.parse('${Constants.baseURL}/api/users/connections/$email'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-    );
-  }
-
-  Future<List<dynamic>> getReviewsByUserIdStreamed(
-      {var accessToken, var email, var userId}) async {
-    final response = await client.get(
-      Uri.parse('${Constants.baseURL}/api/review/byUser/$email?userId=$userId'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-    );
-    if (response.statusCode == 200) {
-      debugPrint("REVES DATA >> ${response.body}");
-      Map<String, dynamic> map = jsonDecode(response.body);
-      return map['data'] as List<dynamic>;
-    } else {
-      throw Exception('Failed to fetch data from the backend');
-    }
-  }
-
-  Future<List<dynamic>> getJobsByUserIdStreamed(
-      {var accessToken, var email, var userId}) async {
-    final response = await client.get(
-      Uri.parse('${Constants.baseURL}/api/job/byUser/$email?userId=$userId'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-    );
-    if (response.statusCode == 200) {
-      debugPrint("MY JOBS DATA >> ${response.body}");
-      Map<String, dynamic> map = jsonDecode(response.body);
-      return map['data'] as List<dynamic>;
-    } else {
-      throw Exception('Failed to fetch data from the backend');
-    }
-  }
-
-  Future<http.Response> topupWallet(
-    Map body,
-    String accessToken,
-    String email,
-  ) async {
-    return await client.put(
-      Uri.parse('${Constants.baseURL}/api/wallet/topup/$email'),
+  Future<http.Response> initCableTVRequest(String accessToken, Map body) async {
+    return await client.post(
+      Uri.parse('${Constants.baseURL}/vtu/request/cable-tv/initiate'),
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
       },
       body: jsonEncode(body),
+    );
+  }
+
+  Future<http.Response> getPlans(String serviceId) async {
+    return await http.get(
+      Uri.parse('${Constants.baseURL}/vtu/$serviceId/plans'),
+      headers: {
+        "Content-type": "application/json",
+      },
+    );
+  }
+
+  Future<http.Response> initPayment(String accessToken, var encodedData) async {
+    return await client.post(
+      Uri.parse('${Constants.baseURL}/vtu/request/payment/initiate'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+      body: jsonEncode(encodedData),
     );
   }
 }
