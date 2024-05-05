@@ -86,9 +86,11 @@ class _ElectricityFormState extends State<ElectricityForm> {
 
   @override
   void initState() {
-    setState(() {
-      _phoneController.text = widget.manager.getUser()['phone_number'];
-    });
+    if (mounted) {
+      setState(() {
+        _phoneController.text = widget.manager.getUser()['phone_number'] ?? "";
+      });
+    }
     super.initState();
   }
 

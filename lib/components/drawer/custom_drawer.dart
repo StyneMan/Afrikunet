@@ -16,6 +16,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/model/drawer/drawermodel.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -33,6 +34,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   List<DrawerModel> drawerList = [];
 
   final _controller = Get.find<StateController>();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   _initAuth() {
     setState(() {
@@ -90,12 +92,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
 
   _logout() async {
-    _controller.setLoading(true);
-    Future.delayed(const Duration(seconds: 2), () {
+    try {
+      _controller.setLoading(true);
+      await _googleSignIn.signOut();
+      Future.delayed(const Duration(seconds: 2), () {
+        _controller.setLoading(false);
+        widget.manager.clearProfile();
+
+        Get.offAll(const GetStarted());
+      });
+    } catch (e) {
       _controller.setLoading(false);
-      widget.manager.clearProfile();
-      Get.offAll(const GetStarted());
-    });
+      print("Log out Error ===> $e");
+    }
   }
 
   Future<void> _launchInBrowser(String url) async {

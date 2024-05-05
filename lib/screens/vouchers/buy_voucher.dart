@@ -54,37 +54,24 @@ class _BuyVoucherState extends State<BuyVoucher> {
         centerTitle: false,
       ),
       body: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        padding: const EdgeInsets.symmetric(
+          vertical: 16.0,
+        ),
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: _amountSection(context),
           ),
           const SizedBox(height: 32.0),
-          const Padding(
-            padding: EdgeInsets.only(
+          Padding(
+            padding: const EdgeInsets.only(
               left: 16.0,
               bottom: 16.0,
+              right: 16.0,
             ),
-            child: VoucherType(),
-          ),
-          const SizedBox(height: 16.0),
-          Padding(
-            padding: const EdgeInsets.all(
-              16.0,
-            ),
-            child: PrimaryButton(
-              fontSize: 16,
-              buttonText: "Pay  ₦100,000",
-              bgColor: Theme.of(context).colorScheme.primaryContainer,
-              onPressed: () {
-                Get.to(
-                  ConfirmPurchase(
-                    manager: widget.manager,
-                  ),
-                  transition: Transition.cupertino,
-                );
-              },
+            child: VoucherType(
+              currentAmount: _amountController.text,
+              manager: widget.manager,
             ),
           ),
         ],
@@ -114,6 +101,10 @@ class _BuyVoucherState extends State<BuyVoucher> {
                 setState(() {
                   _amountController.text = value.toString().replaceAll("-", "");
                 });
+              } else {
+                setState(() {
+                  _amountController.text = value;
+                });
               }
             },
             strokeColor:
@@ -127,7 +118,7 @@ class _BuyVoucherState extends State<BuyVoucher> {
             },
           ),
           const SizedBox(
-            height: 16.0,
+            height: 8.0,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,

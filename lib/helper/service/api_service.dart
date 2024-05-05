@@ -55,7 +55,7 @@ class APIService {
   Future<http.Response> googleAuthRedirect({var authHeaders}) async {
     return await http.get(
         Uri.parse('${Constants.baseURL}/auth/google/redirect'),
-        headers: authHeaders);
+        headers: authHeaders,);
   }
 
   Future<http.Response> forgotPass(Map body) async {
@@ -200,6 +200,17 @@ class APIService {
         "Authorization": "Bearer " + accessToken,
       },
       body: jsonEncode(encodedData),
+    );
+  }
+
+  Future<http.Response> buyVoucher(String accessToken, var payload) async {
+    return await client.post(
+      Uri.parse('${Constants.baseURL}/vouchers/purchase'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+      body: jsonEncode(payload),
     );
   }
 }

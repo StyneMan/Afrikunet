@@ -1,4 +1,4 @@
-import 'package:afrikunet/screens/payment/payment_options.dart';
+import 'package:afrikunet/screens/payment/payment_options.old.dart';
 import 'package:flutter/material.dart';
 
 class CardUtils {

@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'dart:io';
 
 // import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:afrikunet/helper/state/payment_manager.dart';
 import 'package:afrikunet/screens/onboarding/onboarding.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:afrikunet/components/dashboard/dashboard.dart';
@@ -207,8 +206,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           );
         } else {
           // Loading is done, return the app:
-          // print("CurrentTheme :: $_currentThemeMode");
-
           return Obx(
             () => GetMaterialApp(
               debugShowCheckedModeBanner: false,

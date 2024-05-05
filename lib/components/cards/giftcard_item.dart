@@ -2,6 +2,7 @@ import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get_utils/get_utils.dart';
 
 class GiftCardItem extends StatelessWidget {
   final String bgImage;
@@ -9,6 +10,7 @@ class GiftCardItem extends StatelessWidget {
   final String amount;
   final String code;
   final String type;
+  final String voucherType;
   final double width;
 
   const GiftCardItem({
@@ -18,6 +20,7 @@ class GiftCardItem extends StatelessWidget {
     required this.code,
     required this.logo,
     required this.type,
+    this.voucherType = "gift card",
     this.width = 350,
   }) : super(key: key);
 
@@ -35,7 +38,9 @@ class GiftCardItem extends StatelessWidget {
             ),
             color: type == "blue"
                 ? Constants.primaryColor
-                : const Color(0xFFC5C5CF),
+                : type == "black"
+                    ? Colors.black
+                    : const Color(0xFFC5C5CF),
             borderRadius: BorderRadius.circular(10.0),
           ),
         ),
@@ -57,9 +62,11 @@ class GiftCardItem extends StatelessWidget {
                     scale: 1.5,
                   ),
                   Text(
-                    "$amount units",
+                    "$amount",
                     style: TextStyle(
-                      color: type == "blue" ? Colors.white : Colors.black,
+                      color: type == "blue" || type == "black"
+                          ? Colors.white
+                          : Colors.black,
                       fontSize: 24,
                       fontWeight: FontWeight.w500,
                     ),
@@ -74,26 +81,35 @@ class GiftCardItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: type == "blue" ? Colors.white : Colors.black,
-                            width: 1.0,
+                      SizedBox(
+                        width: 125,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: type == "blue" || type == "black"
+                                  ? Colors.white
+                                  : Colors.black,
+                              width: 1.0,
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: TextBody2(
-                            text: code,
-                            color: type == "blue" ? Colors.white : Colors.black,
+                          child: Center(
+                            child: TextBody2(
+                              text: code,
+                              color: type == "blue" || type == "black"
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
                           ),
                         ),
                       ),
                       const SizedBox(height: 1.0),
                       Text(
-                        "Gift Card",
+                        voucherType.capitalize!,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: type == "blue" ? Colors.white : Colors.black,
+                          color: type == "blue" || type == "black"
+                              ? Colors.white
+                              : Colors.black,
                           fontSize: 36,
                           fontFamily: "OpenSans",
                           fontWeight: FontWeight.bold,
@@ -103,7 +119,9 @@ class GiftCardItem extends StatelessWidget {
                         "www.afrikunet.com",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: type == "blue" ? Colors.white : Colors.black,
+                          color: type == "blue" || type == "black"
+                              ? Colors.white
+                              : Colors.black,
                           fontSize: 13,
                           fontFamily: "OpenSans",
                           fontWeight: FontWeight.w400,
@@ -119,7 +137,9 @@ class GiftCardItem extends StatelessWidget {
                   "Music, Games, Apps, Movies, Books and more...",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: type == "blue" ? Colors.white : Colors.black,
+                    color: type == "blue" || type == "black"
+                        ? Colors.white
+                        : Colors.black,
                     fontSize: 10,
                     fontFamily: "OpenSans",
                     fontWeight: FontWeight.w400,
@@ -140,14 +160,18 @@ class GiftCardItem extends StatelessWidget {
               SvgPicture.asset(
                 "assets/images/asterisk.svg",
                 width: 10.0,
-                color: type == "blue" ? Colors.white : Colors.black,
+                color: type == "blue" || type == "black"
+                    ? Colors.white
+                    : Colors.black,
               ),
               const SizedBox(width: 1.0),
               Text(
                 "Pay",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: type == "blue" ? Colors.white : Colors.black,
+                  color: type == "blue" || type == "black"
+                      ? Colors.white
+                      : Colors.black,
                   fontSize: 10,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
@@ -157,14 +181,18 @@ class GiftCardItem extends StatelessWidget {
               SvgPicture.asset(
                 "assets/images/asterisk.svg",
                 width: 10.0,
-                color: type == "blue" ? Colors.white : Colors.black,
+                color: type == "blue" || type == "black"
+                    ? Colors.white
+                    : Colors.black,
               ),
               const SizedBox(width: 1.0),
               Text(
                 "Get Paid",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: type == "blue" ? Colors.white : Colors.black,
+                  color: type == "blue" || type == "black"
+                      ? Colors.white
+                      : Colors.black,
                   fontSize: 10,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
@@ -174,14 +202,18 @@ class GiftCardItem extends StatelessWidget {
               SvgPicture.asset(
                 "assets/images/asterisk.svg",
                 width: 10.0,
-                color: type == "blue" ? Colors.white : Colors.black,
+                color: type == "blue" || type == "black"
+                    ? Colors.white
+                    : Colors.black,
               ),
               const SizedBox(width: 1.0),
               Text(
                 "Split",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: type == "blue" ? Colors.white : Colors.black,
+                  color: type == "blue" || type == "black"
+                      ? Colors.white
+                      : Colors.black,
                   fontSize: 10,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
@@ -191,14 +223,18 @@ class GiftCardItem extends StatelessWidget {
               SvgPicture.asset(
                 "assets/images/asterisk.svg",
                 width: 10.0,
-                color: type == "blue" ? Colors.white : Colors.black,
+                color: type == "blue" || type == "black"
+                    ? Colors.white
+                    : Colors.black,
               ),
               const SizedBox(width: 1.0),
               Text(
                 "Shop",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: type == "blue" ? Colors.white : Colors.black,
+                  color: type == "blue" || type == "black"
+                      ? Colors.white
+                      : Colors.black,
                   fontSize: 10,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
@@ -208,14 +244,18 @@ class GiftCardItem extends StatelessWidget {
               SvgPicture.asset(
                 "assets/images/asterisk.svg",
                 width: 10.0,
-                color: type == "blue" ? Colors.white : Colors.black,
+                color: type == "blue" || type == "black"
+                    ? Colors.white
+                    : Colors.black,
               ),
               const SizedBox(width: 1.0),
               Text(
                 "Share",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: type == "blue" ? Colors.white : Colors.black,
+                  color: type == "blue" || type == "black"
+                      ? Colors.white
+                      : Colors.black,
                   fontSize: 10,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,
@@ -225,14 +265,18 @@ class GiftCardItem extends StatelessWidget {
               SvgPicture.asset(
                 "assets/images/asterisk.svg",
                 width: 10.0,
-                color: type == "blue" ? Colors.white : Colors.black,
+                color: type == "blue" || type == "black"
+                    ? Colors.white
+                    : Colors.black,
               ),
               const SizedBox(width: 1.0),
               Text(
                 "Connect",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: type == "blue" ? Colors.white : Colors.black,
+                  color: type == "blue" || type == "black"
+                      ? Colors.white
+                      : Colors.black,
                   fontSize: 10,
                   fontFamily: "OpenSans",
                   fontWeight: FontWeight.w400,

@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:afrikunet/components/buttons/google.dart';
+import 'package:afrikunet/components/dashboard/dashboard.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/forms/login/loginform.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/helper/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +12,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:afrikunet/components/dividers/horz_text_divider.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../helper/state/state_manager.dart';
 
@@ -38,45 +43,46 @@ class _LoginState extends State<Login> {
         scopes: ['email'],
       ).signIn();
 
-      debugPrint("GOOGLE USER RESP >> ${googleUser}");
-      debugPrint("GOOGLE USER RESP >> ${googleUser?.displayName}");
-      debugPrint("GOOGLE USER RESP >> ${googleUser?.email}");
+      Map _payload = {
+        "first_name": googleUser?.displayName?.split(' ')[0].toLowerCase(),
+        "last_name": ((googleUser?.displayName ?? "").contains(' ')
+                ? googleUser?.displayName?.split(' ')[1]
+                : " ")
+            ?.toLowerCase(),
+        "email_address": googleUser?.email,
+        "photo": '${googleUser?.photoUrl}',
+      };
+      _controller.setLoading(true);
 
-      if (googleUser != null) {
-        final auth = await googleUser.authentication;
-        String? idToken = auth.idToken;
-        if (idToken != null) {
-          // call the server with ID token
-        }
-        // final _redirectResponse = await APIService().googleAuthRedirect(
-        //   authHeaders: authHeaders,
-        // );
+      print("PAYLOAD ::: ${_payload}");
 
-        // debugPrint("REDIRECT RESPONSE ::: ${_redirectResponse.body}");
-        // final response = await http.get(
-        //   Uri.parse('http://your-nestjs-backend/auth/google/callback'),
-        //   headers: authHeaders,
-        // );
+      final _resp = await APIService().googleAuth(_payload);
+
+      debugPrint("Google Server Respone >> ${_resp.body}");
+      _controller.setLoading(false);
+      if (_resp.statusCode >= 200 && _resp.statusCode <= 299) {
+        Map<String, dynamic> _mapper = jsonDecode(_resp.body);
+        final _prefs = await SharedPreferences.getInstance();
+        //Save user data and preferences
+        String userData = jsonEncode(_mapper['user']);
+        _prefs.setString("userData", userData);
+        _controller.setUserData(_mapper['user']);
+        _manager?.setUserData(userData);
+        _manager?.saveAccessToken(_mapper['accessToken']);
+        _prefs.setString("accessToken", _mapper['accessToken']);
+        _controller.onInit();
+
+        _prefs.setBool("loggedIn", true);
+        Get.to(
+          Dashboard(manager: _manager!),
+          transition: Transition.cupertino,
+        );
       } else {
-        // Operation failed right here
+        Map<String, dynamic> _errMap = jsonDecode(_resp.body);
+        Constants.toast("${_errMap['message']}");
       }
-
-      // Obtain the auth details from the request
-      // final googleAuth = await googleUser?.authentication;
-      // debugPrint("Google ID TOKEN >> ${googleAuth?.idToken}");
-      // debugPrint("Google ID TOKEN >> ${googleAuth?.}");
-
-      // Map _payload = {
-      //   "first_name": googleUser?.displayName?.split(' ')[0].toLowerCase(),
-      //   "last_name": googleUser?.displayName?.split(' ')[1].toLowerCase(),
-      //   "email_address": googleUser?.email,
-      //   "photo": '${googleUser?.photoUrl}',
-      // };
-
-      // final resp = await APIService().googleAuth(_payload);
-
-      // debugPrint("Google Server Respone >> ${resp.body}");
     } catch (e) {
+      _controller.setLoading(false);
       debugPrint("ERR >> $e");
     }
   }

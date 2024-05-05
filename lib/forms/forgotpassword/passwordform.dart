@@ -40,7 +40,7 @@ class _PasswordFormState extends State<PasswordForm> {
       };
 
       final _response = await APIService().forgotPass(_payload);
-      debugPrint("LOGIN RESPONSE :: ${_response.body}");
+      debugPrint("FORGOT RESPONSE :: ${_response.body}");
       _controller.setLoading(false);
 
       if (_response.statusCode >= 200 && _response.statusCode <= 299) {

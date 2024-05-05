@@ -1,17 +1,13 @@
 import 'dart:convert';
 
 import 'package:afrikunet/components/buttons/primary.dart';
-import 'package:afrikunet/components/dividers/dotted_divider.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
-import 'package:afrikunet/helper/service/api_service.dart';
 import 'package:afrikunet/helper/state/payment_manager.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/screens/payment/payment_method_full.dart';
-import 'package:afrikunet/screens/payment/payment_options.dart';
 import 'package:afrikunet/screens/payment/payment_view.dart';
-import 'package:afrikunet/screens/success_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -60,11 +56,11 @@ class _PayNowState extends State<PayNow> {
         child: Scaffold(
           appBar: AppBar(
             elevation: 0.0,
-            backgroundColor: Constants.secondaryColor,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             automaticallyImplyLeading: true,
             title: TextMedium(
               text: widget.title,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.tertiary,
             ),
             centerTitle: true,
           ),
@@ -81,7 +77,10 @@ class _PayNowState extends State<PayNow> {
                   Expanded(
                     child: Column(
                       children: [
-                        FullPaymentMethod(onChecked: _onChecked),
+                        FullPaymentMethod(
+                          onChecked: _onChecked,
+                          manager: widget.manager,
+                        ),
                       ],
                     ),
                   ),
@@ -89,6 +88,7 @@ class _PayNowState extends State<PayNow> {
                     width: double.infinity,
                     child: PrimaryButton(
                       buttonText: "Pay",
+                      bgColor: Theme.of(context).colorScheme.primaryContainer,
                       onPressed: !_isChecked
                           ? null
                           : () {
@@ -135,6 +135,7 @@ class _PayNowState extends State<PayNow> {
                                       widget.manager.getAccessToken(),
                                   'manager': widget.manager,
                                   'selectedDataPlanName': widget.dataVal,
+                                  'usecase': 'vtu',
                                 },
                               );
                             },

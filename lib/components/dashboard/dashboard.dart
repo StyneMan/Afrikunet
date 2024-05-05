@@ -1,18 +1,26 @@
+import 'dart:convert';
 import 'dart:io';
 
 // import 'package:shared_preferences/shared_preferences.dart';
+import 'package:afrikunet/components/buttons/primary.dart';
+import 'package:afrikunet/components/dialog/custom_dialog.dart';
+import 'package:afrikunet/components/text/textComponents.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/screens/home/home.dart';
+import 'package:afrikunet/screens/profile/edit_profile.dart';
 import 'package:afrikunet/screens/profile/profile.dart';
 import 'package:afrikunet/screens/settings/settings.dart';
 import 'package:afrikunet/screens/vouchers/my_vouchers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:afrikunet/screens/network/no_internet.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
   final bool showProfile;
@@ -33,8 +41,85 @@ class _DashboardState extends State<Dashboard> {
 
   final _controller = Get.find<StateController>();
 
+  _init() async {
+    final _prefs = await SharedPreferences.getInstance();
+    final _token = _prefs.getString("accessToken") ?? "";
+    final _user = _prefs.getString("user") ?? "";
+    Map<String, dynamic> _userMap = jsonDecode(_user);
+
+    if (_userMap['is_profile_set'] == false) {
+      // Show Dialog here
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => SizedBox(
+          height: MediaQuery.of(context).size.height * 0.4,
+          width: MediaQuery.of(context).size.width * 0.98,
+          child: CustomDialog(
+            ripple: SvgPicture.asset(
+              "assets/images/check_effect.svg",
+              width: (Constants.avatarRadius + 2),
+              height: (Constants.avatarRadius + 2),
+            ),
+            avtrBg: Colors.transparent,
+            avtrChild: const Icon(
+              CupertinoIcons.info_circle,
+              size: 86,
+            ),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 16.0,
+                horizontal: 36.0,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  TextMedium(
+                    text: "Profile Setup Required!",
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                  const SizedBox(
+                    height: 5.0,
+                  ),
+                  TextSmall(
+                    text:
+                        "You must setup your profile to continue using this app",
+                    fontWeight: FontWeight.w400,
+                    align: TextAlign.center,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                  const SizedBox(
+                    height: 21,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.36,
+                    child: PrimaryButton(
+                      buttonText: "Complete Profile",
+                      foreColor: Colors.white,
+                      bgColor: Theme.of(context).colorScheme.primaryContainer,
+                      onPressed: () {
+                        Get.to(
+                          EditProfile(manager: widget.manager),
+                          transition: Transition.cupertino,
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   void initState() {
+    _init();
     super.initState();
   }
 

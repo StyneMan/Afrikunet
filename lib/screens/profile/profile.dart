@@ -9,7 +9,7 @@ import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/helper/service/api_service.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
-import 'package:afrikunet/screens/auth/login/login.dart';
+import 'package:afrikunet/screens/getstarted/getstarted.dart';
 import 'package:afrikunet/screens/security/security.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -17,8 +17,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'edit_profile.dart';
 
 class ProfilePage extends StatefulWidget {
   final PreferenceManager manager;
@@ -34,8 +36,11 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   bool _isImagePicked = false;
   final _controller = Get.find<StateController>();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   var _croppedFile;
+
+  var _items = [];
 
   _onImageSelected(var file) {
     setState(() {
@@ -95,6 +100,62 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (mounted) {
+      setState(() {
+        _items = [
+          {
+            "icon": Icon(
+              CupertinoIcons.person_crop_circle,
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
+            'title': 'Edit Profile',
+            "description": "Setup and update your profile information",
+            "component": EditProfile(manager: widget.manager),
+            "link": null,
+          },
+          {
+            "icon": Icon(
+              Icons.lock_outline_rounded,
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
+            "title": 'Security',
+            "description": '2FA, App lock, Pin & Biometrics',
+            "component": AppSecurity(
+              manager: widget.manager,
+            ),
+            "link": null,
+          },
+          {
+            "icon": SvgPicture.asset(
+              "assets/images/people.svg",
+              color: Theme.of(context).colorScheme.tertiary,
+              width: 22,
+              height: 18,
+            ),
+            "title": 'About Us',
+            "description": 'FAQs, Privacy Policy, Contact us',
+            "component": null,
+            "link": "https://afrikunet.com",
+          },
+          {
+            "icon": Icon(
+              CupertinoIcons.delete,
+              color: Theme.of(context).colorScheme.tertiary,
+              size: 23,
+            ),
+            "title": 'Delete Account',
+            "description": '',
+            "component": null,
+            "link": null,
+          },
+        ];
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -122,7 +183,9 @@ class _ProfilePageState extends State<ProfilePage> {
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
-                    vertical: 16.0, horizontal: 10.0),
+                  vertical: 14.0,
+                  horizontal: 10.0,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -144,17 +207,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                         color: Constants.primaryColor,
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.36,
+                                                0.32,
                                         height:
                                             MediaQuery.of(context).size.width *
-                                                0.36,
+                                                0.32,
                                       ),
                                       fit: BoxFit.cover,
                                       width: MediaQuery.of(context).size.width *
-                                          0.36,
+                                          0.32,
                                       height:
                                           MediaQuery.of(context).size.width *
-                                              0.36,
+                                              0.32,
                                     )
                                   : CachedNetworkImage(
                                       imageUrl:
@@ -166,16 +229,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                         color: Constants.primaryColor,
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.40,
+                                                0.36,
                                         height:
                                             MediaQuery.of(context).size.width *
-                                                0.40,
+                                                0.36,
                                       ),
+                                      fit: BoxFit.cover,
                                       width: MediaQuery.of(context).size.width *
-                                          0.40,
+                                          0.36,
                                       height:
                                           MediaQuery.of(context).size.width *
-                                              0.40,
+                                              0.36,
                                     ),
                             ),
                           ),
@@ -211,7 +275,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     const SizedBox(
-                      height: 8.0,
+                      height: 6.0,
                     ),
                     Center(
                       child: TextLarge(
@@ -240,174 +304,95 @@ class _ProfilePageState extends State<ProfilePage> {
                         const SizedBox(
                           height: 32.0,
                         ),
-                        TextButton(
-                          onPressed: () {
-                            Get.to(
-                              AppSecurity(
-                                manager: widget.manager,
-                              ),
-                              transition: Transition.cupertino,
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.lock_outline_rounded,
-                                    color:
-                                        Theme.of(context).colorScheme.tertiary,
-                                  ),
-                                  const SizedBox(
-                                    width: 18.0,
-                                  ),
-                                  Column(
+                        _items.isNotEmpty
+                            ? ListView.separated(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return TextButton(
+                                    onPressed: () {
+                                      if (_items[index]['component'] != null) {
+                                        Get.to(
+                                          _items[index]['component'],
+                                          transition: Transition.cupertino,
+                                        );
+                                      }
+
+                                      if (_items[index]['link'] != null) {
+                                        _launchInBrowser(_items[index]['link']);
+                                      }
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            _items[index]['icon'],
+                                            const SizedBox(
+                                              width: 18.0,
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                TextMedium(
+                                                  text:
+                                                      "${_items[index]['title']}",
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                                TextBody2(
+                                                  text:
+                                                      "${_items[index]['description']}",
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Icon(
+                                          Icons.chevron_right,
+                                          size: 21,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return const Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.stretch,
                                     children: [
-                                      TextMedium(
-                                        text: "Security",
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary,
-                                        fontWeight: FontWeight.w400,
+                                      SizedBox(
+                                        height: 2.0,
                                       ),
-                                      TextBody2(
-                                        text: "2FA, App lock, Pin & Biometrics",
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary,
+                                      Divider(),
+                                      SizedBox(
+                                        height: 2.0,
                                       ),
                                     ],
-                                  ),
-                                ],
-                              ),
-                              Icon(
-                                Icons.chevron_right,
-                                size: 21,
-                                color: Theme.of(context).colorScheme.tertiary,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 2.0,
-                        ),
-                        const Divider(),
-                        const SizedBox(
-                          height: 2.0,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            _launchInBrowser("https://afrikunet.com");
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    "assets/images/people.svg",
-                                    color:
-                                        Theme.of(context).colorScheme.tertiary,
-                                    width: 22,
-                                    height: 18,
-                                  ),
-                                  const SizedBox(
-                                    width: 16.0,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      TextMedium(
-                                        text: "About Us",
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      TextBody2(
-                                        text:
-                                            "FAQs, Privacy Policy, Contact us",
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Icon(
-                                Icons.chevron_right,
-                                size: 21,
-                                color: Theme.of(context).colorScheme.tertiary,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 2.0,
-                        ),
-                        const Divider(),
-                        const SizedBox(
-                          height: 2.0,
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    CupertinoIcons.delete,
-                                    color:
-                                        Theme.of(context).colorScheme.tertiary,
-                                    size: 23,
-                                  ),
-                                  const SizedBox(
-                                    width: 16.0,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      TextMedium(
-                                        text: "Delete Account",
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Icon(
-                                Icons.chevron_right,
-                                size: 21,
-                                color: Theme.of(context).colorScheme.tertiary,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 2.0,
-                        ),
+                                  );
+                                },
+                                itemCount: _items.length,
+                              )
+                            : const SizedBox(),
                         const Divider(),
                         const SizedBox(
                           height: 2.0,
@@ -542,13 +527,12 @@ class _ProfilePageState extends State<ProfilePage> {
     Get.back();
     try {
       _controller.setLoading(true);
-      final _prefs = await SharedPreferences.getInstance();
-
-      Future.delayed(const Duration(seconds: 3), () {
+      await _googleSignIn.signOut();
+      Future.delayed(const Duration(seconds: 2), () {
         _controller.setLoading(false);
         widget.manager.clearProfile();
-        _prefs.clear();
-        Get.offAll(const Login());
+
+        Get.offAll(const GetStarted());
       });
     } catch (e) {
       _controller.setLoading(false);

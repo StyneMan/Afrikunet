@@ -12,9 +12,11 @@ import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 class ConfirmPurchase extends StatefulWidget {
   final PreferenceManager manager;
+  final Map payload;
   const ConfirmPurchase({
     Key? key,
     required this.manager,
+    required this.payload,
   }) : super(key: key);
 
   @override
@@ -27,6 +29,16 @@ class _ConfirmPurchaseState extends State<ConfirmPurchase> {
   final _formKey = GlobalKey<FormState>();
 
   bool _isValidEmail = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (mounted) {
+      setState(() {
+        _emailController.text = widget.manager.getUser()['email_address'];
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -72,101 +84,125 @@ class _ConfirmPurchaseState extends State<ConfirmPurchase> {
             ),
             centerTitle: true,
           ),
-          body: Form(
-            key: _formKey,
-            child: ListView(
-              padding: const EdgeInsets.all(16.0),
-              children: [
-                const SizedBox(height: 16.0),
-                Text(
-                  "Purchase Info",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.tertiary,
-                        fontFamily: 'OpenSans',
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-                const SizedBox(height: 32.0),
-                const SizedBox(
-                  height: 230,
-                  width: double.infinity,
-                  child: GiftCardItem(
-                    width: double.infinity,
-                    amount: "100,000",
-                    bgImage: "assets/images/giftcard_bg.png",
-                    code: "XDT12IUNWpo1HN",
-                    logo: "assets/images/logo_blue.png",
-                    type: "white",
+          body: SafeArea(
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                padding: const EdgeInsets.all(16.0),
+                children: [
+                  const SizedBox(height: 16.0),
+                  Text(
+                    "Purchase Info",
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.tertiary,
+                          fontFamily: 'OpenSans',
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
-                ),
-                const SizedBox(height: 32.0),
-                Text(
-                  "Alt email for 2FA",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.tertiary,
-                        fontFamily: 'OpenSans',
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-                const SizedBox(height: 10.0),
-                CustomTextField(
-                  placeholder: "Enter a valid email",
-                  onChanged: (value) {
-                    if (value.isEmpty) {
-                      setState(() {
-                        _isValidEmail = false;
-                      });
-                    } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
-                        .hasMatch(value)) {
-                      setState(() {
-                        _isValidEmail = false;
-                      });
-                    } else {
-                      setState(() {
-                        _isValidEmail = true;
-                      });
-                    }
-                  },
-                  endIcon: _isValidEmail
-                      ? const Icon(
-                          Icons.done,
-                          color: Colors.green,
-                        )
-                      : const Icon(
-                          CupertinoIcons.xmark_circle_fill,
-                          color: Colors.red,
+                  const SizedBox(height: 32.0),
+                  SizedBox(
+                    height: 230,
+                    width: double.infinity,
+                    child: GiftCardItem(
+                      width: double.infinity,
+                      amount: widget.payload['amount'],
+                      bgImage: "assets/images/giftcard_bg.png",
+                      code: "XDT12IUNWpo1HN",
+                      logo: widget.payload['voucherIndex'] != 1
+                          ? "assets/images/afrikunet_logo_white.png"
+                          : "assets/images/logo_blue.png",
+                      type: widget.payload['voucherIndex'] == 0
+                          ? "blue"
+                          : widget.payload['voucherIndex'] == 1
+                              ? "white"
+                              : "black",
+                      voucherType: widget.payload['voucherType'],
+                    ),
+                  ),
+                  const SizedBox(height: 32.0),
+                  Text(
+                    "Alt email for 2FA",
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.tertiary,
+                          fontFamily: 'OpenSans',
+                          fontWeight: FontWeight.w600,
                         ),
-                  controller: _emailController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email or phone';
-                    }
-                    if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
-                        .hasMatch(value)) {
-                      return 'Enter a valid email address';
-                    }
-                    return null;
-                  },
-                  inputType: TextInputType.emailAddress,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.15),
-                PrimaryButton(
-                  fontSize: 16,
-                  buttonText: "Confirm",
-                  bgColor: Theme.of(context).colorScheme.primaryContainer,
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Get.to(
-                        PaymentOptions(
-                          manager: widget.manager,
-                        ),
-                        transition: Transition.cupertino,
-                      );
-                      // _showOTPDialog();
-                    }
-                  },
-                ),
-              ],
+                  ),
+                  const SizedBox(height: 10.0),
+                  CustomTextField(
+                    placeholder: "Enter a valid email",
+                    onChanged: (value) {
+                      if (value.isEmpty) {
+                        setState(() {
+                          _isValidEmail = false;
+                        });
+                      } else if (!RegExp(
+                              r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
+                          .hasMatch(value)) {
+                        setState(() {
+                          _isValidEmail = false;
+                        });
+                      } else {
+                        setState(() {
+                          _isValidEmail = true;
+                        });
+                      }
+                    },
+                    endIcon: _isValidEmail
+                        ? const Icon(
+                            Icons.done,
+                            color: Colors.green,
+                          )
+                        : const Icon(
+                            CupertinoIcons.xmark_circle_fill,
+                            color: Colors.red,
+                          ),
+                    controller: _emailController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return null;
+                      }
+                      if (value != null || value.isNotEmpty) {
+                        if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
+                            .hasMatch(value)) {
+                          return 'Enter a valid email address';
+                        }
+                      }
+                      return null;
+                    },
+                    inputType: TextInputType.emailAddress,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+                  PrimaryButton(
+                    fontSize: 16,
+                    buttonText: "Confirm",
+                    bgColor: Theme.of(context).colorScheme.primaryContainer,
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // _purchaseVoucher();
+                        Get.to(
+                          PaymentOptions(
+                            manager: widget.manager,
+                            payload: {
+                              "voucherType": "${widget.payload['voucherType']}",
+                              "amount": "${widget.payload['amount']}"
+                                  .replaceAll("₦", "")
+                                  .replaceAll(",", ""),
+                              "voucherIndex": widget.payload['voucherIndex'],
+                              "email": _emailController.text.isEmpty
+                                  ? widget.manager.getUser()['email_address']
+                                  : _emailController.text,
+                              "phone": widget.manager.getUser()['phone_number'],
+                            },
+                            onChecked: (params, name) {},
+                          ),
+                          transition: Transition.cupertino,
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

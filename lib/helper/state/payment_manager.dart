@@ -12,13 +12,16 @@ import 'package:webview_flutter/webview_flutter.dart';
 class PaymentController extends GetxController {
   var isLoading = false.obs;
   final _controller = Get.find<StateController>();
-  // var data = Get.arguments['data'];
+  var data = Get.arguments['data'];
+
   // var orderId = Get.arguments['order_id'];
   final DateTime pageStartTime = DateTime.now();
 
   late WebViewController webviewController;
 
   _initWebview() {
+    print("ENCODED DATA PAYCONTROLLER ==>> ${data}");
+
     webviewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
@@ -38,16 +41,27 @@ class PaymentController extends GetxController {
             if (request.url
                 .startsWith('https://afrikunet.com/mobile/success/buy')) {
               // User has paid. Now render his/her service here
+              final usecase = Get.arguments['usecase'];
               final payload = Get.arguments['payload'];
               final customerData = Get.arguments['customerData'];
 
-              _initiatePurchase(
-                payload: payload,
-                customerData: customerData,
-                accessToken: Get.arguments['accessToken'],
-                manager: Get.arguments['manager'],
-                selectedDataPlanName: Get.arguments['selectedDataPlanName'],
-              );
+              if (usecase == "vtu") {
+                _initiatePurchase(
+                  payload: payload,
+                  customerData: customerData,
+                  accessToken: Get.arguments['accessToken'],
+                  manager: Get.arguments['manager'],
+                  selectedDataPlanName: Get.arguments['selectedDataPlanName'],
+                );
+              } else if (usecase == "buy-voucher") {
+                print("INITIATE BUY VOUCHER HERE :::");
+
+                _initiateBuyVoucher(
+                  payload: payload,
+                  accessToken: Get.arguments['accessToken'],
+                  manager: Get.arguments['manager'],
+                );
+              }
             }
 
             if (request.url
@@ -62,8 +76,8 @@ class PaymentController extends GetxController {
       ..loadRequest(
         Uri.parse(
           kDebugMode
-              ? 'https://test.afrikunet.com/mobile/buy?code=${Get.arguments['data']}'
-              : 'https://afrikunet.com/mobile/buy?code=${Get.arguments['data']}',
+              ? 'https://test.afrikunet.com/mobile/buy?code=$data'
+              : 'https://afrikunet.com/mobile/buy?code=$data',
         ),
       );
   }
@@ -226,6 +240,36 @@ class PaymentController extends GetxController {
       } catch (e) {
         _controller.setLoading(false);
       }
+    }
+  }
+
+  void _initiateBuyVoucher({
+    required var payload,
+    required var accessToken,
+    required var manager,
+  }) async {
+    try {
+      // _controller.setLoading(true);
+      Map _payload = {
+        "type": "${payload['voucherType']}".replaceAll(" ", "").toLowerCase(),
+        "amount": double.parse("${payload['amount']}"),
+        "email": "${payload['email']}",
+        "phone": double.parse("${payload['phone']}"),
+        "bg_type": payload['voucherIndex'] == 0
+            ? "blue"
+            : payload['voucherIndex'] == 1
+                ? "white"
+                : "black",
+      };
+
+      print("BUY VOUCHER PAYLOAD ::: ${_payload}");
+
+      final _resp = await APIService().buyVoucher(accessToken, _payload);
+      print("BUY VOUCHER RESPONSE ::: ${_resp.body}");
+      // _controller.setLoading(false);
+    } catch (e) {
+      debugPrint(e.toString());
+      // _controller.setLoading(false);
     }
   }
 

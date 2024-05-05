@@ -146,12 +146,12 @@ class _AirtimeTabState extends State<AirtimeTab> {
                         Container(
                           padding: const EdgeInsets.all(10.0),
                           height: MediaQuery.of(context).size.height * 0.8,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(21),
                               topRight: Radius.circular(21),
                             ),
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.surface,
                           ),
                           child: Column(
                             children: [
@@ -163,9 +163,12 @@ class _AirtimeTabState extends State<AirtimeTab> {
                                     onPressed: () {
                                       Get.back();
                                     },
-                                    icon: const Icon(
+                                    icon: Icon(
                                       CupertinoIcons.xmark_circle,
                                       size: 16,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .inverseSurface,
                                     ),
                                   ),
                                 ],
@@ -181,10 +184,12 @@ class _AirtimeTabState extends State<AirtimeTab> {
                                   children: [
                                     Column(
                                       children: [
-                                        const Icon(
+                                        Icon(
                                           CupertinoIcons.exclamationmark_circle,
                                           size: 75,
-                                          color: Constants.primaryColor,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .inverseSurface,
                                         ),
                                         const SizedBox(height: 16.0),
                                         SizedBox(
@@ -212,7 +217,8 @@ class _AirtimeTabState extends State<AirtimeTab> {
                                           buttonText: "Confirm",
                                           bgColor: Theme.of(context)
                                               .colorScheme
-                                              .primaryContainer,
+                                              .primaryContainer
+                                              .withAlpha(10),
                                           onPressed: () {
                                             var _filteredAmount =
                                                 _amountController.text
@@ -245,7 +251,6 @@ class _AirtimeTabState extends State<AirtimeTab> {
                                               ),
                                               transition: Transition.cupertino,
                                             );
-                                            // _sendRequest();
                                           },
                                         ),
                                       ),

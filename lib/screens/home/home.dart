@@ -134,52 +134,59 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ClipOval(
-                      child: CachedNetworkImage(
-                        imageUrl: "${widget.manager.getUser()['photo']}",
-                        errorWidget: (context, url, error) => SvgPicture.asset(
-                          "assets/images/personal_icon.svg",
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ClipOval(
+                        child: CachedNetworkImage(
+                          imageUrl: "${widget.manager.getUser()['photo']}",
+                          errorWidget: (context, url, error) =>
+                              SvgPicture.asset(
+                            "assets/images/personal_icon.svg",
+                            fit: BoxFit.cover,
+                          ),
                           fit: BoxFit.cover,
+                          width: 48,
+                          height: 48,
                         ),
-                        fit: BoxFit.cover,
-                        width: 48,
-                        height: 48,
                       ),
-                    ),
-                    const SizedBox(
-                      width: 4.0,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${getGreeting()}, ${widget.manager.getUser()['first_name'].toString().capitalize}",
-                          textScaleFactor: 0.92,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'OpenSans',
-                            color: Colors.white,
-                          ),
+                      const SizedBox(
+                        width: 4.0,
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${getGreeting()}, ${widget.manager.getUser()['first_name'].toString().capitalize}",
+                              textScaleFactor: 0.92,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'OpenSans',
+                                color: Colors.white,
+                              ),
+                              maxLines: 2, // Set a maximum of 2 lines
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4.0),
+                            Text(
+                              "Last login $_lastTime",
+                              textScaleFactor: 0.86,
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontFamily: 'OpenSans',
+                                color: Color(0xFFC5C5C5),
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 4.0),
-                        Text(
-                          "Last login $_lastTime",
-                          textScaleFactor: 0.86,
-                          style: const TextStyle(
-                            fontSize: 11,
-                            fontFamily: 'OpenSans',
-                            color: Color(0xFFC5C5C5),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
                 TextButton(
                   onPressed: () {

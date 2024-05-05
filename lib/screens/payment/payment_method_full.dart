@@ -1,4 +1,5 @@
 import 'package:afrikunet/components/text/textComponents.dart';
+import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -6,8 +7,14 @@ typedef InitCallback(bool params, String name);
 
 class FullPaymentMethod extends StatefulWidget {
   final InitCallback onChecked;
-  const FullPaymentMethod({Key? key, required this.onChecked})
-      : super(key: key);
+  final PreferenceManager manager;
+  var payload;
+  FullPaymentMethod({
+    Key? key,
+    required this.onChecked,
+    this.payload,
+    required this.manager,
+  }) : super(key: key);
 
   @override
   State<FullPaymentMethod> createState() => _FullPaymentMethodState();
@@ -36,7 +43,7 @@ class _FullPaymentMethodState extends State<FullPaymentMethod> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4.0),
             ),
-            color: const Color(0xFFFDFDFD),
+            color: Theme.of(context).colorScheme.surface,
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(
@@ -56,11 +63,12 @@ class _FullPaymentMethodState extends State<FullPaymentMethod> {
                             width: 24,
                             height: 24,
                             fit: BoxFit.cover,
+                            color: Theme.of(context).colorScheme.inverseSurface,
                           ),
                           const SizedBox(width: 10.0),
                           TextSmall(
                             text: "Bank Transfer",
-                            color: const Color(0xFF3B3B3B),
+                            color: Theme.of(context).colorScheme.tertiary,
                           ),
                         ],
                       ),
@@ -99,11 +107,12 @@ class _FullPaymentMethodState extends State<FullPaymentMethod> {
                             width: 24,
                             height: 24,
                             fit: BoxFit.cover,
+                            color: Theme.of(context).colorScheme.inverseSurface,
                           ),
                           const SizedBox(width: 10.0),
                           TextSmall(
                             text: "Card",
-                            color: const Color(0xFF3B3B3B),
+                            color: Theme.of(context).colorScheme.tertiary,
                           ),
                         ],
                       ),

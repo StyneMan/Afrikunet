@@ -29,7 +29,7 @@ class Constants {
   static const Color shimmerHighlightColor = Colors.white;
 
   static const baseURL = "https://afrikunet-api-orcin.vercel.app/bkapi";
-  // "http://192.168.1.35:3050/bkapi"; //
+  // "http://192.168.52.247:3050/bkapi";
 
   static String pstk = "pk_test_40f544aec0415695c9fae0ba0819ee5bebcb6a5e";
 
@@ -46,6 +46,18 @@ class Constants {
       ),
     );
     return fmf.output.withoutFractionDigits;
+  }
+
+  static String getFlagEmojiFromISO3(String iso3) {
+    const int baseOffset = 127397; // Offset for regional indicator symbols
+    final String countryCode = iso3.toUpperCase();
+    String flag = '';
+    for (int i = 0; i < countryCode.length; i++) {
+      flag += String.fromCharCode(baseOffset + countryCode.codeUnitAt(i));
+      // flag += String.fromCharCode(countryCode.codeUnitAt(i) + baseOffset);
+    }
+    print("FLAG HERE ::: $flag");
+    return flag.replaceAll(RegExp(r'[A-Z]'), '');
   }
 
   static String formatMoneyFloat(double amt) {
