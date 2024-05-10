@@ -2,7 +2,10 @@ import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/data/bills.dart';
 import 'package:afrikunet/forms/bills/electricity_form.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 class Electricity extends StatefulWidget {
   final Bills bill;
@@ -17,6 +20,8 @@ class Electricity extends StatefulWidget {
 
 class _ElectricityState extends State<Electricity> {
   PreferenceManager? _manager;
+  final _controller = Get.find<StateController>();
+
   @override
   void initState() {
     super.initState();
@@ -30,41 +35,48 @@ class _ElectricityState extends State<Electricity> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        automaticallyImplyLeading: true,
-        title: TextMedium(
-          text: "Electricity",
-          color: Colors.white,
-        ),
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  padding: const EdgeInsets.all(5.0),
-                  margin: const EdgeInsets.all(0.5),
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.4,
+    return Obx(
+      () => LoadingOverlayPro(
+        isLoading: _controller.isLoading.value,
+        progressIndicator: const CircularProgressIndicator.adaptive(),
+        backgroundColor: Colors.black54,
+        child: Scaffold(
+          appBar: AppBar(
+            elevation: 0.0,
+            automaticallyImplyLeading: true,
+            title: TextMedium(
+              text: "Electricity",
+              color: Colors.white,
+            ),
+            centerTitle: true,
+          ),
+          body: SafeArea(
+            child: Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(5.0),
+                      margin: const EdgeInsets.all(0.5),
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 24.0),
+                  Expanded(
+                    child: ElectricityForm(
+                      manager: _manager!,
+                      networks: widget.bill.networks!,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 24.0),
-              Expanded(
-                child: ElectricityForm(
-                  manager: _manager!,
-                  networks: widget.bill.networks!,
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),

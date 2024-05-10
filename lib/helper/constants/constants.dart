@@ -29,7 +29,7 @@ class Constants {
   static const Color shimmerHighlightColor = Colors.white;
 
   static const baseURL = "https://afrikunet-api-orcin.vercel.app/bkapi";
-  // "http://192.168.52.247:3050/bkapi";
+  // "http://192.168.43.41:3050/bkapi"; //
 
   static String pstk = "pk_test_40f544aec0415695c9fae0ba0819ee5bebcb6a5e";
 

@@ -20,7 +20,7 @@ class PaymentController extends GetxController {
   late WebViewController webviewController;
 
   _initWebview() {
-    print("ENCODED DATA PAYCONTROLLER ==>> ${data}");
+    print("ENCODED DATA PAYCONTROLLER ==>> $data");
 
     webviewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -38,15 +38,19 @@ class PaymentController extends GetxController {
           onNavigationRequest: (NavigationRequest request) {
             final DateTime pageStartTime = DateTime.now();
 
+            print("REQUEST URL NOW ==>>> ${request.url}");
+
             if (request.url
                 .startsWith('https://afrikunet.com/mobile/success/buy')) {
               // User has paid. Now render his/her service here
+              final encodedData = Get.arguments['data'];
               final usecase = Get.arguments['usecase'];
               final payload = Get.arguments['payload'];
               final customerData = Get.arguments['customerData'];
 
               if (usecase == "vtu") {
                 _initiatePurchase(
+                  encodedData: encodedData,
                   payload: payload,
                   customerData: customerData,
                   accessToken: Get.arguments['accessToken'],
@@ -83,6 +87,7 @@ class PaymentController extends GetxController {
   }
 
   void _initiatePurchase({
+    required var encodedData,
     required var payload,
     required var customerData,
     required var accessToken,
@@ -99,8 +104,8 @@ class PaymentController extends GetxController {
           "network_id": payload['network_id'],
           "product_type_id": payload['product_type_id'],
           "otherParams": {
-            "variation_code": customerData['Meter_Type'],
-            "billersCode": customerData['MeterNumber'],
+            "variation_code": payload['variation_code'],
+            "billersCode": payload['otherParams']['billersCode'],
           }
         };
 
@@ -118,15 +123,17 @@ class PaymentController extends GetxController {
           Map<String, dynamic> map = jsonDecode(_response.body);
           Constants.toast(map['message']);
 
-          Get.to(
-            SuccessPage(
-              isVoucher: false,
-              manager: manager,
-              message:
-                  'You have successfully purchased electricity token worth ${payload['amount']} from ${payload['name']}',
-            ),
-            transition: Transition.cupertino,
-          );
+          if (map['data']['status'] != "failed") {
+            Get.to(
+              SuccessPage(
+                isVoucher: false,
+                manager: manager,
+                message:
+                    'You have successfully purchased electricity token worth ${payload['amount']} from ${payload['name']}',
+              ),
+              transition: Transition.cupertino,
+            );
+          }
         } else {
           Map<String, dynamic> errMap = jsonDecode(_response.body);
           Constants.toast(errMap['message']);
@@ -145,7 +152,8 @@ class PaymentController extends GetxController {
           "product_type_id": payload['product_type_id'],
           "otherParams": {
             "billersCode": payload['otherParams']['billersCode'],
-            "subscription_type": "renew"
+            "subscription_type": "renew",
+            "variation_code": payload['otherParams']['variation_code']
           }
         };
 
@@ -211,8 +219,14 @@ class PaymentController extends GetxController {
       try {
         _controller.setLoading(true);
 
+        if (kDebugMode) {
+          print("BUY DATA PAYLOAD ::: $encodedData");
+        }
+
         final _response =
             await APIService().initVtuRequest(accessToken, payload);
+        // final _response = await APIService()
+        //     .initPayment(accessToken, {"encodedData": encodedData});
         print("DATA REQUEST REPONSE :: ${_response.body}");
         _controller.setLoading(false);
 
@@ -262,7 +276,7 @@ class PaymentController extends GetxController {
                 : "black",
       };
 
-      print("BUY VOUCHER PAYLOAD ::: ${_payload}");
+      print("BUY VOUCHER PAYLOAD ::: $_payload");
 
       final _resp = await APIService().buyVoucher(accessToken, _payload);
       print("BUY VOUCHER RESPONSE ::: ${_resp.body}");

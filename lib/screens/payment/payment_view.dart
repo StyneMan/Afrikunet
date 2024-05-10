@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentView extends GetView<PaymentController> {
-  PaymentView({Key? key}) : super(key: key);
+  const PaymentView({Key? key}) : super(key: key);
 
   // final _djks = Get.put(PaymentController());
 

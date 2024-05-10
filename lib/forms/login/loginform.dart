@@ -77,6 +77,9 @@ class _LoginFormState extends State<LoginForm> {
           // Save accesstoken
           _prefs.setString("accessToken", _mapper['accessToken']);
 
+          // Send user's id to server here
+          socket.emit('identity', _mapper['user']['email_address']);
+
           Constants.toast("${_mapper['message']}");
           _prefs.setBool("loggedIn", true);
           _controller.onInit();

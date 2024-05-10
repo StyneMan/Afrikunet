@@ -20,7 +20,7 @@ class _LogoutLoaderState extends State<LogoutLoader> {
     Future.delayed(const Duration(seconds: 1), () {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => const GetStarted(),
+          builder: (context) => GetStarted(),
         ),
         (Route<dynamic> route) => false,
       );

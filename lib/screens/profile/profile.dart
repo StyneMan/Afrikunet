@@ -321,6 +321,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                       if (_items[index]['link'] != null) {
                                         _launchInBrowser(_items[index]['link']);
                                       }
+
+                                      if (_items[index]['link'] != null &&
+                                          _items[index]['component'] != null) {
+                                        _showDeleteDialog();
+                                      }
                                     },
                                     child: Row(
                                       mainAxisAlignment:
@@ -443,6 +448,94 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  _showDeleteDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => InfoDialog(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.inverseSurface,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
+                  ),
+                ),
+                padding: const EdgeInsets.all(16.0),
+                child: TextMedium(
+                  text: "Confirm Delete Account",
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 18.0,
+                    ),
+                    TextSmall(
+                      text:
+                          "Are you sure you want to stop using Afrikunet and deleted your account? Click button below to initiate deletion request.",
+                      align: TextAlign.center,
+                      fontWeight: FontWeight.w400,
+                      color: Theme.of(context).colorScheme.tertiary,
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: SecondaryButton(
+                            buttonText: "Cancel",
+                            foreColor:
+                                Theme.of(context).colorScheme.inverseSurface,
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 16.0,
+                        ),
+                        Expanded(
+                          child: PrimaryButton(
+                            buttonText: "Continue",
+                            onPressed: () {
+                              _controller.setLoading(true);
+                              Future.delayed(const Duration(seconds: 2), () {
+                                _controller.setLoading(false);
+                                Constants.showInfoDialog(
+                                  context: context,
+                                  message:
+                                      "Account deletion request sent successfully",
+                                  status: "success",
+                                );
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   _showDialog() {
     showDialog(
       context: context,
@@ -532,7 +625,7 @@ class _ProfilePageState extends State<ProfilePage> {
         _controller.setLoading(false);
         widget.manager.clearProfile();
 
-        Get.offAll(const GetStarted());
+        Get.offAll(GetStarted());
       });
     } catch (e) {
       _controller.setLoading(false);

@@ -46,7 +46,7 @@ class _HomeSliderState extends State<HomeSlider> {
                       padding: const EdgeInsets.all(14.0),
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage(sliderData.bgImage),
+                          image: NetworkImage(sliderData.bgImage),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(16.0),
@@ -58,7 +58,7 @@ class _HomeSliderState extends State<HomeSlider> {
                       right: 4.0,
                       child: Container(
                         padding: const EdgeInsets.only(
-                          top: 21.0,
+                          top: 48.0,
                           left: 8.0,
                           bottom: 10.0,
                           right: 8.0,
@@ -77,7 +77,7 @@ class _HomeSliderState extends State<HomeSlider> {
                         child: SizedBox(
                           width: 126,
                           child: TextSmall(
-                            text: sliderData.title,
+                            text: '',
                             color: Colors.white,
                           ),
                         ),

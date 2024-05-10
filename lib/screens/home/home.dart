@@ -2,12 +2,19 @@ import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/dialog/info_dialog.dart';
 import 'package:afrikunet/components/drawer/custom_drawer.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
+import 'package:afrikunet/data/bills.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/model/home/home_action.dart';
+import 'package:afrikunet/screens/airtime/airtime.dart';
+import 'package:afrikunet/screens/bank/add_bank.dart';
+import 'package:afrikunet/screens/cable_tv/cable_tv.dart';
+import 'package:afrikunet/screens/data/internet_data.dart';
+import 'package:afrikunet/screens/electricity/electricity.dart';
 import 'package:afrikunet/screens/vouchers/buy_voucher.dart';
 import 'package:afrikunet/screens/vouchers/redeem_voucher.dart';
+import 'package:afrikunet/screens/vouchers/split_voucher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,26 +39,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _controller = Get.find<StateController>();
-
+  List<HomeAction> _homeActions = [];
   var utcTime, _lastTime;
 
   _getTimeZone() {
-    // String timezone;
     try {
-      // timezone = await FlutterNativeTimezone.getLocalTimezone();
-      // debugPrint("TIME ZONE :: $timezone");
-
       utcTime = DateTime.parse(widget.manager.getUser()['last_login']);
       _lastTime = DateFormat.yMMMMd('en_US').add_jm().format(utcTime.toLocal());
 
       debugPrint("LAST LOGIN MY TIMEZONE :: $_lastTime");
-    } catch (e) {
-      // timezone = 'Error: $e';
-    }
-    // if (!mounted) return;
-    // setState(() {
-    //   _timezone = timezone;
-    // });
+    } catch (e) {}
   }
 
   @override
@@ -60,6 +57,65 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     debugPrint("HOME PIC ${widget.manager.getUser()['photo']}");
     debugPrint("STATE PIC ${_controller.userData.value['photo']}");
+
+    _homeActions = [
+      HomeAction(
+        icon: "action_electricity.svg",
+        title: "Electricity",
+        widget: Electricity(
+          bill: tempBills[1],
+        ),
+      ),
+      HomeAction(
+        icon: "action_simcard.svg",
+        title: "Airtime",
+        widget: Airtime(),
+      ),
+      HomeAction(
+        icon: "action_simcard.svg",
+        title: "Data",
+        widget: const InternetData(),
+      ),
+      HomeAction(
+        icon: "action_cable_tv.svg",
+        title: "Cable TV",
+        widget: CableTV(
+          bill: tempBills[0],
+        ),
+      ),
+      HomeAction(
+        icon: "action_split_voucher.svg",
+        title: "Split Voucher",
+        widget: const SplitVoucher(),
+      ),
+      HomeAction(
+        icon: "action_water.svg",
+        title: "Water",
+        widget: const SizedBox(),
+      ),
+      HomeAction(
+        icon: "action_bank.svg",
+        title: "Bank",
+        widget: AddBank(
+          manager: widget.manager,
+        ),
+      ),
+      HomeAction(
+        icon: "action_bank.svg",
+        title: "Virtual card",
+        widget: const SizedBox(),
+      ),
+      HomeAction(
+        icon: "action_support.svg",
+        title: "Rewards",
+        widget: const SizedBox(),
+      ),
+      HomeAction(
+        icon: "action_support.svg",
+        title: "Support",
+        widget: const SizedBox(),
+      ),
+    ];
   }
 
   @override
@@ -292,7 +348,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisSpacing: 0.5,
               ),
               itemBuilder: (context, index) {
-                return _itemCard(homeActions[index], context);
+                return _itemCard(_homeActions[index], context);
               },
               itemCount: 8,
             ),
@@ -336,9 +392,10 @@ class _HomePageState extends State<HomePage> {
                                   mainAxisSpacing: 0.5,
                                 ),
                                 itemBuilder: (context, index) {
-                                  return _itemCard(homeActions[index], context);
+                                  return _itemCard(
+                                      _homeActions[index], context);
                                 },
-                                itemCount: homeActions.length,
+                                itemCount: _homeActions.length,
                               ),
                             ],
                           ),

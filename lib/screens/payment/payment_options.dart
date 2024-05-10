@@ -274,7 +274,11 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                           "phone": int.parse(
                               widget.manager.getUser()['phone_number']),
                           "merchant_id": '65d3404666a4d',
-                          "payment_type": 'card'
+                          "payment_type": 'card',
+                          "customer_ref":
+                              "Afrikunet_${DateTime.now().millisecondsSinceEpoch}_${widget.manager.getUser()['first_name']}_pay",
+                          "webhook_url":
+                              "https://afrikunet-api-orcin.vercel.app/bkapi/vouchers/webhook",
                         };
 
                         var _credentials = jsonEncode(_payload);
@@ -295,7 +299,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                             fenix: true);
 
                         Get.to(
-                          PaymentView(),
+                          const PaymentView(),
                           arguments: {
                             'data': encoded,
                             "usecase": 'buy-voucher',

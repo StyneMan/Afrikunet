@@ -35,41 +35,48 @@ class _CableTVState extends State<CableTV> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        automaticallyImplyLeading: true,
-        title: TextMedium(
-          text: "CableTV",
-          color: Colors.white,
-        ),
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  padding: const EdgeInsets.all(5.0),
-                  margin: const EdgeInsets.all(0.5),
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.4,
+    return Obx(
+      () => LoadingOverlayPro(
+        isLoading: _controller.isLoading.value,
+        progressIndicator: const CircularProgressIndicator.adaptive(),
+        backgroundColor: Colors.black54,
+        child: Scaffold(
+          appBar: AppBar(
+            elevation: 0.0,
+            automaticallyImplyLeading: true,
+            title: TextMedium(
+              text: "CableTV",
+              color: Colors.white,
+            ),
+            centerTitle: true,
+          ),
+          body: SafeArea(
+            child: Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(5.0),
+                      margin: const EdgeInsets.all(0.5),
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 24.0),
+                  Expanded(
+                    child: CableTvForm(
+                      manager: _manager!,
+                      network: widget.bill.networks![0],
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 24.0),
-              Expanded(
-                child: CableTvForm(
-                  manager: _manager!,
-                  network: widget.bill.networks![0],
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),

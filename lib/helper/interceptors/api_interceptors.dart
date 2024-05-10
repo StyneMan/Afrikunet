@@ -6,6 +6,7 @@ import 'package:afrikunet/screens/auth/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 // import 'package:http_interceptor/http_interceptor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,8 +14,8 @@ import 'package:afrikunet/helper/state/state_manager.dart';
 
 class MyApiInterceptor implements InterceptorContract {
   late PreferenceManager manager;
-
   final _controller = Get.find<StateController>();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
@@ -48,10 +49,11 @@ class MyApiInterceptor implements InterceptorContract {
     if (data.statusCode == 401 || data.statusCode == 403) {
       debugPrint("LOG THIS USER OUT. SESSION EXPIRED!!!");
       //Clear prefeence
+      await _googleSignIn.signOut();
       final _pref = await SharedPreferences.getInstance();
       _pref.clear();
 
-      Get.offAll(Login());
+      Get.offAll(const Login());
     }
     return data;
   }

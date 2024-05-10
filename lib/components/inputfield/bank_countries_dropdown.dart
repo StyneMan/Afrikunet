@@ -1,16 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 
-typedef void InitCallback(var value);
+typedef void InitCallback(var item);
 
-class BankCustomDropdown extends StatefulWidget {
+class BankCountriesCustomDropdown extends StatefulWidget {
   final InitCallback onSelected;
   final double borderRadius;
   final String hint;
   final List<dynamic> items;
   var validator;
   var value;
-  BankCustomDropdown({
+  BankCountriesCustomDropdown({
     Key? key,
     required this.items,
     required this.hint,
@@ -21,12 +22,14 @@ class BankCustomDropdown extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<BankCustomDropdown> createState() => _BankCustomDropdownState();
+  State<BankCountriesCustomDropdown> createState() =>
+      _BankCountriesCustomDropdownState();
 }
 
-class _BankCustomDropdownState extends State<BankCustomDropdown> {
+class _BankCountriesCustomDropdownState
+    extends State<BankCountriesCustomDropdown> {
   String _hint = "";
-  var _bank;
+  var _country;
 
   @override
   void initState() {
@@ -43,29 +46,26 @@ class _BankCustomDropdownState extends State<BankCustomDropdown> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.network(
-            '${widget.value['logo']}',
-            width: 32,
+          CachedNetworkImage(
+            imageUrl: '${widget.value['logo']}',
+            width: 24,
             fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
+            errorWidget: (context, url, error) {
               return Image.asset(
-                'assets/images/bank.png',
-                width: 32,
-                height: 32,
+                'assets/images/logo_blue.png',
+                width: 24,
+                height: 24,
               );
             },
           ),
           const SizedBox(
             width: 8.0,
           ),
-          Expanded(
-            child: Text(
-              '${widget.value['name']}',
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 14,
-                color: Theme.of(context).colorScheme.tertiary,
-              ),
+          Text(
+            '${widget.value['name']}',
+            style: TextStyle(
+              fontSize: 14,
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ),
         ],
@@ -128,7 +128,7 @@ class _BankCustomDropdownState extends State<BankCustomDropdown> {
             children: [
               Image.network(
                 '${e['logo']}',
-                width: 32,
+                width: 24,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Image.asset(
@@ -141,27 +141,25 @@ class _BankCustomDropdownState extends State<BankCustomDropdown> {
               const SizedBox(
                 width: 8.0,
               ),
-              Expanded(
-                child: Text(
-                  e['name'],
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
+              Text(
+                e['name'],
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
               ),
             ],
           ),
         );
       }).toList(),
+      // value: widget.value,
       onChanged: (newValue) async {
         widget.onSelected(
           newValue,
         );
         setState(
           () {
-            _bank = newValue;
+            _country = newValue;
             widget.value = newValue;
           },
         );

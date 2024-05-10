@@ -161,12 +161,36 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       }
 
       socket.on(
-        "FromAPI",
+        "message",
         (data) => debugPrint("DATA FROM SERVER >> $data"),
       );
 
       socket.on(
         "isOnline",
+        (data) => debugPrint("DATA FROM  >> $data"),
+      );
+
+      // Profile Updated
+      socket.on(
+        "profile-updated",
+        (data) {
+          debugPrint("DATA FROM PROFILE UPDATE  >> ${jsonEncode(data)}");
+          // debugPrint("USER ID >> ${data['userId']}");
+          if (data['user']['email_address'] == _userMap['email_address']) {
+            //For me
+            debugPrint("FOR ME !! ");
+            _prefs.setString('user', data['user']);
+            _controller.userData.value = data['user'];
+          } else {
+            // Not for me
+            debugPrint("NOT FOR ME !! ");
+          }
+        },
+      );
+
+      // Bank saved
+      socket.on(
+        "bank-added",
         (data) => debugPrint("DATA FROM  >> $data"),
       );
     } catch (e) {
@@ -179,7 +203,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.initState();
     _manager = PreferenceManager(context);
     _init();
-    // _connectSocket();
+    _connectSocket();
   }
 
   // This widget is the root of your application.

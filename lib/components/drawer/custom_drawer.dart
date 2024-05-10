@@ -67,7 +67,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
           icon: 'assets/images/add_bank.svg',
           title: 'Add Bank',
           isAction: false,
-          widget: AddBank(),
+          widget: AddBank(
+            manager: widget.manager,
+          ),
         ),
         DrawerModel(
           icon: 'assets/images/share_ios.svg',
@@ -99,7 +101,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
         _controller.setLoading(false);
         widget.manager.clearProfile();
 
-        Get.offAll(const GetStarted());
+        Get.offAll(GetStarted());
       });
     } catch (e) {
       _controller.setLoading(false);
@@ -164,26 +166,28 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   const SizedBox(
                     width: 6.0,
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextSmall(
-                        text:
-                            "${widget.manager.getUser()['first_name']} ${widget.manager.getUser()['last_name']}"
-                                .capitalize,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        "${widget.manager.getUser()['email_address']}",
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextSmall(
+                          text:
+                              "${widget.manager.getUser()['first_name']} ${widget.manager.getUser()['last_name']}"
+                                  .capitalize,
+                          fontWeight: FontWeight.w600,
                           color: Colors.white,
                         ),
-                      ),
-                    ],
+                        Text(
+                          "${widget.manager.getUser()['email_address']}",
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -207,8 +211,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             itemBuilder: (context, i) {
                               return ListTile(
                                 dense: true,
-                                contentPadding:
-                                    const EdgeInsets.symmetric(horizontal: 2.0),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 2.0,
+                                  vertical: 0.0,
+                                ),
                                 title: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -258,22 +264,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                       transition: Transition.cupertino,
                                     );
                                   }
-
-                                  // else {
-                                  //   if (drawerList[i].isAction) {
-                                  //     Navigator.of(context).pop();
-                                  //     _launchInBrowser("${drawerList[i].url}");
-                                  //   } else {
-                                  //     Navigator.of(context).pop();
-                                  //     Navigator.of(context).push(
-                                  //       PageTransition(
-                                  //         type: PageTransitionType.size,
-                                  //         alignment: Alignment.bottomCenter,
-                                  //         child: drawerList[i].widget!,
-                                  //       ),
-                                  //     );
-                                  //   }
-                                  // }
                                 },
                               );
                             },
@@ -287,13 +277,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                   ),
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 21.0,
-                          vertical: 6.0,
+                          vertical: 0.0,
                         ),
                         child: DottedDivider(),
                       ),

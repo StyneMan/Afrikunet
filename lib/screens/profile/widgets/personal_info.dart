@@ -234,12 +234,13 @@ class _PersonalState extends State<Personal> {
       };
 
       debugPrint("PAY:LOAD UPDATE:  >> ${_payload}");
+      debugPrint("USER ID:  >> ${widget.manager.getUser()}");
 
       try {
         final resp = await APIService().updateProfile(
           accessToken: widget.manager.getAccessToken(),
           body: _payload,
-          id: widget.manager.getUser()['id'],
+          id: widget.manager.getUser()['email_address'],
         );
 
         debugPrint("ABOUT UPDATE:  >> ${resp.body}");
@@ -294,7 +295,7 @@ class _PersonalState extends State<Personal> {
           "language": _selectedLanguage['code'].toString().toLowerCase(),
           "iso_code": _isoCode,
           "country_code": _countryCode,
-          "phone_number": _phoneController.text,
+          "phone_number": _phoneController.text.toString(),
           "photo": url,
           "international_phone_format": "$_isoCode ${_phoneController.text}",
           "address": {
@@ -340,6 +341,7 @@ class _PersonalState extends State<Personal> {
           showStatusDialog();
         } else {
           Map<String, dynamic> map = jsonDecode(resp.body);
+          print("JKJS SSS::: ${map}");
           Constants.toast(map['message']);
         }
       } catch (e) {
@@ -351,7 +353,7 @@ class _PersonalState extends State<Personal> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("LKL>> ${countries['data']}");
+    // debugPrint("LKL>> ${countries['data']}");
     return Form(
       key: _formKey,
       child: ListView(
@@ -447,7 +449,7 @@ class _PersonalState extends State<Personal> {
                           },
                           icon: const Icon(
                             Icons.add_a_photo_outlined,
-                            color: Constants.secondaryColor,
+                            color: Colors.white,
                             size: 24,
                           ),
                         ),
@@ -576,8 +578,8 @@ class _PersonalState extends State<Personal> {
                     _countryCode = "${val.code}";
                     _isoCode = "${val.dialCode}";
                   });
-                  print("SELECTED CODE ::: ${val.code}");
-                  print("SELECTED DIAL CODE ::: ${val.dialCode}");
+                  // print("SELECTED CODE ::: ${val.code}");
+                  // print("SELECTED DIAL CODE ::: ${val.dialCode}");
                 },
                 padding: const EdgeInsets.all(0.0),
                 initialSelection: 'NG',
@@ -591,7 +593,7 @@ class _PersonalState extends State<Personal> {
             ),
             controller: _phoneController,
             validator: (value) {
-              if (value.toString().isEmpty || value == null) {
+              if (value.isEmpty || value == null) {
                 return "Phone number is required";
               }
               return null;

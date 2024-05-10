@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
+// import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:afrikunet/helper/service/api_service.dart';
@@ -48,6 +48,7 @@ class StateController extends GetxController {
   var usersVoucherSplit = [].obs;
   var userHistory = [].obs;
   var banks = [].obs;
+  var bankCountries = [].obs;
   var selectedContact = {}.obs;
 
   var userData = {}.obs;
@@ -58,10 +59,10 @@ class StateController extends GetxController {
   ScrollController messagesScrollController = ScrollController();
 
   var accessToken = "".obs;
-  String _token = "";
+  // String _token = "";
   RxString dbItem = 'Awaiting data'.obs;
 
-  final Connectivity _connectivity = Connectivity();
+  // final Connectivity _connectivity = Connectivity();
 
   Future<void> initDao() async {
     // instantiate Dao only if null (i.e. not supplied in constructor)
@@ -89,6 +90,14 @@ class StateController extends GetxController {
               else if (elem['name'].toString().toLowerCase() == "cable_tv")
                 {cableData.value = elem}
             });
+      }
+
+      final _countriesResponse = await APIService().getBankCountries();
+      debugPrint("SUPPORTED COUNTRIES RESP:: ${_countriesResponse.body}");
+      setHasInternet(true);
+      if (_countriesResponse.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(_countriesResponse.body);
+        bankCountries.value = map['data'];
       }
     } catch (e) {
       debugPrint(e.toString());

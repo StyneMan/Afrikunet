@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -21,6 +22,9 @@ class APIService {
   APIService() {
     // init();
   }
+
+  final StreamController<http.Response> _streamController =
+      StreamController<http.Response>();
 
   Future<http.Response> signup(Map body) async {
     return await http.post(
@@ -54,8 +58,9 @@ class APIService {
 
   Future<http.Response> googleAuthRedirect({var authHeaders}) async {
     return await http.get(
-        Uri.parse('${Constants.baseURL}/auth/google/redirect'),
-        headers: authHeaders,);
+      Uri.parse('${Constants.baseURL}/auth/google/redirect'),
+      headers: authHeaders,
+    );
   }
 
   Future<http.Response> forgotPass(Map body) async {
@@ -134,7 +139,7 @@ class APIService {
       Uri.parse('${Constants.baseURL}/users/$id/update'),
       headers: {
         "Content-type": "application/json",
-        // "Authorization": "Bearer " + accessToken,
+        "Authorization": "Bearer " + accessToken,
       },
       body: jsonEncode(body),
     );
@@ -212,5 +217,97 @@ class APIService {
       },
       body: jsonEncode(payload),
     );
+  }
+
+  Future<http.Response> getBanks(String countryCode) async {
+    return await http.get(
+      Uri.parse('${Constants.baseURL}/bank/list?country_code=$countryCode'),
+      headers: {
+        "Content-type": "application/json",
+      },
+    );
+  }
+
+  Future<http.Response> getBankCountries() async {
+    return await http.get(
+      Uri.parse('${Constants.baseURL}/bank/countries'),
+      headers: {
+        "Content-type": "application/json",
+      },
+    );
+  }
+
+  Future<http.Response> validateBank(String accessToken, var payload) async {
+    return await client.post(
+      Uri.parse('${Constants.baseURL}/bank/account/validate'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+      body: jsonEncode(payload),
+    );
+  }
+
+  Future<http.Response> saveBank({
+    required String accessToken,
+    required var payload,
+  }) async {
+    return await client.post(
+      Uri.parse('${Constants.baseURL}/bank/user/save'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+      body: jsonEncode(payload),
+    );
+  }
+
+  Future<http.Response> removeBank({
+    required String accessToken,
+    required var payload,
+    required var bankId,
+  }) async {
+    return await client.delete(
+      Uri.parse('${Constants.baseURL}/bank/user/remove/$bankId'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+      body: jsonEncode(payload),
+    );
+  }
+
+  // Future<http.Response> getUserBankAccounts({
+  //   required String accessToken,
+  //   required String userId,
+  // }) async {
+  //   return await http.get(
+  //     Uri.parse('${Constants.baseURL}/bank/user/id=$userId/accounts'),
+  //     headers: {
+  //       "Content-type": "application/json",
+  //       "Authorization": "Bearer " + accessToken,
+  //     },
+  //   );
+  // }
+
+  Stream<http.Response> getUserBankAccounts({
+    required String accessToken,
+    required String emailAddress,
+  }) async* {
+    try {
+      // Fetch data and add it to the stream
+      http.Response response = await client.get(
+        Uri.parse('${Constants.baseURL}/bank/user/$emailAddress/accounts'),
+        headers: {
+          "Content-type": "application/json",
+        },
+      );
+
+      print("USER BANKS RESPO ::: ${response.body}");
+      yield response; // Yield the response to the stream
+    } catch (error) {
+      // Handle errors by adding an error to the stream
+      _streamController.addError(error);
+    }
   }
 }

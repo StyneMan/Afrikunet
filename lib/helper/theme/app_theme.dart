@@ -109,7 +109,7 @@ ThemeData darkTheme = ThemeData(
     background: Color(0xDD080808),
     tertiary: Colors.white,
     inversePrimary: Color(0xFF4C4C4C),
-    primaryContainer: Color(0xFF1F1F1F),
+    primaryContainer: Color.fromARGB(255, 188, 171, 171),
     surface: Color(0xFF1F1F1F),
     inverseSurface: Colors.white,
   ),

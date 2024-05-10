@@ -100,7 +100,7 @@ class _OnboardingState extends State<Onboarding> {
                   TextButton(
                     onPressed: () {
                       Get.offAll(
-                        const GetStarted(),
+                        GetStarted(),
                         transition: Transition.cupertino,
                       );
                     },

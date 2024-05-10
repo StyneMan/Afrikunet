@@ -49,11 +49,29 @@ class _DataTabState extends State<DataTab> {
     }
   }
 
+  _generateServiceId(String name) {
+    String serviceId = "";
+    if (name.contains("9")) {
+      serviceId = "etisalat-data";
+    } else if (name.toLowerCase() != 'mtn' &&
+        name.toLowerCase() != 'glo' &&
+        name.toLowerCase() != 'airtel') {
+      if (name.toLowerCase() == 'smile') {
+        serviceId = "${name.toLowerCase()}-direct";
+      } else {
+        serviceId = name.toLowerCase();
+      }
+    } else {
+      serviceId = "${name.toLowerCase()}-data";
+    }
+    return serviceId;
+  }
+
   _fetchCurrentPlan(String name) async {
     _controller.isLoadingPackages.value = true;
     try {
-      final _response = await APIService().getPlans(
-          '${name.contains("9") ? "etisalat" : name.toLowerCase()}-data');
+      final _response =
+          await APIService().getPlans('${_generateServiceId(name)}');
       print("FECTHED ::: ${_response.body}");
       _controller.isLoadingPackages.value = false;
       if (_response.statusCode >= 200 && _response.statusCode <= 299) {
@@ -83,45 +101,41 @@ class _DataTabState extends State<DataTab> {
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
                 SizedBox(
-                  height: 100,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  child: GridView.count(
+                    crossAxisCount: 4,
+                    shrinkWrap: true,
                     children: [
                       for (var i = 0;
                           i < _controller.internetData.value['networks'].length;
                           i++)
-                        Expanded(
-                          child: Container(
-                            height: 75,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1.0,
-                                color: _current == i
-                                    ? Theme.of(context).colorScheme.secondary
-                                    : Colors.transparent,
-                              ),
+                        Container(
+                          height: 75,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1.0,
+                              color: _current == i
+                                  ? Theme.of(context).colorScheme.secondary
+                                  : Colors.transparent,
                             ),
-                            child: TextButton(
-                              onPressed: () {
-                                setState(() => _current = i);
-                                _controller.selectedDataNetwork.value =
-                                    _controller.internetData.value['networks']
-                                        [i];
+                          ),
+                          child: TextButton(
+                            onPressed: () {
+                              setState(() => _current = i);
+                              _controller.selectedDataNetwork.value =
+                                  _controller.internetData.value['networks'][i];
 
-                                setState(() {
-                                  _currentPlans = [];
-                                  _selectedVariationCode = "";
-                                });
+                              setState(() {
+                                _currentPlans = [];
+                                _selectedVariationCode = "";
+                              });
 
-                                _controller.selectedDataPlan.value = {};
+                              _controller.selectedDataPlan.value = {};
 
-                                _fetchCurrentPlan(_controller
-                                    .internetData.value['networks'][i]['name']);
-                              },
-                              child: Image.network(
-                                "${_controller.internetData.value['networks'][i]['icon']}",
-                              ),
+                              _fetchCurrentPlan(_controller
+                                  .internetData.value['networks'][i]['name']);
+                            },
+                            child: Image.network(
+                              "${_controller.internetData.value['networks'][i]['icon']}",
                             ),
                           ),
                         ),
@@ -163,8 +177,10 @@ class _DataTabState extends State<DataTab> {
                 ),
                 const SizedBox(height: 24.0),
                 TextSmall(
-                  text:
-                      "${_current == 6 ? 'Select network first' : 'Select a data bundle for ' + _controller.selectedDataNetwork.value['name']}",
+                  text: _current == 6
+                      ? 'Select network first'
+                      : 'Select a data bundle for ' +
+                          _controller.selectedDataNetwork.value['name'],
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
                 Obx(
@@ -270,7 +286,7 @@ class _DataTabState extends State<DataTab> {
                                         SizedBox(
                                           width: 256,
                                           child: Text(
-                                            "You are about to purchase ${_controller.selectedCableBouquet.value['name']} for this phone number ${_phoneController.text}.",
+                                            "You are about to purchase ${_controller.selectedDataPlan.value['name']} for this phone number ${_phoneController.text}.",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               color: Theme.of(context)
@@ -301,10 +317,10 @@ class _DataTabState extends State<DataTab> {
                                                 payload: {
                                                   "type": "data",
                                                   "amount": double.parse(
-                                                      _controller
-                                                              .selectedDataPlan
-                                                              .value[
-                                                          'variation_amount']),
+                                                    _controller.selectedDataPlan
+                                                            .value[
+                                                        'variation_amount'],
+                                                  ),
                                                   "billersCode":
                                                       _phoneController.text,
                                                   "variation_code":
@@ -321,6 +337,12 @@ class _DataTabState extends State<DataTab> {
                                                   "network_id": _controller
                                                       .selectedDataNetwork
                                                       .value['id'],
+                                                  "otherParams": {
+                                                    "billersCode":
+                                                        _phoneController.text,
+                                                    "variation_code":
+                                                        _selectedVariationCode,
+                                                  }
                                                 },
                                                 dataVal: _controller
                                                     .selectedDataPlan

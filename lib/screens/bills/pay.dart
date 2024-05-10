@@ -2,13 +2,11 @@ import 'dart:convert';
 
 import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
-import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
 import 'package:afrikunet/helper/state/payment_manager.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/screens/payment/payment_method_full.dart';
 import 'package:afrikunet/screens/payment/payment_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,7 +33,6 @@ class PayNow extends StatefulWidget {
 
 class _PayNowState extends State<PayNow> {
   final _controller = Get.find<StateController>();
-
   bool _isChecked = false;
   String _selectedPaymentName = "";
 
@@ -103,7 +100,11 @@ class _PayNowState extends State<PayNow> {
                                     widget.manager.getUser()['email_address'],
                                 "amount": widget.payload['amount'],
                                 "merchant_id": '65d3404666a4d',
-                                "payment_type": 'card'
+                                "payment_type": 'card',
+                                "customer_ref":
+                                    "Afrikunet_${DateTime.now().millisecondsSinceEpoch}_${widget.manager.getUser()['first_name']}_pay",
+                                "webhook_url":
+                                    "https://afrikunet-api-orcin.vercel.app/bkapi/vouchers/webhook",
                               };
 
                               var _credentials = jsonEncode(_payload);
@@ -126,7 +127,7 @@ class _PayNowState extends State<PayNow> {
                                   fenix: true);
 
                               Get.to(
-                                PaymentView(),
+                                const PaymentView(),
                                 arguments: {
                                   'data': encoded,
                                   'customerData': widget.customerData,

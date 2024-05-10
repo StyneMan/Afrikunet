@@ -79,6 +79,7 @@ class _DashboardState extends State<Dashboard> {
                   TextMedium(
                     text: "Profile Setup Required!",
                     fontWeight: FontWeight.w600,
+                    align: TextAlign.center,
                     color: Theme.of(context).colorScheme.tertiary,
                   ),
                   const SizedBox(

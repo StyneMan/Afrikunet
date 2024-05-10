@@ -99,11 +99,13 @@ class _LoginState extends State<Login> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 16),
               width: double.infinity,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/bg.png'),
-                  fit: BoxFit.cover,
-                ),
+              decoration: BoxDecoration(
+                image: _controller.currentThemeMode.value == "dark"
+                    ? null
+                    : const DecorationImage(
+                        image: AssetImage('assets/images/bg.png'),
+                        fit: BoxFit.cover,
+                      ),
               ),
               child: ListView(
                 padding: const EdgeInsets.all(10.0),

@@ -49,6 +49,7 @@ class _ElectricityFormState extends State<ElectricityForm> {
   }
 
   _sendRequest() async {
+    FocusManager.instance.primaryFocus?.unfocus();
     var filteredAmt = _amountController.text.replaceAll("₦", "");
     try {
       _controller.setLoading(true);
@@ -80,6 +81,7 @@ class _ElectricityFormState extends State<ElectricityForm> {
 
       //
     } catch (error) {
+      _controller.setLoading(false);
       debugPrint(error.toString());
     }
   }
@@ -417,17 +419,22 @@ class _ElectricityFormState extends State<ElectricityForm> {
                     const Divider(),
                     const SizedBox(height: 6.0),
                     _itemRow(
-                        title: "Meter Number", value: "${data['MeterNumber']}"),
+                        title: "Meter Number",
+                        value:
+                            "${data['MeterNumber'] ?? data['Meter_Number']}"),
                     const SizedBox(height: 6.0),
                     const Divider(),
                     const SizedBox(height: 6.0),
-                    _itemRow(title: "Address", value: "${data['Address']}"),
+                    _itemRow(
+                        title: "Address",
+                        value: "${data['Address'] ?? data['District']}"),
                     const SizedBox(height: 6.0),
                     const Divider(),
                     const SizedBox(height: 6.0),
                     _itemRow(
                         title: "Meter Type",
-                        value: "${data['Meter_Type']}"..capitalize),
+                        value: "${data['Meter_Type'] ?? _selectedMeterType}"
+                          ..capitalize),
                     const SizedBox(height: 36.0),
                   ],
                 ),

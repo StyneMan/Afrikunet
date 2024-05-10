@@ -15,6 +15,7 @@ class CustomTextField extends StatelessWidget {
   final String? placeholder;
   final FocusNode? focusNode;
   final Widget? prefix;
+  final int? maxLength;
 
   CustomTextField({
     Key? key,
@@ -31,6 +32,7 @@ class CustomTextField extends StatelessWidget {
     this.placeholder = "",
     this.focusNode,
     this.prefix,
+    this.maxLength,
   }) : super(key: key);
 
   @override
@@ -40,7 +42,7 @@ class CustomTextField extends StatelessWidget {
       cursorColor: Constants.secondaryColor,
       controller: controller,
       validator: validator,
-      maxLength: hintText == "Phone" ? 11 : null,
+      maxLength: hintText == "Phone" ? 11 : maxLength,
       enabled: isEnabled,
       focusNode: focusNode,
       decoration: InputDecoration(

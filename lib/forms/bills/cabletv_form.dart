@@ -44,7 +44,7 @@ class _CableTvFormState extends State<CableTvForm> {
   Map _payload = {};
 
   _sendRequest() async {
-    print("JUST CLICKED RITANOL");
+    FocusManager.instance.primaryFocus?.unfocus();
     _controller.setLoading(true);
 
     try {
@@ -79,7 +79,8 @@ class _CableTvFormState extends State<CableTvForm> {
 
         if ('${map['message']}'.toLowerCase().contains('verified')) {
           Get.bottomSheet(
-              _confirmBottomSheetContent(data: map['customerData']));
+            _confirmBottomSheetContent(data: map['customerData']),
+          );
         }
       } else {
         Map<String, dynamic> errMap = jsonDecode(_response.body);
@@ -375,8 +376,9 @@ class _CableTvFormState extends State<CableTvForm> {
 
                                                 _controller
                                                         .cableTvAmount.value =
-                                                    _currentPlans[index]
-                                                        ['variation_amount'];
+                                                    double.parse(_currentPlans[
+                                                            index]
+                                                        ['variation_amount']);
 
                                                 _controller.cableTvPackageName
                                                         .value =
@@ -473,12 +475,12 @@ class _CableTvFormState extends State<CableTvForm> {
   Container _confirmBottomSheetContent({required var data}) => Container(
         padding: const EdgeInsets.all(10.0),
         height: MediaQuery.of(context).size.height * 0.70,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(21),
             topRight: Radius.circular(21),
           ),
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.background,
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -524,11 +526,14 @@ class _CableTvFormState extends State<CableTvForm> {
                     const SizedBox(height: 6.0),
                     _itemRow(
                         title: "Customer Number",
-                        value: "${data['Customer_Number']}"),
+                        value:
+                            "${data['Customer_Number'] ?? data['Customer_ID'] ?? data['Smartcard_Number']}"),
                     const SizedBox(height: 6.0),
                     const Divider(),
                     const SizedBox(height: 6.0),
-                    _itemRow(title: "Due Date", value: "${data['Due_Date']}"),
+                    _itemRow(
+                        title: "Due Date",
+                        value: "${data['Due_Date'] ?? data['DUE_DATE']}"),
                     const SizedBox(height: 6.0),
                     const Divider(),
                     const SizedBox(height: 6.0),
