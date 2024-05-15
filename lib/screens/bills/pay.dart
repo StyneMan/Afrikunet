@@ -89,8 +89,9 @@ class _PayNowState extends State<PayNow> {
                       onPressed: !_isChecked
                           ? null
                           : () {
-                              // Get.to(page, arguments: )
                               // Send Request for payment and trigger payment form
+                              var _customerRef =
+                                  "Afrikunet_${DateTime.now().millisecondsSinceEpoch}_${widget.manager.getUser()['first_name']}_pay";
                               var _payload = {
                                 "full_name":
                                     "${widget.manager.getUser()['first_name']} ${widget.manager.getUser()['last_name']}",
@@ -101,8 +102,7 @@ class _PayNowState extends State<PayNow> {
                                 "amount": widget.payload['amount'],
                                 "merchant_id": '65d3404666a4d',
                                 "payment_type": 'card',
-                                "customer_ref":
-                                    "Afrikunet_${DateTime.now().millisecondsSinceEpoch}_${widget.manager.getUser()['first_name']}_pay",
+                                "customer_ref": _customerRef,
                                 "webhook_url":
                                     "https://afrikunet-api-orcin.vercel.app/bkapi/vouchers/webhook",
                               };
@@ -130,6 +130,7 @@ class _PayNowState extends State<PayNow> {
                                 const PaymentView(),
                                 arguments: {
                                   'data': encoded,
+                                  "customerRef": _customerRef,
                                   'customerData': widget.customerData,
                                   'payload': widget.payload,
                                   'accessToken':

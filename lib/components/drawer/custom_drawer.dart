@@ -61,7 +61,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           icon: 'assets/images/voucher_icon.svg',
           title: 'My Vouchers',
           isAction: false,
-          widget: const MyVouchersPage(),
+          widget: MyVouchersPage(manager: widget.manager),
         ),
         DrawerModel(
           icon: 'assets/images/add_bank.svg',

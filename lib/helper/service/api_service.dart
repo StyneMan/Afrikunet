@@ -197,6 +197,37 @@ class APIService {
     );
   }
 
+  Future<http.Response> getVTUCountries({required String type}) async {
+    return await http.get(
+      Uri.parse('${Constants.baseURL}/vtu/international?type=$type'),
+      headers: {
+        "Content-type": "application/json",
+      },
+    );
+  }
+
+  Future<http.Response> getCountryOperators(
+      {required String countryCode, required String productTypeID}) async {
+    return await http.get(
+      Uri.parse(
+          '${Constants.baseURL}/vtu/country/operators?code=$countryCode&product_type_id=$productTypeID'),
+      headers: {
+        "Content-type": "application/json",
+      },
+    );
+  }
+
+  Future<http.Response> getInternationalVariationCode(
+      {required String operatorID, required String productTypeID}) async {
+    return await http.get(
+      Uri.parse(
+          '${Constants.baseURL}/vtu/international/variation-code?operator_id=$operatorID&product_type_id=$productTypeID'),
+      headers: {
+        "Content-type": "application/json",
+      },
+    );
+  }
+
   Future<http.Response> initPayment(String accessToken, var encodedData) async {
     return await client.post(
       Uri.parse('${Constants.baseURL}/vtu/request/payment/initiate'),
@@ -205,17 +236,6 @@ class APIService {
         "Authorization": "Bearer " + accessToken,
       },
       body: jsonEncode(encodedData),
-    );
-  }
-
-  Future<http.Response> buyVoucher(String accessToken, var payload) async {
-    return await client.post(
-      Uri.parse('${Constants.baseURL}/vouchers/purchase'),
-      headers: {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-      },
-      body: jsonEncode(payload),
     );
   }
 
@@ -277,18 +297,18 @@ class APIService {
     );
   }
 
-  // Future<http.Response> getUserBankAccounts({
-  //   required String accessToken,
-  //   required String userId,
-  // }) async {
-  //   return await http.get(
-  //     Uri.parse('${Constants.baseURL}/bank/user/id=$userId/accounts'),
-  //     headers: {
-  //       "Content-type": "application/json",
-  //       "Authorization": "Bearer " + accessToken,
-  //     },
-  //   );
-  // }
+  Future<http.Response> fetchUserBankAccounts({
+    required String accessToken,
+    required String userId,
+  }) async {
+    return await http.get(
+      Uri.parse('${Constants.baseURL}/bank/user/id=$userId/accounts'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+    );
+  }
 
   Stream<http.Response> getUserBankAccounts({
     required String accessToken,
@@ -309,5 +329,84 @@ class APIService {
       // Handle errors by adding an error to the stream
       _streamController.addError(error);
     }
+  }
+
+  // VOUCHERS
+  Future<http.Response> buyVoucher(String accessToken, var payload) async {
+    return await client.post(
+      Uri.parse('${Constants.baseURL}/vouchers/purchase'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+      body: jsonEncode(payload),
+    );
+  }
+
+  Future<http.Response> redeemVoucher(String accessToken, var payload) async {
+    return await client.post(
+      Uri.parse('${Constants.baseURL}/vouchers/redeem'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+      body: jsonEncode(payload),
+    );
+  }
+
+  Future<http.Response> getUserVouchers({
+    required String accessToken,
+    required int page,
+    required int limit,
+  }) async {
+    return await http.get(
+      Uri.parse(
+          '${Constants.baseURL}/vouchers/user/all?page=$page&limit=$limit'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+    );
+  }
+
+  Future<http.Response> fetchVoucherCharge({
+    required String accessToken,
+    required var payload,
+  }) async {
+    return await client.post(
+      Uri.parse('${Constants.baseURL}/vouchers/buy/fetch-charge'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+      body: jsonEncode(payload),
+    );
+  }
+
+  Future<http.Response> validateVoucherCode({
+    required String accessToken,
+    required var voucherCode,
+  }) async {
+    return await client.post(
+      Uri.parse(
+          '${Constants.baseURL}/vouchers/code/validate?voucher_code=$voucherCode'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+    );
+  }
+
+  Future<http.Response> voucherGenerateOTP({
+    required String accessToken,
+    required var voucherCode,
+  }) async {
+    return await client.get(
+      Uri.parse('${Constants.baseURL}/vouchers/otp/generate/$voucherCode'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+    );
   }
 }

@@ -12,7 +12,7 @@ class SocketManager {
   SocketManager._internal() {
     // Initialize the Socket.IO instance here
     // socket = IO.io('your_socket_server_url');
-    socket = IO.io('http://192.168.43.41:3001', <String, dynamic>{
+    socket = IO.io('${Constants.baseURL2}:3001', <String, dynamic>{
       "transports": ["websocket"],
       "autoConnect": false
     });

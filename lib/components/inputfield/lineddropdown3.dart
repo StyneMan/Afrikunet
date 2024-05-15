@@ -1,5 +1,6 @@
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 typedef void InitCallback(var value);
 
@@ -28,64 +29,81 @@ class _LinedDropdownState extends State<LinedDropdown3> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          TextBody1(
-            text: widget.title,
-            fontWeight: FontWeight.w500,
-            color: Theme.of(context).colorScheme.tertiary,
-          ),
-          Expanded(
-            child: Container(
-              width: 100,
-              color: Colors.transparent,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: GestureDetector(
+        onTap: () {
+          _showChooser(
+            items: widget.items,
+          );
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            TextBody1(
+              text: widget.title,
+              fontWeight: FontWeight.w500,
+              color: Theme.of(context).colorScheme.tertiary,
             ),
-          ),
-          SizedBox(
-            width: 120,
-            child: DropdownButton(
-              hint: TextBody1(
-                text: "${widget.label['flag']} ${widget.label['label']}",
-                align: TextAlign.end,
-                color: Theme.of(context).colorScheme.tertiary,
-                fontWeight: FontWeight.w400,
+            Expanded(
+              child: Container(
+                width: 100,
+                color: Colors.transparent,
               ),
-              alignment: AlignmentDirectional.centerEnd,
-              items: widget.items.map((e) {
-                return DropdownMenuItem(
-                  value: e,
-                  alignment: AlignmentDirectional.centerEnd,
-                  child: TextBody1(
-                    text: "${e['flag']} ${e['label']}",
-                    align: TextAlign.end,
-                    color: Theme.of(context).colorScheme.tertiary,
-                    fontWeight: FontWeight.w400,
-                  ),
-                );
-              }).toList(),
-              value: selectVal,
-              onChanged: !widget.isEnabled
-                  ? null
-                  : (newValue) async {
-                      print("INNEC LANG SELECTED :: $newValue");
-                      widget.onSelected(
-                        newValue,
-                      );
-                      setState(
-                        () {
-                          selectVal = newValue as Map;
-                        },
-                      );
-                    },
-              icon: const Icon(Icons.keyboard_arrow_down_rounded),
-              iconSize: 30,
-              isExpanded: true,
-              underline: const SizedBox(),
             ),
+            TextBody1(
+              text: "${widget.label['flag']} ${widget.label['label']}",
+              align: TextAlign.end,
+              color: Theme.of(context).colorScheme.tertiary,
+              fontWeight: FontWeight.w400,
+            ),
+            const SizedBox(width: 4.0),
+            const Icon(Icons.keyboard_arrow_down_rounded),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _showChooser({var items}) {
+    return Get.bottomSheet(
+      Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(21),
+            topRight: Radius.circular(21),
           ),
-        ],
+          color: Theme.of(context).colorScheme.surface,
+        ),
+        child: SingleChildScrollView(
+          child: ListView.separated(
+            shrinkWrap: true,
+            padding: const EdgeInsets.only(
+              top: 16.0,
+              bottom: 8.0,
+            ),
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) => TextButton(
+              onPressed: () {
+                widget.onSelected(
+                  items[index],
+                );
+                setState(() {
+                  selectVal = items[index];
+                });
+                Get.back();
+              },
+              child: Text(
+                '${items[index]['flag']} ${items[index]['label']}',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
+              ),
+            ),
+            separatorBuilder: (context, index) => const Divider(),
+            itemCount: items.length,
+          ),
+        ),
       ),
     );
   }

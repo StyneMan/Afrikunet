@@ -52,7 +52,14 @@ class _PaymentOptionsState extends State<PaymentOptions> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    print("PAYLOAD :: ${widget.payload}");
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print("PAYLOAD :: ${widget.payload}");
     return Obx(
       () => LoadingOverlayPro(
         isLoading: _controller.isLoading.value,
@@ -263,8 +270,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     bgColor: Theme.of(context).colorScheme.primaryContainer,
                     onPressed: () {
                       if (_isChecked || _isChecked2) {
-                        // Load Flutterwave Here
-                        // Get.to(page, arguments: )
+                        var _customerRef =
+                            "Afrikunet_${DateTime.now().millisecondsSinceEpoch}_${widget.manager.getUser()['first_name']}_pay";
                         // Send Request for payment and trigger payment form
                         var _payload = {
                           "full_name":
@@ -275,8 +282,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                               widget.manager.getUser()['phone_number']),
                           "merchant_id": '65d3404666a4d',
                           "payment_type": 'card',
-                          "customer_ref":
-                              "Afrikunet_${DateTime.now().millisecondsSinceEpoch}_${widget.manager.getUser()['first_name']}_pay",
+                          "customer_ref": _customerRef,
                           "webhook_url":
                               "https://afrikunet-api-orcin.vercel.app/bkapi/vouchers/webhook",
                         };
@@ -302,6 +308,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                           const PaymentView(),
                           arguments: {
                             'data': encoded,
+                            "customerRef": _customerRef,
                             "usecase": 'buy-voucher',
                             'payload': widget.payload,
                             'accessToken': widget.manager.getAccessToken(),

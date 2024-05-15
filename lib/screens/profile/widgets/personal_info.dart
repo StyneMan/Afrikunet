@@ -53,18 +53,25 @@ class _PersonalState extends State<Personal> {
   Map _selectedState = {};
   var _selectedLanguage = {"flag": "🇬🇧", "code": "en", "label": 'English'};
 
-  String? _genderLabel;
+  String? _genderLabel = "Male";
   bool _shouldEdit = false;
   String _isoCode = "+234", _countryCode = "NG";
 
   // final _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final _controller = Get.find<StateController>();
+  List<Map<String, dynamic>> _countries = [];
 
   _onSelected(val) {
     setState(() {
       _selectedGender = val;
       _shouldEdit = true;
+    });
+  }
+
+  _onCountryFiltered(val) {
+    setState(() {
+      _countries = val;
     });
   }
 
@@ -109,106 +116,65 @@ class _PersonalState extends State<Personal> {
   @override
   void initState() {
     super.initState();
+    print("USER DATA ::: ${widget.manager.getUser()}");
 
-    setState(() {
-      _fnameController.text =
-          _controller.userData.value['first_name'].toString().capitalize ??
-              widget.manager.getUser()['first_name'].toString().capitalize ??
-              "";
-      _mnameController.text =
-          _controller.userData.value['middle_name'].toString().capitalize ??
-              widget.manager.getUser()['middle_name'].toString().capitalize ??
-              "";
-      _lnameController.text =
-          _controller.userData.value['last_name'].toString().capitalize ??
-              widget.manager.getUser()['last_name'].toString().capitalize ??
-              "";
-      _phoneController.text = _controller.userData.value['phone_number'] ??
-          widget.manager.getUser()['phone_number'] ??
-          "";
-      _emailController.text = _controller.userData.value['email_address'] ??
-          widget.manager.getUser()['email_address'] ??
-          "";
-      _genderLabel =
-          _controller.userData.value['gender'].toString().capitalize ??
-              widget.manager.getUser()['gender'].toString().capitalize ??
-              "Gender";
-      // _selectedCity = _controller.userData.value['address']['city']
-      //         .toString()
-      //         .capitalize ??
-      //     widget.manager.getUser()['address']['city'].toString().capitalize ??
-      //     "Select city";
-      // _selectedState = _controller.userData.value['address']['state']
-      //         .toString()
-      //         .capitalize ??
-      //     widget.manager.getUser()['address']['state'].toString().capitalize ??
-      //     "Select state";
+    try {
+      setState(() {
+        _countries = countries['data'];
+        _fnameController.text =
+            _controller.userData.value['first_name'].toString().capitalize ??
+                widget.manager.getUser()['first_name'].toString().capitalize ??
+                "";
+        _mnameController.text = _controller.userData.value['middle_name'] !=
+                null
+            ? _controller.userData.value['middle_name'].toString().capitalize ??
+                widget.manager.getUser()['middle_name'].toString().capitalize ??
+                ""
+            : "";
+        _lnameController.text = _controller.userData.value['last_name'] != null
+            ? _controller.userData.value['last_name'].toString().capitalize ??
+                widget.manager.getUser()['last_name'].toString().capitalize ??
+                ""
+            : "";
+        _phoneController.text = _controller.userData.value['phone_number'] ??
+            widget.manager.getUser()['phone_number'] ??
+            "";
+        _emailController.text = _controller.userData.value['email_address'] ??
+            widget.manager.getUser()['email_address'] ??
+            "";
+        _genderLabel =
+            _controller.userData.value['gender'].toString().capitalize ??
+                widget.manager.getUser()['gender'].toString().capitalize ??
+                "Male";
 
-      // _selectedLanguage = {"flag": "", "code": "en"} =
-      //     _controller.userData.value['profession'].toString().capitalize ??
-      //         widget.manager.getUser()['profession'].toString().capitalize ??
-      //         "Select profession";
-      _shouldEdit = _controller.croppedPic.value.isNotEmpty;
-    });
+        _addressController.text =
+            _controller.userData.value['address']['street'] != null
+                ? _controller.userData.value['address']['street']
+                        .toString()
+                        .capitalize ??
+                    widget.manager
+                        .getUser()['address']['street']
+                        .toString()
+                        .capitalize ??
+                    ""
+                : "";
+        _cityController.text = _controller.userData.value['address']['city'] !=
+                null
+            ? _controller.userData.value['address']['city']
+                    .toString()
+                    .capitalize ??
+                widget.manager
+                    .getUser()['address']['city']
+                    .toString()
+                    .capitalize ??
+                ""
+            : "";
+        _shouldEdit = _controller.croppedPic.value.isNotEmpty;
+      });
+    } catch (e) {
+      print("JKS ERR :: $e");
+    }
   }
-
-  showStatusDialog() => showDialog(
-        context: context,
-        builder: (BuildContext context) => SizedBox(
-          height: MediaQuery.of(context).size.height * 0.4,
-          width: MediaQuery.of(context).size.width * 0.98,
-          child: CustomDialog(
-            ripple: SvgPicture.asset(
-              "assets/images/check_effect.svg",
-              width: (Constants.avatarRadius + 20),
-              height: (Constants.avatarRadius + 20),
-            ),
-            avtrBg: Colors.transparent,
-            avtrChild: Image.asset(
-              "assets/images/checked.png",
-            ), //const Icon(CupertinoIcons.check_mark, size: 50,),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 16.0,
-                horizontal: 36.0,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  TextMedium(
-                    text: "Profile Update",
-                    fontWeight: FontWeight.w400,
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
-                  const SizedBox(
-                    height: 5.0,
-                  ),
-                  TextSmall(
-                    text: "Updated successfully",
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
-                  const SizedBox(
-                    height: 21,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.36,
-                    child: PrimaryButton(
-                      buttonText: "Close",
-                      foreColor: Colors.white,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
 
   _updateProfile() async {
     _controller.setLoading(true);
@@ -267,7 +233,12 @@ class _PersonalState extends State<Personal> {
             _shouldEdit = false;
           });
 
-          showStatusDialog();
+          Constants.showSuccessDialog(
+            context: context,
+            title: "Profile Update",
+            message:
+                "${Constants.toast(map['message']) ?? "Profile updated successfully"}",
+          );
         } else {
           Map<String, dynamic> map = jsonDecode(resp.body);
           Constants.toast(map['message']);
@@ -338,7 +309,11 @@ class _PersonalState extends State<Personal> {
 
           _controller.croppedPic.value = "";
 
-          showStatusDialog();
+          Constants.showSuccessDialog(
+              context: context,
+              title: "Profile Update",
+              message:
+                  "${Constants.toast(map['message']) ?? "Profile updated successfully"}");
         } else {
           Map<String, dynamic> map = jsonDecode(resp.body);
           print("JKJS SSS::: ${map}");
@@ -353,7 +328,6 @@ class _PersonalState extends State<Personal> {
 
   @override
   Widget build(BuildContext context) {
-    // debugPrint("LKL>> ${countries['data']}");
     return Form(
       key: _formKey,
       child: ListView(
@@ -641,6 +615,7 @@ class _PersonalState extends State<Personal> {
             title: "Country",
             onSelected: _onCountrySelected,
             items: countries['data'],
+            onFiltered: _onCountryFiltered,
           ),
           const Divider(
             color: Constants.accentColor,

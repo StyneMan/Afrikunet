@@ -33,11 +33,11 @@ class _ConfirmPurchaseState extends State<ConfirmPurchase> {
   @override
   void initState() {
     super.initState();
-    if (mounted) {
-      setState(() {
-        _emailController.text = widget.manager.getUser()['email_address'];
-      });
-    }
+    // if (mounted) {
+    //   setState(() {
+    //     _emailController.text = widget.manager.getUser()['email_address'];
+    //   });
+    // }
   }
 
   @override
@@ -105,18 +105,15 @@ class _ConfirmPurchaseState extends State<ConfirmPurchase> {
                     width: double.infinity,
                     child: GiftCardItem(
                       width: double.infinity,
-                      amount: widget.payload['amount'],
-                      bgImage: "assets/images/giftcard_bg.png",
-                      code: "XDT12IUNWpo1HN",
-                      logo: widget.payload['voucherIndex'] != 1
-                          ? "assets/images/afrikunet_logo_white.png"
-                          : "assets/images/logo_blue.png",
-                      type: widget.payload['voucherIndex'] == 0
+                      amount: widget.payload['finalValue'],
+                      status: "unused",
+                      code: "XYZ**********",
+                      bgType: widget.payload['voucherIndex'] == 0
                           ? "blue"
                           : widget.payload['voucherIndex'] == 1
                               ? "white"
                               : "black",
-                      voucherType: widget.payload['voucherType'],
+                      type: widget.payload['voucherType'],
                     ),
                   ),
                   const SizedBox(height: 32.0),
@@ -153,10 +150,12 @@ class _ConfirmPurchaseState extends State<ConfirmPurchase> {
                             Icons.done,
                             color: Colors.green,
                           )
-                        : const Icon(
-                            CupertinoIcons.xmark_circle_fill,
-                            color: Colors.red,
-                          ),
+                        : _emailController.text.isNotEmpty
+                            ? const Icon(
+                                CupertinoIcons.xmark_circle_fill,
+                                color: Colors.red,
+                              )
+                            : const SizedBox(),
                     controller: _emailController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -185,6 +184,7 @@ class _ConfirmPurchaseState extends State<ConfirmPurchase> {
                             manager: widget.manager,
                             payload: {
                               "voucherType": "${widget.payload['voucherType']}",
+                              "finalValue": "${widget.payload['finalValue']}",
                               "amount": "${widget.payload['amount']}"
                                   .replaceAll("₦", "")
                                   .replaceAll(",", ""),

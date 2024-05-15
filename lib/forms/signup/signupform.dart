@@ -30,7 +30,8 @@ class SignupForm extends StatefulWidget {
 }
 
 class _SignupFormState extends State<SignupForm> {
-  final _nameController = TextEditingController();
+  final _fnameController = TextEditingController();
+  final _lnameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -52,12 +53,12 @@ class _SignupFormState extends State<SignupForm> {
     _controller.setLoading(true);
 
     Map _payload = {
-      "email_address": _emailController.text,
-      "password": _passwordController.text,
-      "first_name": _nameController.text.split(' ')[0],
-      "last_name": _nameController.text.split(' ')[1] ?? "",
+      "email_address": _emailController.text.trim(),
+      "password": _passwordController.text.trim(),
+      "first_name": _fnameController.text.trim(),
+      "last_name": _lnameController.text.trim(),
       "iso_code": _isoCode,
-      "country_code": _countryCode,
+      "country_code": _countryCode.trim(),
       "phone_number": _phoneController.text,
       "international_phone_format": "$_isoCode ${_phoneController.text}"
     };
@@ -66,10 +67,13 @@ class _SignupFormState extends State<SignupForm> {
       final _response = await APIService().signup(_payload);
       _controller.setLoading(false);
       debugPrint("SIGUP RESPONSE :: ${_response.body}");
-      if (_response.statusCode >= 200 && _response.statusCode <= 299) {
+      Map<String, dynamic> map = jsonDecode(_response.body);
+      if (_response.statusCode >= 200 &&
+          _response.statusCode <= 299 &&
+          (map['message'] != 'Account already exist' &&
+              map['message'] != 'Phone number is taken')) {
         // Successful
         Map<String, dynamic> _mapper = jsonDecode(_response.body);
-
         Constants.toast("${_mapper['message']}");
 
         Get.to(
@@ -103,26 +107,51 @@ class _SignupFormState extends State<SignupForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextBody1(
-            text: "Name",
+            text: "Full Name",
             fontWeight: FontWeight.w400,
             color: Theme.of(context).colorScheme.tertiary,
           ),
           const SizedBox(
             height: 4.0,
           ),
-          CustomTextField(
-            hintText: "",
-            placeholder: "Enter full name",
-            onChanged: (val) {},
-            controller: _nameController,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your email or phone';
-              }
-              return null;
-            },
-            inputType: TextInputType.name,
-            capitalization: TextCapitalization.words,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: CustomTextField(
+                  hintText: "",
+                  placeholder: "First name",
+                  onChanged: (val) {},
+                  controller: _fnameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email or phone';
+                    }
+                    return null;
+                  },
+                  inputType: TextInputType.name,
+                  capitalization: TextCapitalization.words,
+                ),
+              ),
+              const SizedBox(width: 2.0),
+              Expanded(
+                child: CustomTextField(
+                  hintText: "",
+                  placeholder: "Last name",
+                  onChanged: (val) {},
+                  controller: _lnameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email or phone';
+                    }
+                    return null;
+                  },
+                  inputType: TextInputType.name,
+                  capitalization: TextCapitalization.words,
+                ),
+              ),
+            ],
           ),
           const SizedBox(
             height: 16.0,

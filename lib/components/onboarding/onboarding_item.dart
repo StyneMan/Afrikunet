@@ -1,8 +1,6 @@
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/model/onboarding.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class OnbaoardingItem extends StatelessWidget {
   final OnboardingSlide item;

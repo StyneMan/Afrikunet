@@ -64,6 +64,7 @@ class PaymentController extends GetxController {
                   payload: payload,
                   accessToken: Get.arguments['accessToken'],
                   manager: Get.arguments['manager'],
+                  customerRef: Get.arguments['customerRef'],
                 );
               }
             }
@@ -106,6 +107,7 @@ class PaymentController extends GetxController {
           "otherParams": {
             "variation_code": payload['variation_code'],
             "billersCode": payload['otherParams']['billersCode'],
+            "email_address": manager.getUser()['email_address'],
           }
         };
 
@@ -153,7 +155,8 @@ class PaymentController extends GetxController {
           "otherParams": {
             "billersCode": payload['otherParams']['billersCode'],
             "subscription_type": "renew",
-            "variation_code": payload['otherParams']['variation_code']
+            "variation_code": payload['otherParams']['variation_code'],
+            "email_address": manager.getUser()['email_address'],
           }
         };
 
@@ -189,8 +192,15 @@ class PaymentController extends GetxController {
       try {
         _controller.setLoading(true);
 
+        Map _payload = {
+          ...payload,
+          "otherParams": {
+            "email_address": manager.getUser()['email_address'],
+          }
+        };
+
         final _response =
-            await APIService().initVtuRequest(accessToken, payload);
+            await APIService().initVtuRequest(accessToken, _payload);
         print("INIT REQUEST REPONSE :: ${_response.body}");
         _controller.setLoading(false);
 
@@ -219,12 +229,19 @@ class PaymentController extends GetxController {
       try {
         _controller.setLoading(true);
 
+        Map _payload = {
+          ...payload,
+          "otherParams": {
+            "email_address": manager.getUser()['email_address'],
+          }
+        };
+
         if (kDebugMode) {
           print("BUY DATA PAYLOAD ::: $encodedData");
         }
 
         final _response =
-            await APIService().initVtuRequest(accessToken, payload);
+            await APIService().initVtuRequest(accessToken, _payload);
         // final _response = await APIService()
         //     .initPayment(accessToken, {"encodedData": encodedData});
         print("DATA REQUEST REPONSE :: ${_response.body}");
@@ -261,6 +278,7 @@ class PaymentController extends GetxController {
     required var payload,
     required var accessToken,
     required var manager,
+    required var customerRef,
   }) async {
     try {
       // _controller.setLoading(true);
@@ -274,6 +292,8 @@ class PaymentController extends GetxController {
             : payload['voucherIndex'] == 1
                 ? "white"
                 : "black",
+        "customer_ref": customerRef,
+        "user_id": manager.getUser()['email_address']
       };
 
       print("BUY VOUCHER PAYLOAD ::: $_payload");

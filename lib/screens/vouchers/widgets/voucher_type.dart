@@ -6,12 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class VoucherType extends StatefulWidget {
+  final String finalValue;
   final String currentAmount;
   final PreferenceManager manager;
+  final bool hasFetchedCharge;
   const VoucherType({
     Key? key,
     required this.manager,
+    required this.finalValue,
     required this.currentAmount,
+    required this.hasFetchedCharge,
   }) : super(key: key);
 
   @override
@@ -221,14 +225,16 @@ class _VoucherTypeState extends State<VoucherType> {
                   children: [
                     Expanded(
                       child: GiftCardItem(
-                        amount: widget.currentAmount,
-                        bgImage: "assets/images/giftcard_bg.png",
-                        code: "XDT12IUNWpo1HN",
-                        logo: "assets/images/afrikunet_logo_white.png",
-                        type: "blue",
+                        amount: widget.finalValue,
+                        bgType: "blue",
+                        code: "XYZ**********",
+                        status: "unused",
+                        type: _currentVoucherType,
                         width: 285,
-                        voucherType: _currentVoucherType,
                       ),
+                    ),
+                    const SizedBox(
+                      height: 4.0,
                     ),
                     Radio(
                       activeColor: Theme.of(context).colorScheme.tertiary,
@@ -253,13 +259,12 @@ class _VoucherTypeState extends State<VoucherType> {
                   children: [
                     Expanded(
                       child: GiftCardItem(
-                        amount: widget.currentAmount,
-                        bgImage: "assets/images/giftcard_bg.png",
+                        amount: widget.finalValue,
+                        bgType: "white",
                         code: "XDT12IUNWpo1HN",
-                        logo: "assets/images/logo_blue.png",
-                        type: "white",
+                        status: "unused",
+                        type: _currentVoucherType,
                         width: 285,
-                        voucherType: _currentVoucherType,
                       ),
                     ),
                     const SizedBox(
@@ -288,13 +293,12 @@ class _VoucherTypeState extends State<VoucherType> {
                   children: [
                     Expanded(
                       child: GiftCardItem(
-                        amount: widget.currentAmount,
-                        bgImage: "assets/images/giftcard_bg.png",
+                        amount: widget.finalValue,
+                        bgType: "black",
                         code: "XDT12IUNWpo1HN",
-                        logo: "assets/images/afrikunet_logo_white.png",
-                        type: "black",
+                        type: _currentVoucherType,
                         width: 285,
-                        voucherType: _currentVoucherType,
+                        status: 'used',
                       ),
                     ),
                     const SizedBox(
@@ -323,7 +327,7 @@ class _VoucherTypeState extends State<VoucherType> {
             fontSize: 16,
             buttonText: "Pay  ${widget.currentAmount}",
             bgColor: Theme.of(context).colorScheme.primaryContainer,
-            onPressed: widget.currentAmount.isEmpty
+            onPressed: widget.currentAmount.isEmpty || !widget.hasFetchedCharge
                 ? null
                 : () {
                     Get.to(
@@ -333,6 +337,7 @@ class _VoucherTypeState extends State<VoucherType> {
                           "voucherType": _currentVoucherType,
                           "amount": widget.currentAmount,
                           "voucherIndex": _voucherIndex,
+                          "finalValue": widget.finalValue,
                         },
                       ),
                       transition: Transition.cupertino,

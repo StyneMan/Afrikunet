@@ -49,7 +49,21 @@ class _OnboardingState extends State<Onboarding> {
                   scrollDirection: Axis.horizontal,
                   itemCount: onboardingSlides.length,
                   itemBuilder: (context, index) {
-                    return OnbaoardingItem(item: onboardingSlides[index]);
+                    return GestureDetector(
+                      onHorizontalDragUpdate: (details) {
+                        print("DETAILS ::: ${details.globalPosition.dx}");
+                        if (_appController.onboardingIndex.value == 2) {
+                          if (details.globalPosition.dx > 75) {
+                            print("DELETE LEFT HERE :::");
+                            Get.offAll(
+                              GetStarted(),
+                              transition: Transition.cupertino,
+                            );
+                          }
+                        }
+                      },
+                      child: OnbaoardingItem(item: onboardingSlides[index]),
+                    );
                   },
                 ),
               ),

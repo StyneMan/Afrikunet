@@ -220,14 +220,14 @@ class _AddBankFormState extends State<AddBankForm> {
                 )
               : const SizedBox(),
           const SizedBox(height: 16.0),
-          _selectedBank == null
+          _selectedBank == null && _banks.isEmpty
               ? const SizedBox()
               : TextBody1(
                   text: "Account Number",
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
           const SizedBox(height: 4.0),
-          _selectedBank == null
+          _selectedBank == null && _banks.isEmpty
               ? const SizedBox()
               : CustomTextField(
                   maxLength: _selectedCountry['code'] == 'ng' ? 10 : null,
@@ -348,7 +348,7 @@ class _AddBankFormState extends State<AddBankForm> {
         "account_number": _accountNumber,
       };
 
-      print("BANK SAVE PAYLOAD ::: $_payload");
+      // print("BANK SAVE PAYLOAD ::: $_payload");
 
       final _prefs = await SharedPreferences.getInstance();
       final _token = _prefs.getString('accessToken') ?? "";
@@ -361,6 +361,8 @@ class _AddBankFormState extends State<AddBankForm> {
       print("SAVE BANK RESPONSE L::::: ${_response.body}");
 
       _showBottomSheet();
+
+      _controller.onInit();
     } catch (e) {
       _controller.setLoading(false);
       setState(() {
@@ -433,6 +435,7 @@ class _AddBankFormState extends State<AddBankForm> {
                       child: TextBody1(
                         text: 'Account successfully saved',
                         align: TextAlign.center,
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                     ),
                   ),

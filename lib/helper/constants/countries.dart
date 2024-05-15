@@ -3786,6 +3786,7 @@ Map countries = {
         {"name": "Osun State", "state_code": "OS"},
         {"name": "Oyo State", "state_code": "OY"},
         {"name": "Plateau State", "state_code": "PL"},
+        {"name": "Rivers State", "state_code": "RV"},
         {"name": "Sokoto State", "state_code": "SO"},
         {"name": "Taraba State", "state_code": "TA"},
         {"name": "Yobe State", "state_code": "YO"},

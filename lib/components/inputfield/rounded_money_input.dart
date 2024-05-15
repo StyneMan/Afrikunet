@@ -5,25 +5,32 @@ import 'package:afrikunet/helper/constants/constants.dart';
 
 class RoundedInputMoney extends StatelessWidget {
   final String hintText;
+  final String errorText;
+  final String helperText;
   final IconData icon;
   final bool? enabled;
+  final String? currencySymbol;
   final ValueChanged<String> onChanged;
   final TextEditingController controller;
   var validator;
   final Color strokeColor;
   final double borderRadius;
 
-  RoundedInputMoney({
-    Key? key,
-    required this.hintText,
-    this.icon = Icons.money,
-    this.enabled,
-    this.strokeColor = Colors.black,
-    required this.onChanged,
-    required this.controller,
-    required this.validator,
-    this.borderRadius = 4.0,
-  }) : super(key: key);
+  RoundedInputMoney(
+      {Key? key,
+      required this.hintText,
+      this.icon = Icons.money,
+      this.errorText = "",
+      this.helperText = "",
+      this.enabled,
+      this.strokeColor = Colors.black,
+      required this.onChanged,
+      required this.controller,
+      required this.validator,
+      this.borderRadius = 4.0,
+      this.currencySymbol = '₦',
+      s})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +44,7 @@ class RoundedInputMoney extends StatelessWidget {
         CurrencyTextInputFormatter(
           locale: 'en',
           decimalDigits: 0,
-          symbol: '₦',
+          symbol: currencySymbol,
         ),
       ],
       keyboardType: TextInputType.number,
@@ -75,7 +82,8 @@ class RoundedInputMoney extends StatelessWidget {
         ),
         filled: false,
         hintText: hintText,
-        // labelText: hintText,
+        helperText: helperText,
+        errorText: errorText.isEmpty ? null : errorText,
         focusColor: Constants.accentColor,
         hintStyle: TextStyle(
           fontFamily: "OpenSans",

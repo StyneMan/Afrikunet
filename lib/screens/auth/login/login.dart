@@ -67,8 +67,8 @@ class _LoginState extends State<Login> {
         String userData = jsonEncode(_mapper['user']);
         _prefs.setString("userData", userData);
         _controller.setUserData(_mapper['user']);
-        _manager?.setUserData(userData);
-        _manager?.saveAccessToken(_mapper['accessToken']);
+        // _manager?.setUserData(userData);
+        // _manager?.saveAccessToken(_mapper['accessToken']);
         _prefs.setString("accessToken", _mapper['accessToken']);
         _controller.onInit();
 

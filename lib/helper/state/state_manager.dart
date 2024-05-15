@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 // import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:afrikunet/helper/constants/countries.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:afrikunet/helper/service/api_service.dart';
@@ -30,10 +31,13 @@ class StateController extends GetxController {
   var electricityDistributorName = "".obs;
 
   var vtus = [].obs;
+  var internationVTUTopup = [].obs;
+  var internationVTUData = [].obs;
   var internetData = {}.obs;
   var airtimeData = {}.obs;
   var electricityData = {}.obs;
   var cableData = {}.obs;
+  var filteredVTUCountries = [].obs;
 
   var selectedAirtimeNetwork = {}.obs;
 
@@ -46,10 +50,14 @@ class StateController extends GetxController {
   var croppedPic = "".obs;
   var customSearchBar = [].obs;
   var usersVoucherSplit = [].obs;
+  var userBankAccounts = [].obs;
+  var userVouchers = [].obs;
   var userHistory = [].obs;
   var banks = [].obs;
   var bankCountries = [].obs;
   var selectedContact = {}.obs;
+  var filteredStates = [].obs;
+  var filteredCountries = [].obs;
 
   var userData = {}.obs;
 
@@ -99,6 +107,16 @@ class StateController extends GetxController {
         Map<String, dynamic> map = jsonDecode(_countriesResponse.body);
         bankCountries.value = map['data'];
       }
+
+      final _topupResponse = await APIService().getVTUCountries(type: '');
+      debugPrint("INTERNATIONAL VTU PEOPLE ::: ${_topupResponse.body}");
+      setHasInternet(true);
+      if (_topupResponse.statusCode >= 200 &&
+          _topupResponse.statusCode <= 299) {
+        Map<String, dynamic> map = jsonDecode(_topupResponse.body);
+        internationVTUData.value = map['data'];
+        internationVTUTopup.value = map['topup'];
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -107,6 +125,7 @@ class StateController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    filteredCountries.value = countries['data'];
     initDao();
 
     final _prefs = await SharedPreferences.getInstance();
@@ -135,13 +154,48 @@ class StateController extends GetxController {
         }
       });
 
-      //Get User Profile
+      //Get User History
       APIService().getHistory(_token).then((value) {
         Map<String, dynamic> data = jsonDecode(value.body);
         print("HISTORY  ::: ${data['data']}");
         userHistory.value = data['data'];
       }).catchError((onError) {
         debugPrint("STATE GET PROFILE ERROR >>> $onError");
+        if (onError.toString().contains("rk is unreachable")) {
+          hasInternetAccess.value = false;
+        }
+      });
+
+      //Get User Vouchers
+      APIService()
+          .getUserVouchers(
+        accessToken: _token,
+        page: 1,
+        limit: 20,
+      )
+          .then((value) {
+        Map<String, dynamic> data = jsonDecode(value.body);
+        print("MY VOUCHERS  ::: ${data['vouchers']}");
+        userVouchers.value = data['vouchers'];
+      }).catchError((onError) {
+        debugPrint("STATE GET PROFILE ERROR >>> $onError");
+        if (onError.toString().contains("rk is unreachable")) {
+          hasInternetAccess.value = false;
+        }
+      });
+
+      //Get User Banks
+      APIService()
+          .fetchUserBankAccounts(
+        accessToken: _token,
+        userId: map['email_address'],
+      )
+          .then((value) {
+        Map<String, dynamic> data = jsonDecode(value.body);
+        print("MY BANK ACCOUNTS  ::: ${data['data']}");
+        userBankAccounts.value = data['data'];
+      }).catchError((onError) {
+        debugPrint("STATE GET BANK ACCOUNTS ERROR >>> $onError");
         if (onError.toString().contains("rk is unreachable")) {
           hasInternetAccess.value = false;
         }

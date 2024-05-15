@@ -20,7 +20,7 @@ class _HomeSliderState extends State<HomeSlider> {
       children: [
         CarouselSlider(
           options: CarouselOptions(
-            height: 210,
+            height: 200,
             viewportFraction: 1,
             autoPlay: true,
             autoPlayInterval: const Duration(seconds: 10),
@@ -41,13 +41,13 @@ class _HomeSliderState extends State<HomeSlider> {
                   children: [
                     Container(
                       width: double.infinity,
-                      height: 300,
+                      height: 200,
                       margin: const EdgeInsets.symmetric(horizontal: 4.0),
                       padding: const EdgeInsets.all(14.0),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: NetworkImage(sliderData.bgImage),
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                         ),
                         borderRadius: BorderRadius.circular(16.0),
                       ),

@@ -217,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${getGreeting()}, ${widget.manager.getUser()['first_name'].toString().capitalize}",
+                              "${getGreeting()}, ${widget.manager.getUser()['first_name'] == null ? "" : widget.manager.getUser()['first_name'].toString().capitalize}",
                               textScaleFactor: 0.92,
                               style: const TextStyle(
                                 fontSize: 18,
@@ -230,7 +230,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             const SizedBox(height: 4.0),
                             Text(
-                              "Last login $_lastTime",
+                              "Last login ${_lastTime == null ? "" : _lastTime}",
                               textScaleFactor: 0.86,
                               style: const TextStyle(
                                 fontSize: 11,
@@ -439,39 +439,37 @@ class _HomePageState extends State<HomePage> {
           if (data.title.toLowerCase().startsWith("wate") ||
               data.title.toLowerCase().startsWith("virtual") ||
               data.title.toLowerCase().startsWith("reward")) {
-            _showDialog(var context) {
-              showDialog(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) => InfoDialog(
-                  body: SingleChildScrollView(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const SizedBox(height: 40.0),
-                          Icon(
-                            CupertinoIcons.info_circle,
-                            size: 84,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          const SizedBox(height: 10.0),
-                          TextMedium(
-                            text: "Coming soon!",
-                            fontWeight: FontWeight.w400,
-                            color: Theme.of(context).colorScheme.tertiary,
-                          ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                        ],
-                      ),
+            showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) => InfoDialog(
+                body: SingleChildScrollView(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 40.0),
+                        Icon(
+                          CupertinoIcons.info_circle,
+                          size: 84,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        const SizedBox(height: 10.0),
+                        TextMedium(
+                          text: "Coming soon!",
+                          fontWeight: FontWeight.w400,
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              );
-            }
+              ),
+            );
           } else {
             Get.to(
               data.widget,

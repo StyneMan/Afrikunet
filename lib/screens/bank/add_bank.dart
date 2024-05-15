@@ -102,7 +102,7 @@ class AddBank extends StatelessWidget {
                         ),
                         TextButton.icon(
                           onPressed: () {
-                            _showBottomSheet(context);
+                            showBankBottomSheet(context);
                           },
                           icon: Icon(
                             CupertinoIcons.add,
@@ -136,7 +136,7 @@ class AddBank extends StatelessWidget {
                         ),
                         TextButton.icon(
                           onPressed: () {
-                            _showBottomSheet(context);
+                            showBankBottomSheet(context);
                           },
                           icon: Icon(
                             CupertinoIcons.add,
@@ -177,7 +177,7 @@ class AddBank extends StatelessWidget {
                       children: [
                         InkWell(
                           onTap: () {
-                            _showBottomSheet(context);
+                            showBankBottomSheet(context);
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -215,7 +215,7 @@ class AddBank extends StatelessWidget {
     );
   }
 
-  _showBottomSheet(var context) {
+  showBankBottomSheet(var context) {
     double sheetHeight = MediaQuery.of(context).size.height * 0.75;
 
     showModalBottomSheet(

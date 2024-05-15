@@ -1,12 +1,14 @@
-import 'package:afrikunet/components/buttons/primary.dart';
-import 'package:afrikunet/components/buttons/secondary.dart';
+import 'dart:convert';
+
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
+import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'voucher_code.dart';
+import 'widgets/redeem_actions.dart';
 
 class RedeemVoucher extends StatefulWidget {
   final PreferenceManager manager;
@@ -20,6 +22,32 @@ class RedeemVoucher extends StatefulWidget {
 }
 
 class _RedeemVoucherState extends State<RedeemVoucher> {
+  final _controller = Get.find<StateController>();
+
+  _initBanks() async {
+    try {
+      final _bankAccountsResponse = await APIService().fetchUserBankAccounts(
+        accessToken: widget.manager.getAccessToken(),
+        userId: widget.manager.getUser()['email_address'],
+      );
+
+      if (_bankAccountsResponse.statusCode >= 200 &&
+          _bankAccountsResponse.statusCode <= 299) {
+        Map<String, dynamic> data = jsonDecode(_bankAccountsResponse.body);
+        print("MY BANK ACCOUNTS  ::: ${data['data']}");
+        _controller.userBankAccounts.value = data['data'];
+      }
+    } catch (e) {
+      print("$e");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initBanks();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,34 +98,9 @@ class _RedeemVoucherState extends State<RedeemVoucher> {
                     color: Theme.of(context).colorScheme.tertiary,
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: PrimaryButton(
-                          buttonText: "Scan",
-                          bgColor:
-                              Theme.of(context).colorScheme.primaryContainer,
-                          onPressed: () {},
-                        ),
-                      ),
-                      const SizedBox(width: 16.0),
-                      Expanded(
-                        child: SecondaryButton(
-                          buttonText: "Enter Code",
-                          foreColor: Theme.of(context).colorScheme.secondary,
-                          onPressed: () {
-                            Get.to(
-                              VoucherCode(
-                                manager: widget.manager,
-                              ),
-                              transition: Transition.cupertino,
-                            );
-                          },
-                        ),
-                      ),
-                    ],
+                  VoucherRedeemActions(
+                    manager: widget.manager,
+                    caller: 'bank',
                   )
                 ],
               ),

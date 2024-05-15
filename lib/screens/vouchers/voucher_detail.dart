@@ -1,3 +1,4 @@
+import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/cards/giftcard_item.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,7 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class VoucherDetail extends StatelessWidget {
-  const VoucherDetail({Key? key}) : super(key: key);
+  var data;
+  VoucherDetail({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,7 @@ class VoucherDetail extends StatelessWidget {
               ),
             ),
             TextMedium(
-              text: "My Voucher",
+              text: "Voucher Information",
               color: Theme.of(context).colorScheme.tertiary,
             ),
           ],
@@ -41,14 +46,14 @@ class VoucherDetail extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           children: [
             const SizedBox(height: 10.0),
-            const SizedBox(
+            SizedBox(
               height: 225,
               child: GiftCardItem(
-                amount: "4 units",
-                bgImage: "assets/images/giftcard_bg.png",
-                code: "123mjksjk43",
-                logo: "assets/images/afrikunet_logo_white.png",
-                type: "blue",
+                amount: "${data['amount']}",
+                bgType: data['bg_type'],
+                code: data['code'],
+                status: data['status'],
+                type: data['type'],
               ),
             ),
             const SizedBox(height: 36.0),
@@ -61,7 +66,9 @@ class VoucherDetail extends StatelessWidget {
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
                 TextSmall(
-                  text: "12-03-2024",
+                  text: "${data['redeemed_at']}".isEmpty
+                      ? "Not redeemed"
+                      : "${data['redeemed_at']}",
                   color: Theme.of(context).colorScheme.tertiary,
                 )
               ],
@@ -78,7 +85,7 @@ class VoucherDetail extends StatelessWidget {
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
                 TextSmall(
-                  text: "Used",
+                  text: "${data['status']}".capitalize,
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
               ],
@@ -95,10 +102,25 @@ class VoucherDetail extends StatelessWidget {
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
                 TextSmall(
-                  text: "Marriage",
+                  text: "${data['type']}",
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
               ],
+            ),
+            const SizedBox(height: 24.0),
+            const Divider(),
+            const SizedBox(height: 24.0),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(
+                vertical: 16.0,
+              ),
+              child: PrimaryButton(
+                fontSize: 16,
+                buttonText: "Share",
+                bgColor: Theme.of(context).colorScheme.primaryContainer,
+                onPressed: () {},
+              ),
             ),
           ],
         ),

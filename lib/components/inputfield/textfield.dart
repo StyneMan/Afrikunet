@@ -3,6 +3,8 @@ import 'package:afrikunet/helper/constants/constants.dart';
 
 class CustomTextField extends StatelessWidget {
   final String hintText;
+  final String errorText;
+  final String helperText;
   final IconData icon;
   final ValueChanged<String> onChanged;
   final TextEditingController controller;
@@ -20,6 +22,8 @@ class CustomTextField extends StatelessWidget {
   CustomTextField({
     Key? key,
     this.hintText = "",
+    this.errorText = "",
+    this.helperText = "",
     this.icon = Icons.person,
     this.isEnabled = true,
     this.capitalization = TextCapitalization.none,
@@ -39,6 +43,15 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       onChanged: onChanged,
+      onEditingComplete: () {
+        print("IS EDITING COMPLETE OH !!!");
+      },
+      onFieldSubmitted: (value) {
+        print("IS SUBMITTED OHH !!! $value");
+      },
+      onSaved: (newValue) {
+        print("IS SAVED OHH !! newValue");
+      },
       cursorColor: Constants.secondaryColor,
       controller: controller,
       validator: validator,
@@ -74,9 +87,23 @@ class CustomTextField extends StatelessWidget {
           ),
           gapPadding: 4.0,
         ),
+        // errorBorder: errorText.isEmpty
+        //     ? null
+        //     : OutlineInputBorder(
+        //         borderSide: const BorderSide(
+        //           color: Constants.strokeColor,
+        //           width: 1.0,
+        //         ),
+        //         borderRadius: BorderRadius.all(
+        //           Radius.circular(borderRadius),
+        //         ),
+        //         gapPadding: 4.0,
+        //       ),
         filled: false,
         hintText: placeholder ?? hintText,
+        helperText: helperText,
         focusColor: Constants.strokeColor,
+        errorText: errorText.isEmpty ? null : errorText,
         hintStyle: const TextStyle(
           fontFamily: "OpenSans",
           color: Colors.grey,

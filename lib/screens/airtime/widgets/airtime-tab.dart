@@ -1,18 +1,29 @@
-import 'package:afrikunet/components/buttons/action.dart';
-import 'package:afrikunet/components/buttons/primary.dart';
-import 'package:afrikunet/components/dividers/dotted_divider.dart';
+import 'dart:convert';
+
+import 'package:afrikunet/components/buttons/dropdown_button.dart';
+import 'package:afrikunet/components/cards/micro_giftcard.dart';
+import 'package:afrikunet/components/dialog/info_dialog.dart';
+import 'package:afrikunet/components/inputfield/custom_phone_input.dart';
 import 'package:afrikunet/components/inputfield/rounded_money_input.dart';
 import 'package:afrikunet/components/inputfield/textfield.dart';
+import 'package:afrikunet/components/shimmer/circular_shimmer.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
-import 'package:afrikunet/data/networks.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
+import 'package:afrikunet/helper/constants/currencies.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
-import 'package:afrikunet/screens/bills/pay.dart';
+import 'package:afrikunet/screens/auth/otp/verifyotp.dart';
+import 'package:afrikunet/screens/vouchers/buy_voucher.dart';
+import 'package:afrikunet/screens/vouchers/widgets/redeem_actions.dart';
+import 'package:afrikunet/screens/vouchers/widgets/sheets/redeemable_africa_bottom_sheet.dart';
+import 'package:afrikunet/screens/vouchers/widgets/voucher_scanner.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'networks_bottom_sheet.dart';
 
 class AirtimeTab extends StatefulWidget {
   final PreferenceManager manager;
@@ -27,15 +38,33 @@ class AirtimeTab extends StatefulWidget {
 
 class _AirtimeTabState extends State<AirtimeTab> {
   int _current = 0;
-  String _countryCode = "+234";
+  String _countryCode = "+234",
+      _errorMsg = "",
+      _errText = "",
+      _countryFlag = 'https://vtpass.com/resources/images/flags/NG.png';
   final _formKey = GlobalKey<FormState>();
+  final _inputController = TextEditingController();
   final _phoneController = TextEditingController();
   final _amountController = TextEditingController();
   final _controller = Get.find<StateController>();
+  bool _isOpenInput = false;
+  var _selectedCountry, _selectedVariation;
+  bool _isLoadingProviders = true;
+  bool _showNaija = true, _isAmountFixed = false;
+  var _networkProviders = [];
+  var _variationCodes = [];
+  String _providerFlag = "", _dynamicPlaceholder = "", _dynamicAmount = '';
+  RegExp regExp = RegExp(r'[^0-9]');
+
+  // Replace all non-numeric characters with an empty string
+  // String numericData = data.replaceAll(regExp, '');
 
   @override
   void initState() {
     super.initState();
+    _controller.filteredVTUCountries.value =
+        _controller.internationVTUTopup.value;
+
     // Initialize selected airtime network to the first item
     if (_controller.airtimeData.isNotEmpty) {
       _controller.selectedAirtimeNetwork.value =
@@ -43,10 +72,75 @@ class _AirtimeTabState extends State<AirtimeTab> {
     }
   }
 
+  _onClicked(bool value) {
+    print('TEST VAL :: $value');
+    if (_formKey.currentState != null) {
+      if (_formKey.currentState!.validate()) {
+        _showInputSheet();
+      }
+    }
+  }
+
+  _onCountrySelected(val) async {
+    print('SELECTED COUNTRY DATA ::: ::: $val');
+    setState(() {
+      _selectedCountry = val;
+      _isLoadingProviders = true;
+      _countryCode = "+${val['prefix']}";
+      _variationCodes = [];
+      _selectedVariation = null;
+      _dynamicPlaceholder = "";
+      _dynamicAmount = "";
+      _showNaija = val['prefix'] == '234' ? true : false;
+    });
+
+    // Now load operators for this country
+    try {
+      final _resp = await APIService().getCountryOperators(
+        countryCode: val['country_code'],
+        productTypeID: "${val['content'][0]['product_type_id']}",
+      );
+      debugPrint("COUNTRY OPERATORS DATA ::: ${_resp.body}");
+      if (_resp.statusCode >= 200 && _resp.statusCode <= 299) {
+        Map<String, dynamic> map = jsonDecode(_resp.body);
+        setState(() {
+          _isLoadingProviders = false;
+          _networkProviders = map['content'];
+        });
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      setState(() {
+        _isLoadingProviders = false;
+      });
+    }
+  }
+
+  _getVariationCode({
+    required var operatorID,
+    required var productTypeID,
+  }) async {
+    try {
+      final _response = await APIService().getInternationalVariationCode(
+        operatorID: operatorID,
+        productTypeID: productTypeID,
+      );
+      print('"VARAITION CODE RESPONSE ::: ${_response.body}');
+
+      if (_response.statusCode >= 200 && _response.statusCode <= 299) {
+        Map<String, dynamic> map = jsonDecode(_response.body);
+        setState(() {
+          _variationCodes = map['content']['variations'];
+        });
+      }
+    } catch (e) {
+      debugPrint("$e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("AIRTIME ::: ${_controller.airtimeData.value}");
-
+    // print('CURRENCY TEST :: ${currencySymbols['INR']}');
     return Form(
       key: _formKey,
       child: _controller.airtimeData.isEmpty
@@ -56,336 +150,620 @@ class _AirtimeTabState extends State<AirtimeTab> {
               padding: const EdgeInsets.all(5.0),
               children: [
                 TextSmall(
-                  text: "Select your preferred network",
-                  color: Theme.of(context).colorScheme.tertiary,
-                ),
-                SizedBox(
-                  height: 100,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      for (var i = 0;
-                          i < _controller.airtimeData.value['networks'].length;
-                          i++)
-                        Expanded(
-                          child: Container(
-                            height: 75,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1.0,
-                                color: _current == i
-                                    ? Theme.of(context).colorScheme.secondary
-                                    : Colors.transparent,
-                              ),
-                            ),
-                            child: TextButton(
-                              onPressed: () {
-                                setState(() => _current = i);
-                                _controller.selectedAirtimeNetwork.value =
-                                    _controller.airtimeData.value['networks']
-                                        [i];
-                              },
-                              child: Image.network(
-                                "${_controller.airtimeData.value['networks'][i]['icon']}",
-                              ),
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 18.0),
-                TextSmall(
                   text: "Phone number",
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  child: CustomTextField(
-                    onChanged: (val) {},
-                    controller: _phoneController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Phone number is required';
-                      }
-                      return null;
-                    },
-                    inputType: TextInputType.number,
-                    prefix: CountryCodePicker(
-                      alignLeft: false,
-                      onChanged: null,
-                      padding: const EdgeInsets.all(0.0),
-                      initialSelection:
-                          '${widget.manager.getUser()['country_code']}',
-                      showCountryOnly: true,
-                      showFlag: true,
-                      showDropDownButton: false,
-                      hideMainText: true,
-                      showOnlyCountryWhenClosed: false,
-                      enabled: false,
-                    ),
-                  ),
+                CustonPhoneInputWithSheet(
+                  onChanged: (val) {},
+                  controller: _phoneController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Phone number is required';
+                    }
+                    return null;
+                  },
+                  items: _controller.internationVTUTopup.value,
+                  onSelected: _onCountrySelected,
                 ),
-                const SizedBox(height: 24.0),
+                const SizedBox(height: 8.0),
                 TextSmall(
-                  text:
-                      "How much ${networksAirtime[_current].name} airtime are you buying?",
+                  text: "Select your preferred network",
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
-                const SizedBox(height: 16.0),
-                _amountSection(context),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.20),
-                PrimaryButton(
-                  fontSize: 15,
-                  buttonText: "Pay",
-                  bgColor: Theme.of(context).colorScheme.primaryContainer,
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Get.bottomSheet(
-                        Container(
-                          padding: const EdgeInsets.all(10.0),
-                          height: MediaQuery.of(context).size.height * 0.8,
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(21),
-                              topRight: Radius.circular(21),
-                            ),
-                            color: Theme.of(context).colorScheme.surface,
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      Get.back();
-                                    },
-                                    icon: Icon(
-                                      CupertinoIcons.xmark_circle,
-                                      size: 16,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .inverseSurface,
-                                    ),
+                const SizedBox(height: 4.0),
+                _showNaija
+                    ? SizedBox(
+                        height: 100,
+                        child: GridView.count(
+                          crossAxisCount: 4,
+                          shrinkWrap: true,
+                          children: [
+                            for (var i = 0;
+                                i <
+                                    _controller
+                                        .airtimeData.value['networks'].length;
+                                i++)
+                              Container(
+                                height: 75,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1.0,
+                                    color: _current == i
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .secondary
+                                        : Colors.transparent,
                                   ),
-                                ],
-                              ),
-                              const SizedBox(height: 8.0),
-                              DottedDivider(),
-                              const SizedBox(height: 16.0),
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Icon(
-                                          CupertinoIcons.exclamationmark_circle,
-                                          size: 75,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .inverseSurface,
-                                        ),
-                                        const SizedBox(height: 16.0),
-                                        SizedBox(
-                                          width: 256,
-                                          child: Text(
-                                            "Your about to topup your mobile number (${_phoneController.text}) with ${_amountController.text} ${networksAirtime[_current].name} airtime.",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .tertiary,
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(height: 24.0),
-                                    SizedBox(
-                                      width: double.infinity,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0,
-                                        ),
-                                        child: PrimaryButton(
-                                          buttonText: "Confirm",
-                                          bgColor: Theme.of(context)
-                                              .colorScheme
-                                              .primaryContainer
-                                              .withAlpha(10),
-                                          onPressed: () {
-                                            var _filteredAmount =
-                                                _amountController.text
-                                                    .replaceAll(",", "");
-                                            var _removeSign = _filteredAmount
-                                                .replaceAll("₦", "");
-                                            Get.back();
-                                            Get.to(
-                                              PayNow(
-                                                title: 'Airtime Topup',
-                                                manager: widget.manager,
-                                                customerData: {},
-                                                payload: {
-                                                  "type": "airtime",
-                                                  "amount":
-                                                      double.parse(_removeSign),
-                                                  "product_type_id": int.parse(
-                                                      _controller.airtimeData
-                                                          .value['id']),
-                                                  "network_id": _controller
-                                                      .selectedAirtimeNetwork
-                                                      .value['id'],
-                                                  "phone":
-                                                      _phoneController.text,
-                                                  "name": _controller
-                                                      .selectedAirtimeNetwork
-                                                      .value['name']
-                                                      .toLowerCase()
-                                                },
-                                              ),
-                                              transition: Transition.cupertino,
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    setState(() => _current = i);
+                                    _controller.selectedAirtimeNetwork.value =
+                                        _controller
+                                            .airtimeData.value['networks'][i];
+                                  },
+                                  child: Image.network(
+                                    "${_controller.airtimeData.value['networks'][i]['icon']}",
+                                  ),
                                 ),
                               ),
-                            ],
-                          ),
+                          ],
                         ),
-                      );
-                    }
-                  },
+                      )
+                    : _isLoadingProviders
+                        ? GridView.count(
+                            crossAxisCount: 4,
+                            shrinkWrap: true,
+                            children: [
+                              for (var i = 0; i < 4; i++)
+                                const CircularShimmer()
+                            ],
+                          )
+                        : SizedBox(
+                            height: 100,
+                            child: GridView.count(
+                              crossAxisCount: 4,
+                              shrinkWrap: true,
+                              children: [
+                                for (var i = 0;
+                                    i < _networkProviders.length;
+                                    i++)
+                                  Container(
+                                    height: 75,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: 1.0,
+                                        color: _current == i
+                                            ? Theme.of(context)
+                                                .colorScheme
+                                                .secondary
+                                            : Colors.transparent,
+                                      ),
+                                    ),
+                                    child: TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _current = i;
+                                          _providerFlag = _networkProviders[i]
+                                              ['operator_image'];
+                                        });
+                                        _getVariationCode(
+                                          operatorID:
+                                              "${_networkProviders[i]['operator_id']}",
+                                          productTypeID:
+                                              "${_selectedCountry['content'][0]['product_type_id']}",
+                                        );
+                                      },
+                                      child: Image.network(
+                                        "${_networkProviders[i]['operator_image']}",
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                _variationCodes.isNotEmpty
+                    ? TextSmall(
+                        text: "Packages",
+                        color: Theme.of(context).colorScheme.tertiary,
+                      )
+                    : const SizedBox(),
+                const SizedBox(
+                  height: 4.0,
+                ),
+                _variationCodes.isNotEmpty
+                    ? DropDownButton(
+                        onPressed: () {
+                          Get.bottomSheet(NetworkBottomSheet(
+                            flag: _providerFlag,
+                            items: _variationCodes,
+                            onSelected: (value) {
+                              print("AIR VALUE ::: ${value} ");
+                              setState(() {
+                                _selectedVariation = value;
+                                _dynamicPlaceholder = value['name']
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains('enter')
+                                    ? value['name']
+                                    : "";
+
+                                _isAmountFixed = value['fixedPrice']
+                                            .toString()
+                                            .toLowerCase() ==
+                                        "no"
+                                    ? false
+                                    : true;
+
+                                _amountController.text =
+                                    value['variation_amount'] ?? "";
+                              });
+                            },
+                          ));
+                        },
+                        title: _selectedVariation != null
+                            ? "${_selectedVariation['name'] ?? ""} - ${_selectedVariation['variation_amount'] ?? ""}"
+                            : "Select variation",
+                      )
+                    : const SizedBox(),
+                _selectedVariation == null
+                    ? const SizedBox()
+                    : const SizedBox(height: 21.0),
+                _selectedVariation == null
+                    ? const SizedBox()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          TextSmall(
+                            text: "Amount",
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
+                          TextSmall(
+                            text:
+                                "${_selectedVariation['variation_amount_min']} - ${_selectedVariation['variation_amount_max']}",
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
+                        ],
+                      ),
+                const SizedBox(height: 4.0),
+                _selectedVariation == null
+                    ? const SizedBox()
+                    : RoundedInputMoney(
+                        hintText: _dynamicPlaceholder,
+                        enabled: !_isAmountFixed,
+                        currencySymbol:
+                            currencySymbols['${_selectedCountry['currency']}'],
+                        onChanged: (value) {
+                          if (value.toString().contains("-")) {}
+
+                          if (int.parse(
+                                  value.toString().replaceAll(regExp, '')) <
+                              _selectedVariation['variation_amount_min']) {
+                            setState(() {
+                              _errText = 'Below min amount';
+                            });
+                          } else if (int.parse(
+                                  value.toString().replaceAll(regExp, '')) >
+                              _selectedVariation['variation_amount_max']) {
+                            setState(() {
+                              _errText = 'Above max amount';
+                            });
+                          } else {
+                            setState(() {
+                              _errText = '';
+                            });
+                          }
+                        },
+                        errorText: _errText,
+                        controller: _amountController,
+                        validator: (value) {
+                          if (value.toString().isEmpty) {
+                            return "Amount is required!";
+                          }
+                          if (value.toString().contains("-")) {
+                            return "Negative numbers not allowed";
+                          }
+
+                          // if (double.parse(
+                          //         value.toString().replaceAll(regExp, '')) <
+                          //     _selectedVariation['variation_amount_min']) {
+                          //   return 'Below min amount';
+                          // } else if (double.parse(
+                          //         value.toString().replaceAll(regExp, '')) >
+                          //     _selectedVariation['variation_amount_max']) {
+                          //   return 'Above max amount';
+                          // }
+                          return null;
+                        },
+                      ),
+                const SizedBox(height: 24.0),
+                TextSmall(
+                  text: "Pay with voucher",
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
+                const SizedBox(height: 6.0),
+                VoucherRedeemActions(
+                  manager: widget.manager,
+                  caller: 'utility',
+                  onClicked: _onClicked,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          _showVouchersBottomSheet(context);
+                        }
+                      },
+                      icon: const Icon(
+                        CupertinoIcons.add,
+                        size: 16,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
     );
   }
 
-  Widget _amountSection(context) => Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 6.0,
+  _generateOTP() async {
+    try {
+      _controller.setLoading(true);
+      final _response = await APIService().voucherGenerateOTP(
+        accessToken: widget.manager.getAccessToken(),
+        voucherCode: _inputController.text.trim(),
+      );
+      _controller.setLoading(false);
+      print("SEND OTP RESPONSE HERE ${_response.body}");
+      if (_response.statusCode >= 200 && _response.statusCode <= 299) {
+        Map<String, dynamic> map = jsonDecode(_response.body);
+        Constants.toast(map['message']);
+
+        Get.back();
+        Get.to(
+          VerifyOTP(
+            email: '',
+            caller: 'vtu',
+            manager: widget.manager,
+            bankData: null,
+            voucherCode: _inputController.text.trim(),
           ),
-          RoundedInputMoney(
-            hintText: "Amount",
-            onChanged: (value) {
-              if (value.toString().contains("-")) {
-                setState(() {
-                  _amountController.text = value.toString().replaceAll("-", "");
-                });
-              }
-            },
-            strokeColor: Theme.of(context).colorScheme.tertiary,
-            controller: _amountController,
-            validator: (value) {
-              if (value.toString().isEmpty) {
-                return "Amount is required!";
-              }
-              if (value.toString().contains("-")) {
-                return "Negative numbers not allowed";
-              }
-              return null;
-            },
+          transition: Transition.cupertino,
+        );
+      }
+    } catch (e) {
+      _controller.setLoading(false);
+      print("$e");
+    }
+  }
+
+  _validate() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    try {
+      _controller.setLoading(true);
+
+      final _validateResponse = await APIService().validateVoucherCode(
+        accessToken: widget.manager.getAccessToken(),
+        voucherCode: _inputController.text,
+      );
+      _controller.setLoading(false);
+      debugPrint("VALIDATE RESPONSE :::  ${_validateResponse.body}");
+
+      Map<String, dynamic> map = jsonDecode(_validateResponse.body);
+      // Constants.toast(map['message']);
+
+      if ("${map['message']}".toLowerCase() == "voucher has been used") {
+        _showErrorDialog(status: 'used', message: map['message']);
+      } else if ("${map['message']}".toLowerCase().contains("exist")) {
+        _showErrorDialog(status: 'invalid', message: map['message']);
+      } else {
+        // Now generate otp here
+        _generateOTP();
+      }
+    } catch (e) {
+      _controller.setLoading(false);
+    }
+  }
+
+  _showErrorDialog({var status, var message}) {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) => InfoDialog(
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 40.0),
+                status == "used"
+                    ? Icon(
+                        CupertinoIcons.info_circle,
+                        size: 84,
+                        color: Theme.of(context).colorScheme.secondary,
+                      )
+                    : Icon(
+                        CupertinoIcons.xmark_circle_fill,
+                        size: 84,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                const SizedBox(height: 10.0),
+                TextMedium(
+                  text: status == "used" ? "$message" : "Invalid Voucher",
+                  color: Theme.of(context).colorScheme.tertiary,
+                  fontWeight: FontWeight.w400,
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+              ],
+            ),
           ),
-          const SizedBox(
-            height: 6.0,
+        ),
+      ),
+    );
+  }
+
+  _showVouchersBottomSheet(var context) {
+    double sheetHeight = MediaQuery.of(context).size.height * 0.75;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return SizedBox(
+          height: sheetHeight,
+          width: double.infinity,
+          child: Scaffold(
+            resizeToAvoidBottomInset: true,
+            backgroundColor: Colors.transparent,
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8.0,
+                  vertical: 14.0,
+                ),
+                child: _controller.userVouchers.value.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset("assets/images/empty.png"),
+                            TextSmall(
+                              text: "You have not purchased any vouchers",
+                              color: Theme.of(context).colorScheme.tertiary,
+                            ),
+                            TextButton.icon(
+                              onPressed: () {
+                                Get.to(
+                                  BuyVoucher(
+                                    manager: widget.manager,
+                                  ),
+                                );
+                              },
+                              icon: Icon(
+                                CupertinoIcons.add,
+                                size: 16,
+                                color: Theme.of(context).colorScheme.tertiary,
+                              ),
+                              label: TextBody2(
+                                text: "Buy voucher",
+                                color: Theme.of(context).colorScheme.tertiary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : ListView.separated(
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.all(1.0),
+                        itemBuilder: (context, index) {
+                          final item = _controller.userVouchers.value[index];
+                          return TextButton(
+                            onPressed: () {
+                              print('VOUCHER DATA HERE :::  ${item}');
+                              setState(() {
+                                _inputController.text = item['code'];
+                              });
+                              Get.back();
+                              _showInputSheet();
+                              Future.delayed(const Duration(seconds: 2), () {
+                                _validate();
+                              });
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: 140,
+                                        height: 96,
+                                        child: MicroGiftCard(
+                                          amount: "${item['amount']}",
+                                          bgType: item['bg_type'],
+                                          code: item['code'],
+                                          status: item['status'],
+                                          type: item['type'],
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 16.0,
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          TextSmall(
+                                            text:
+                                                "Voucher  ${item['code'].toString().substring(0, 4)}****",
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary,
+                                          ),
+                                          TextBody2(
+                                            text:
+                                                "${Constants.formatDate("${item['created_at']}")} (${Constants.timeUntil(DateTime.parse(item['created_at']))})",
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary,
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        separatorBuilder: (context, index) => const Column(
+                          children: [
+                            SizedBox(height: 16.0),
+                            Divider(),
+                            SizedBox(height: 16.0),
+                          ],
+                        ),
+                        itemCount: _controller.userVouchers.value.length,
+                      ),
+              ),
+            ),
           ),
-          Row(
+        );
+      },
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
+      ),
+    );
+  }
+
+  _showInputSheet() {
+    return Get.bottomSheet(
+      Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(21),
+            topRight: Radius.circular(21),
+          ),
+          color: Theme.of(context).colorScheme.surface,
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: ActionButton(
-                  strokeColor: Colors.black,
-                  icon: Text(
-                    "₦200",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.tertiary,
+              const SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 80,
+                    child: CountryCodePicker(
+                      alignLeft: false,
+                      onChanged: (val) {
+                        setState(() {
+                          _countryCode = val as String;
+                        });
+                      },
+                      padding: const EdgeInsets.all(0.0),
+                      initialSelection: 'NG',
+                      favorite: const ['+234', 'NG'],
+                      countryFilter: const [
+                        'NG',
+                        'GH',
+                        'ET',
+                        'EG',
+                        'MW',
+                        'KE',
+                        'RW',
+                        'ZA',
+                        'TZ',
+                        'US',
+                        'UG',
+                        'SL'
+                      ],
+                      showCountryOnly: true,
+                      showFlag: true,
+                      showDropDownButton: true,
+                      hideMainText: true,
+                      showOnlyCountryWhenClosed: false,
                     ),
                   ),
-                  bgColor:
-                      Theme.of(context).colorScheme.background.withOpacity(0.8),
-                  radius: 10,
-                  onPressed: () {
-                    setState(() {
-                      _amountController.text = "₦200";
-                    });
-                  },
-                ),
+                  Expanded(
+                    child: CustomTextField(
+                      onChanged: (val) {
+                        if (val.isEmpty) {
+                          setState(
+                            () => _errorMsg = "Voucher code is required",
+                          );
+                        } else if (val.length < 12) {
+                          setState(
+                            () => _errorMsg = "12 characters required",
+                          );
+                        } else {
+                          setState(
+                            () {
+                              _errorMsg = "";
+                            },
+                          );
+                          _validate();
+                        }
+                      },
+                      controller: _inputController,
+                      errorText: _errorMsg,
+                      hintText: 'E.g: 0GPKZBGFQG5P',
+                      validator: (value) {},
+                      inputType: TextInputType.text,
+                      capitalization: TextCapitalization.characters,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 12.0),
-              Expanded(
-                child: ActionButton(
-                  strokeColor: Colors.black,
-                  icon: Text(
-                    "₦300",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.tertiary,
-                    ),
-                  ),
-                  radius: 10,
-                  bgColor:
-                      Theme.of(context).colorScheme.background.withOpacity(0.8),
+              SizedBox(
+                child: TextButton(
                   onPressed: () {
-                    setState(() {
-                      _amountController.text = "₦300";
-                    });
+                    Get.bottomSheet(const RedeemableInAfricaSheet());
                   },
-                ),
-              ),
-              const SizedBox(width: 12.0),
-              Expanded(
-                child: ActionButton(
-                  radius: 10,
-                  strokeColor: Colors.black,
-                  icon: Text(
-                    "₦500",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.tertiary,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        CupertinoIcons.info,
+                        size: 16,
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                      ),
+                      const SizedBox(width: 4.0),
+                      TextBody1(
+                        text: "Only redeemable in Africa and the US",
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
+                    ],
                   ),
-                  bgColor:
-                      Theme.of(context).colorScheme.background.withOpacity(0.8),
-                  onPressed: () {
-                    setState(() {
-                      _amountController.text = "₦500";
-                    });
-                  },
-                ),
-              ),
-              const SizedBox(width: 12.0),
-              Expanded(
-                child: ActionButton(
-                  strokeColor: Colors.black,
-                  icon: Text(
-                    "₦1000",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.tertiary,
-                    ),
-                  ),
-                  bgColor:
-                      Theme.of(context).colorScheme.background.withOpacity(0.8),
-                  radius: 10,
-                  onPressed: () {
-                    setState(() {
-                      _amountController.text = "₦1,000";
-                    });
-                  },
                 ),
               ),
             ],
-          )
-        ],
-      );
+          ),
+        ),
+      ),
+    );
+  }
 }
