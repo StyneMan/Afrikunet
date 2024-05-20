@@ -1,4 +1,5 @@
 import 'package:afrikunet/components/buttons/primary.dart';
+import 'package:afrikunet/components/dialog/custom_dialog.dart';
 import 'package:afrikunet/components/dialog/info_dialog.dart';
 import 'package:afrikunet/components/drawer/custom_drawer.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
@@ -12,6 +13,7 @@ import 'package:afrikunet/screens/bank/add_bank.dart';
 import 'package:afrikunet/screens/cable_tv/cable_tv.dart';
 import 'package:afrikunet/screens/data/internet_data.dart';
 import 'package:afrikunet/screens/electricity/electricity.dart';
+import 'package:afrikunet/screens/profile/edit_profile.dart';
 import 'package:afrikunet/screens/vouchers/buy_voucher.dart';
 import 'package:afrikunet/screens/vouchers/redeem_voucher.dart';
 import 'package:afrikunet/screens/vouchers/split_voucher.dart';
@@ -436,45 +438,164 @@ class _HomePageState extends State<HomePage> {
     return Card(
       child: TextButton(
         onPressed: () {
-          if (data.title.toLowerCase().startsWith("wate") ||
-              data.title.toLowerCase().startsWith("virtual") ||
-              data.title.toLowerCase().startsWith("reward")) {
-            showDialog(
-              context: context,
-              barrierDismissible: true,
-              builder: (BuildContext context) => InfoDialog(
-                body: SingleChildScrollView(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 40.0),
-                        Icon(
-                          CupertinoIcons.info_circle,
-                          size: 84,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                        const SizedBox(height: 10.0),
-                        TextMedium(
-                          text: "Coming soon!",
-                          fontWeight: FontWeight.w400,
-                          color: Theme.of(context).colorScheme.tertiary,
-                        ),
-                        const SizedBox(
-                          height: 40,
-                        ),
-                      ],
+          try {
+            if (widget.manager.getUser()['address'] == null ||
+                widget.manager.getUser()['is_profile_set'] == false) {
+              // Show Dialog here
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) => SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  width: MediaQuery.of(context).size.width * 0.98,
+                  child: CustomDialog(
+                    ripple: SvgPicture.asset(
+                      "assets/images/check_effect.svg",
+                      width: (Constants.avatarRadius + 2),
+                      height: (Constants.avatarRadius + 2),
+                    ),
+                    avtrBg: Colors.transparent,
+                    avtrChild: const Icon(
+                      CupertinoIcons.info_circle,
+                      size: 86,
+                    ),
+                    body: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16.0,
+                        horizontal: 36.0,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          TextMedium(
+                            text: "Profile Setup Required!",
+                            fontWeight: FontWeight.w600,
+                            align: TextAlign.center,
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
+                          const SizedBox(
+                            height: 5.0,
+                          ),
+                          TextSmall(
+                            text:
+                                "You must setup your profile to continue using this app",
+                            fontWeight: FontWeight.w400,
+                            align: TextAlign.center,
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
+                          const SizedBox(
+                            height: 21,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.36,
+                            child: PrimaryButton(
+                              buttonText: "Complete Profile",
+                              foreColor: Colors.white,
+                              bgColor: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
+                              onPressed: () {
+                                Get.to(
+                                  EditProfile(manager: widget.manager),
+                                  transition: Transition.cupertino,
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          } else {
-            Get.to(
-              data.widget,
-              transition: Transition.cupertino,
-            );
+              );
+            } else {
+              if (data.title.toLowerCase().startsWith("wate") ||
+                  data.title.toLowerCase().startsWith("virtual") ||
+                  data.title.toLowerCase().startsWith("reward")) {
+                showDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) => InfoDialog(
+                    body: SingleChildScrollView(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 40.0),
+                            Icon(
+                              CupertinoIcons.info_circle,
+                              size: 84,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            const SizedBox(height: 10.0),
+                            TextMedium(
+                              text: "Coming soon!",
+                              fontWeight: FontWeight.w400,
+                              color: Theme.of(context).colorScheme.tertiary,
+                            ),
+                            const SizedBox(
+                              height: 40,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }
+              // else if (data.title.toLowerCase().startsWith("elec") ||
+              //     data.title.toLowerCase().startsWith("cable") ||
+              //     data.title.toLowerCase().startsWith("split")) {
+              //   if (widget.manager
+              //           .getUser()['address']['country']
+              //           .toString()
+              //           .toLowerCase() !=
+              //       "nigeria") {
+              //     showDialog(
+              //       context: context,
+              //       barrierDismissible: true,
+              //       builder: (BuildContext context) => InfoDialog(
+              //         body: SingleChildScrollView(
+              //           child: Center(
+              //             child: Column(
+              //               mainAxisAlignment: MainAxisAlignment.center,
+              //               crossAxisAlignment: CrossAxisAlignment.center,
+              //               children: [
+              //                 const SizedBox(height: 40.0),
+              //                 Icon(
+              //                   CupertinoIcons.info_circle,
+              //                   size: 84,
+              //                   color: Theme.of(context).colorScheme.secondary,
+              //                 ),
+              //                 const SizedBox(height: 10.0),
+              //                 TextMedium(
+              //                   text: "Not available in your region.",
+              //                   fontWeight: FontWeight.w400,
+              //                   color: Theme.of(context).colorScheme.tertiary,
+              //                 ),
+              //                 const SizedBox(
+              //                   height: 40,
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //     );
+              //   }
+              // }
+              else {
+                Get.to(
+                  data.widget,
+                  transition: Transition.cupertino,
+                );
+              }
+            }
+          } catch (e) {
+            debugPrint(e.toString());
           }
         },
         child: Center(

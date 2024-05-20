@@ -91,10 +91,17 @@ class _PersonalState extends State<Personal> {
       _shouldEdit = true;
     });
 
-    Future.delayed(
-      const Duration(seconds: 1),
-      () => setState(() => _states = val['states']),
+    final _filterer = countries['data']?.where(
+      (element) =>
+          "${element['name']}".toLowerCase() == "${val['name']}".toLowerCase(),
     );
+
+    print("FILTEREDS ::: ${_filterer}");
+
+    // Future.delayed(
+    //   const Duration(seconds: 1),
+    //   () => setState(() => _states = val['states']),
+    // );
   }
 
   _onLanguageSelected(val) {
@@ -171,6 +178,10 @@ class _PersonalState extends State<Personal> {
             : "";
         _shouldEdit = _controller.croppedPic.value.isNotEmpty;
       });
+
+      if (_controller.userData.value['address']['country'] != null) {
+        // final _defaultCountry = countries['data'];
+      }
     } catch (e) {
       print("JKS ERR :: $e");
     }
@@ -614,7 +625,7 @@ class _PersonalState extends State<Personal> {
             label: _selectedCountry,
             title: "Country",
             onSelected: _onCountrySelected,
-            items: countries['data'],
+            items: _controller.bankCountries.value ?? [],
             onFiltered: _onCountryFiltered,
           ),
           const Divider(

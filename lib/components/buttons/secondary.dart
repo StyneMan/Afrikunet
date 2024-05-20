@@ -7,6 +7,7 @@ class SecondaryButton extends StatelessWidget {
   final Color foreColor;
   final String buttonText;
   final double? fontSize;
+  final Widget? startIcon;
   final Function()? onPressed;
   const SecondaryButton({
     Key? key,
@@ -15,6 +16,7 @@ class SecondaryButton extends StatelessWidget {
     required this.buttonText,
     required this.onPressed,
     this.fontSize,
+    this.startIcon = const SizedBox(),
   }) : super(key: key);
 
   @override
@@ -36,18 +38,32 @@ class SecondaryButton extends StatelessWidget {
         ),
       ),
       child: fontSize != null
-          ? Text(
-              buttonText,
-              style: TextStyle(
-                color: foreColor,
-                fontSize: fontSize,
-                fontWeight: FontWeight.w500,
-              ),
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                startIcon ?? const SizedBox(),
+                Text(
+                  buttonText,
+                  style: TextStyle(
+                    color: foreColor,
+                    fontSize: fontSize,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             )
-          : TextBody1(
-              text: buttonText,
-              color: foreColor,
-              fontWeight: FontWeight.w700,
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                startIcon ?? const SizedBox(),
+                TextBody1(
+                  text: buttonText,
+                  color: foreColor,
+                  fontWeight: FontWeight.w700,
+                ),
+              ],
             ),
     );
   }

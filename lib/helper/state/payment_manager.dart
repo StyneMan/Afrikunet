@@ -301,6 +301,11 @@ class PaymentController extends GetxController {
       final _resp = await APIService().buyVoucher(accessToken, _payload);
       print("BUY VOUCHER RESPONSE ::: ${_resp.body}");
       // _controller.setLoading(false);
+      Get.back();
+      Get.to(
+        SuccessPage(manager: manager),
+        transition: Transition.cupertino,
+      );
     } catch (e) {
       debugPrint(e.toString());
       // _controller.setLoading(false);

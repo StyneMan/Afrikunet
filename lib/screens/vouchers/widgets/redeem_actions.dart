@@ -1,14 +1,18 @@
+import 'dart:convert';
+
 import 'package:afrikunet/components/buttons/primary.dart';
 import 'package:afrikunet/components/buttons/secondary.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/forms/bank/add_bank.dart';
 import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:afrikunet/helper/preference/preference_manager.dart';
+import 'package:afrikunet/helper/service/api_service.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/screens/vouchers/voucher_code.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'voucher_scanner.dart';
 
@@ -32,6 +36,35 @@ class VoucherRedeemActions extends StatefulWidget {
 class _VoucherRedeemActionsState extends State<VoucherRedeemActions> {
   final _controller = Get.find<StateController>();
   bool _isOpen = false;
+
+  _init() async {
+    try {
+      final _prefs = await SharedPreferences.getInstance();
+      final _token = _prefs.getString("accessToken") ?? "";
+      final _user = _prefs.getString("user") ?? "";
+      Map<String, dynamic> _userMap = jsonDecode(_user);
+
+      final _bankAccountsResponse = await APIService().fetchUserBankAccounts(
+        accessToken: _token,
+        userId: _userMap['email_address'],
+      );
+
+      if (_bankAccountsResponse.statusCode >= 200 &&
+          _bankAccountsResponse.statusCode <= 299) {
+        Map<String, dynamic> data = jsonDecode(_bankAccountsResponse.body);
+        print("MY BANK ACCOUNTS  ::: ${data['data']}");
+        _controller.userBankAccounts.value = data['data'];
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    _init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

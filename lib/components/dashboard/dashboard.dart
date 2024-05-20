@@ -118,17 +118,23 @@ class _DashboardState extends State<Dashboard> {
         );
       }
 
-      final _voucherResponse = await APIService().getUserVouchers(
-        accessToken: _token,
-        page: 1,
-        limit: 20,
-      );
+      final response = await APIService().getVTUs();
+      debugPrint("PRODUCT RESP:: ${response.body}");
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response.body);
+        // ProductResponse body = ProductResponse.fromJson(map);
+        _controller.setVtus(map['data']);
 
-      if (_voucherResponse.statusCode >= 200 &&
-          _voucherResponse.statusCode <= 299) {
-        Map<String, dynamic> data = jsonDecode(_voucherResponse.body);
-        print("MY VOUCHERS  ::: ${data['vouchers']}");
-        _controller.userVouchers.value = data['vouchers'];
+        map['data']?.forEach((elem) => {
+              if (elem['name'].toString().toLowerCase() == "airtime")
+                {_controller.airtimeData.value = elem}
+              else if (elem['name'].toString().toLowerCase() == "data")
+                {_controller.internetData.value = elem}
+              else if (elem['name'].toString().toLowerCase() == "electricity")
+                {_controller.electricityData.value = elem}
+              else if (elem['name'].toString().toLowerCase() == "cable_tv")
+                {_controller.cableData.value = elem}
+            });
       }
 
       final _bankAccountsResponse = await APIService().fetchUserBankAccounts(
@@ -149,7 +155,43 @@ class _DashboardState extends State<Dashboard> {
           _topupResponse.statusCode <= 299) {
         Map<String, dynamic> map = jsonDecode(_topupResponse.body);
         _controller.internationVTUData.value = map['data'];
+        _controller.filteredVTUCountries.value = map['topup'];
+        _controller.filteredVTUDataCountries.value = map['data'];
         _controller.internationVTUTopup.value = map['topup'];
+      }
+
+      final _voucherResponse = await APIService().getUserVouchers(
+        accessToken: _token,
+        page: 1,
+        limit: 20,
+      );
+
+      if (_voucherResponse.statusCode >= 200 &&
+          _voucherResponse.statusCode <= 299) {
+        Map<String, dynamic> data = jsonDecode(_voucherResponse.body);
+        print("MY VOUCHERS  ::: ${data['vouchers']}");
+        _controller.userVouchers.value = data['vouchers'];
+      }
+
+      final _countriesResponse = await APIService().getBankCountries();
+      debugPrint("SUPPORTED COUNTRIES RESP:: ${_countriesResponse.body}");
+      if (_countriesResponse.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(_countriesResponse.body);
+        _controller.bankCountries.value = map['data'];
+        _controller.filteredCountries.value = map['data'];
+      }
+
+      final _unusedVoucherResponse = await APIService().getUserUnusedVouchers(
+        accessToken: _token,
+        page: 1,
+        limit: 20,
+      );
+
+      if (_unusedVoucherResponse.statusCode >= 200 &&
+          _unusedVoucherResponse.statusCode <= 299) {
+        Map<String, dynamic> data = jsonDecode(_unusedVoucherResponse.body);
+        print("MY UNUSED VOUCHERS  ::: ${data['vouchers']}");
+        _controller.userUnusedVouchers.value = data['vouchers'];
       }
     } catch (e) {
       print("$e");

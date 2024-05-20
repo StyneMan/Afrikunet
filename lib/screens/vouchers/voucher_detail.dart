@@ -1,8 +1,11 @@
 import 'package:afrikunet/components/buttons/primary.dart';
+import 'package:afrikunet/components/buttons/secondary.dart';
 import 'package:afrikunet/components/cards/giftcard_item.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
+import 'package:afrikunet/helper/constants/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class VoucherDetail extends StatelessWidget {
@@ -54,6 +57,7 @@ class VoucherDetail extends StatelessWidget {
                 code: data['code'],
                 status: data['status'],
                 type: data['type'],
+                width: double.infinity,
               ),
             ),
             const SizedBox(height: 36.0),
@@ -115,11 +119,41 @@ class VoucherDetail extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                 vertical: 16.0,
               ),
-              child: PrimaryButton(
-                fontSize: 16,
-                buttonText: "Share",
-                bgColor: Theme.of(context).colorScheme.primaryContainer,
-                onPressed: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: SecondaryButton(
+                      buttonText: "Copy Code",
+                      bgColor: Theme.of(context).colorScheme.primaryContainer,
+                      onPressed: () {
+                        Clipboard.setData(
+                          ClipboardData(text: '${data['code']}'),
+                        );
+                        Constants.toast('Code copied to clipboard!');
+                      },
+                      startIcon: const Padding(
+                        padding: EdgeInsets.only(right: 6.0),
+                        child: Icon(
+                          Icons.copy_rounded,
+                          size: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  Expanded(
+                    child: PrimaryButton(
+                      fontSize: 16,
+                      buttonText: "Share",
+                      bgColor: Theme.of(context).colorScheme.primaryContainer,
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

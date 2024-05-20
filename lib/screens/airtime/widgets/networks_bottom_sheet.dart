@@ -92,44 +92,46 @@ class NetworkBottomSheet extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 4.0),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "${items[index]['name']}",
-                                  style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.tertiary,
-                                    fontSize: 14,
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${items[index]['name']}",
+                                    style: TextStyle(
+                                      color:
+                                          Theme.of(context).colorScheme.tertiary,
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 2.0),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Min: ${items[index]['variation_amount_min']} - ",
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary,
-                                        fontSize: 12,
-                                        fontStyle: FontStyle.italic,
+                                  const SizedBox(height: 2.0),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Min: ${items[index]['variation_amount_min']} - ",
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                          fontSize: 12,
+                                          fontStyle: FontStyle.italic,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      "Max: ${items[index]['variation_amount_max']}",
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary,
-                                        fontSize: 12,
-                                        fontStyle: FontStyle.italic,
+                                      Text(
+                                        "Max: ${items[index]['variation_amount_max']}",
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                          fontSize: 12,
+                                          fontStyle: FontStyle.italic,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),

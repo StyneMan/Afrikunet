@@ -32,11 +32,11 @@ class Constants {
   static const Color shimmerBaseColor = Color.fromARGB(255, 203, 203, 203);
   static const Color shimmerHighlightColor = Colors.white;
 
-  static const baseURL = "http://192.168.43.42:3050/bkapi";
-  // "https://afrikunet-api-orcin.vercel.app/bkapi"; //
+  static const baseURL =
+      "http://192.168.43.41:3050/bkapi"; // "https://afrikunet-api-orcin.vercel.app/bkapi"; //
 
-  static const baseURL2 = "http://192.168.43.42";
-  // "https://afrikunet-api-orcin.vercel.app"; //
+  static const baseURL2 =
+      "http://192.168.43.41"; // "https://afrikunet-api-orcin.vercel.app"; //
 
   static String pstk = "pk_test_40f544aec0415695c9fae0ba0819ee5bebcb6a5e";
 
@@ -62,6 +62,7 @@ class Constants {
         .replaceAll("second", "sec")
         .replaceAll("hour", "hr")
         .replaceAll("a moment ago", "just now")
+        .replaceAll("from now", "ago")
         .replaceAll("about", "");
   }
 
@@ -164,6 +165,7 @@ class Constants {
                     text: "$message".replaceAll("_", " "),
                     color: Theme.of(context).colorScheme.tertiary,
                     fontWeight: FontWeight.w400,
+                    align: TextAlign.center,
                   ),
                 ),
                 const SizedBox(

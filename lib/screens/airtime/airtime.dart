@@ -34,6 +34,7 @@ class _AirtimeState extends State<Airtime> {
         _controller.internationVTUData.value = map['data'];
         _controller.internationVTUTopup.value = map['topup'];
         _controller.filteredVTUCountries.value = map['topup'];
+        _controller.filteredVTUDataCountries.value = map['data'];
       }
     } catch (e) {
       debugPrint("INIT VTU ERR ::: $e");

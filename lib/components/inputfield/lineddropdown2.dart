@@ -51,7 +51,7 @@ class _LinedDropdownState extends State<LinedDropdown2> {
               ),
             ),
             TextBody1(
-              text: "$selectVal",
+              text: "${selectVal ?? widget.label}",
               fontWeight: FontWeight.w500,
               color: Theme.of(context).colorScheme.tertiary,
             ),

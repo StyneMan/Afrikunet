@@ -16,13 +16,14 @@ import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/screens/auth/otp/verifyotp.dart';
 import 'package:afrikunet/screens/vouchers/buy_voucher.dart';
 import 'package:afrikunet/screens/vouchers/widgets/redeem_actions.dart';
+import 'package:afrikunet/screens/vouchers/widgets/sheets/my_vouchers_sheet.dart';
 import 'package:afrikunet/screens/vouchers/widgets/sheets/redeemable_africa_bottom_sheet.dart';
-import 'package:afrikunet/screens/vouchers/widgets/voucher_scanner.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'amount_section.dart';
 import 'networks_bottom_sheet.dart';
 
 class AirtimeTab extends StatefulWidget {
@@ -37,7 +38,7 @@ class AirtimeTab extends StatefulWidget {
 }
 
 class _AirtimeTabState extends State<AirtimeTab> {
-  int _current = 0;
+  int _current = 10;
   String _countryCode = "+234",
       _errorMsg = "",
       _errText = "",
@@ -54,7 +55,7 @@ class _AirtimeTabState extends State<AirtimeTab> {
   var _networkProviders = [];
   var _variationCodes = [];
   String _providerFlag = "", _dynamicPlaceholder = "", _dynamicAmount = '';
-  RegExp regExp = RegExp(r'[^0-9]');
+  RegExp regExp = RegExp(r'[^0-9.]');
 
   // Replace all non-numeric characters with an empty string
   // String numericData = data.replaceAll(regExp, '');
@@ -140,7 +141,6 @@ class _AirtimeTabState extends State<AirtimeTab> {
 
   @override
   Widget build(BuildContext context) {
-    // print('CURRENCY TEST :: ${currencySymbols['INR']}');
     return Form(
       key: _formKey,
       child: _controller.airtimeData.isEmpty
@@ -164,6 +164,7 @@ class _AirtimeTabState extends State<AirtimeTab> {
                   },
                   items: _controller.internationVTUTopup.value,
                   onSelected: _onCountrySelected,
+                  caller: 'topup',
                 ),
                 const SizedBox(height: 8.0),
                 TextSmall(
@@ -201,6 +202,10 @@ class _AirtimeTabState extends State<AirtimeTab> {
                                     _controller.selectedAirtimeNetwork.value =
                                         _controller
                                             .airtimeData.value['networks'][i];
+
+                                    print(
+                                      "NAIJA NETWORK SELECT ${_controller.airtimeData.value['networks'][i]}",
+                                    );
                                   },
                                   child: Image.network(
                                     "${_controller.airtimeData.value['networks'][i]['icon']}",
@@ -327,6 +332,12 @@ class _AirtimeTabState extends State<AirtimeTab> {
                         ],
                       ),
                 const SizedBox(height: 4.0),
+                // NAIJA CASE
+                _showNaija
+                    ? AmountSection(
+                        controller: _amountController,
+                      )
+                    : const SizedBox(),
                 _selectedVariation == null
                     ? const SizedBox()
                     : RoundedInputMoney(
@@ -365,15 +376,25 @@ class _AirtimeTabState extends State<AirtimeTab> {
                             return "Negative numbers not allowed";
                           }
 
-                          // if (double.parse(
-                          //         value.toString().replaceAll(regExp, '')) <
-                          //     _selectedVariation['variation_amount_min']) {
-                          //   return 'Below min amount';
-                          // } else if (double.parse(
-                          //         value.toString().replaceAll(regExp, '')) >
-                          //     _selectedVariation['variation_amount_max']) {
-                          //   return 'Above max amount';
-                          // }
+                          print(
+                              "REG EX :: ${value.runtimeType}  ${value.toString().replaceAll(regExp, '')}");
+
+                          print(
+                              "VARIATION CODE VALIDATOR :: ${_selectedVariation['variation_amount_min'].runtimeType} :::: ${_selectedVariation['variation_amount_min']}");
+
+                          if (double.parse(
+                                  value.toString().replaceAll(regExp, '')) <
+                              double.parse(
+                                  "${_selectedVariation['variation_amount_min']}")) {
+                            return 'Below min amount';
+                          }
+
+                          if (double.parse(
+                                  value.toString().replaceAll(regExp, '')) >
+                              double.parse(
+                                  "${_selectedVariation['variation_amount_max']}")) {
+                            return 'Above max amount';
+                          }
                           return null;
                         },
                       ),
@@ -410,7 +431,9 @@ class _AirtimeTabState extends State<AirtimeTab> {
     );
   }
 
-  _generateOTP() async {
+  _generateOTP({
+    required String email,
+  }) async {
     try {
       _controller.setLoading(true);
       final _response = await APIService().voucherGenerateOTP(
@@ -423,17 +446,62 @@ class _AirtimeTabState extends State<AirtimeTab> {
         Map<String, dynamic> map = jsonDecode(_response.body);
         Constants.toast(map['message']);
 
-        Get.back();
-        Get.to(
-          VerifyOTP(
-            email: '',
-            caller: 'vtu',
-            manager: widget.manager,
-            bankData: null,
-            voucherCode: _inputController.text.trim(),
-          ),
-          transition: Transition.cupertino,
-        );
+        print("AMT CONTroLLeR VALUE ::: ${_amountController.text}");
+
+        if (_showNaija) {
+          Map _payload = {
+            "serviceID":
+                "${_controller.selectedAirtimeNetwork.value['vtpass_code']}",
+            "phone": int.parse(_phoneController.text.trim()),
+            "email": "${widget.manager.getUser()['email_address']}",
+            "amount": int.parse(_amountController.text.replaceAll(regExp, '')),
+          };
+
+          _controller.internationalTopupPayload.value = _payload;
+
+          Get.back();
+          Get.to(
+            VerifyOTP(
+              email: email,
+              caller: 'vtu',
+              manager: widget.manager,
+              bankData: null,
+              voucherCode: _inputController.text.trim(),
+              vtuType: "topup",
+            ),
+            transition: Transition.cupertino,
+          );
+        } else {
+          var _payload = {
+            "serviceID": "foreign-airtime",
+            "billersCode": _phoneController.text.trim(),
+            "variation_code": _selectedVariation['variation_code'],
+            "phone": _phoneController.text.trim(),
+            "operator_id": _networkProviders[_current]['operator_id'],
+            "country_code": _selectedCountry['country_code'],
+            "product_type_id": _selectedCountry['content'][0]
+                ['product_type_id'],
+            "email": widget.manager.getUser()['email_address'],
+            "amount":
+                double.parse(_amountController.text.replaceAll(regExp, '')),
+          };
+
+          print("SNJS PAYLOAD ::: ${_payload}");
+
+          _controller.internationalTopupPayload.value = _payload;
+
+          Get.back();
+          Get.to(
+            VerifyOTP(
+              email: email,
+              caller: 'vtu',
+              manager: widget.manager,
+              bankData: null,
+              voucherCode: _inputController.text.trim(),
+            ),
+            transition: Transition.cupertino,
+          );
+        }
       }
     } catch (e) {
       _controller.setLoading(false);
@@ -456,13 +524,28 @@ class _AirtimeTabState extends State<AirtimeTab> {
       Map<String, dynamic> map = jsonDecode(_validateResponse.body);
       // Constants.toast(map['message']);
 
+      print(
+          "AMT CHECK :: ${double.parse(_amountController.text.replaceAll(regExp, ''))}");
+
       if ("${map['message']}".toLowerCase() == "voucher has been used") {
         _showErrorDialog(status: 'used', message: map['message']);
       } else if ("${map['message']}".toLowerCase().contains("exist")) {
         _showErrorDialog(status: 'invalid', message: map['message']);
       } else {
+        // Check if amount matches voucher amount before generating OTP
+
+        // if (double.parse("${map['data']['amount']}") !=
+        //     double.parse(_amountController.text.replaceAll(regExp, ''))) {
+        //   Constants.showInfoDialog(
+        //     context: context,
+        //     message:
+        //         "Amount not equivalent to voucher amount of ${map['data']['amount']}",
+        //     status: 'error',
+        //   );
+        // } else {
         // Now generate otp here
-        _generateOTP();
+        _generateOTP(email: map['data']['email']);
+        // }
       }
     } catch (e) {
       _controller.setLoading(false);

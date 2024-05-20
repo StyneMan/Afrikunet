@@ -33,17 +33,18 @@ class StateController extends GetxController {
   var vtus = [].obs;
   var internationVTUTopup = [].obs;
   var internationVTUData = [].obs;
+  var internationalTopupPayload = {}.obs;
+  var internationalDataPayload = {}.obs;
   var internetData = {}.obs;
   var airtimeData = {}.obs;
   var electricityData = {}.obs;
   var cableData = {}.obs;
   var filteredVTUCountries = [].obs;
+  var filteredVTUDataCountries = [].obs;
 
   var selectedAirtimeNetwork = {}.obs;
-
   var selectedDataNetwork = {}.obs;
   var selectedDataPlan = {}.obs;
-
   var selectedCableNetwork = {}.obs;
   var selectedCableBouquet = {}.obs;
 
@@ -52,6 +53,7 @@ class StateController extends GetxController {
   var usersVoucherSplit = [].obs;
   var userBankAccounts = [].obs;
   var userVouchers = [].obs;
+  var userUnusedVouchers = [].obs;
   var userHistory = [].obs;
   var banks = [].obs;
   var bankCountries = [].obs;
@@ -106,6 +108,7 @@ class StateController extends GetxController {
       if (_countriesResponse.statusCode == 200) {
         Map<String, dynamic> map = jsonDecode(_countriesResponse.body);
         bankCountries.value = map['data'];
+        filteredCountries.value = map['data'];
       }
 
       final _topupResponse = await APIService().getVTUCountries(type: '');
@@ -115,7 +118,9 @@ class StateController extends GetxController {
           _topupResponse.statusCode <= 299) {
         Map<String, dynamic> map = jsonDecode(_topupResponse.body);
         internationVTUData.value = map['data'];
+        filteredVTUDataCountries.value = map['data'];
         internationVTUTopup.value = map['topup'];
+        filteredVTUCountries.value = map['topup'];
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -125,7 +130,6 @@ class StateController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    filteredCountries.value = countries['data'];
     initDao();
 
     final _prefs = await SharedPreferences.getInstance();
@@ -196,6 +200,24 @@ class StateController extends GetxController {
         userBankAccounts.value = data['data'];
       }).catchError((onError) {
         debugPrint("STATE GET BANK ACCOUNTS ERROR >>> $onError");
+        if (onError.toString().contains("rk is unreachable")) {
+          hasInternetAccess.value = false;
+        }
+      });
+
+      //Get User Unused Vouchers
+      APIService()
+          .getUserUnusedVouchers(
+        accessToken: _token,
+        page: 1,
+        limit: 20,
+      )
+          .then((value) {
+        Map<String, dynamic> data = jsonDecode(value.body);
+        print("MY UNUSED VOUCHERS  ::: ${data['vouchers']}");
+        userUnusedVouchers.value = data['vouchers'];
+      }).catchError((onError) {
+        debugPrint("STATE GET PROFILE ERROR >>> $onError");
         if (onError.toString().contains("rk is unreachable")) {
           hasInternetAccess.value = false;
         }

@@ -67,7 +67,6 @@ class _ElectricityState extends State<Electricity> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 24.0),
                   Expanded(
                     child: ElectricityForm(
                       manager: _manager!,

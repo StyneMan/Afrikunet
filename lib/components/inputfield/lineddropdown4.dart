@@ -1,6 +1,6 @@
 import 'package:afrikunet/components/inputfield/textfield.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
-import 'package:afrikunet/helper/constants/countries.dart';
+// import 'package:afrikunet/helper/constants/countries.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 // import 'package:afrikunet/data/countries/countries.dart';
 // import 'package:afrikunet/helper/constants/constants.dart';
@@ -8,6 +8,8 @@ import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../helper/constants/countries.dart';
 
 typedef void InitCallback(var value);
 typedef void FilterCallback(var value);
@@ -17,7 +19,8 @@ class LinedDropdown4 extends StatefulWidget {
   var label;
   final InitCallback onSelected;
   final FilterCallback onFiltered;
-  final List<Map<String, dynamic>> items;
+  // final List<Map<String, dynamic>> items;
+  var items;
   final bool isEnabled;
 
   LinedDropdown4({
@@ -138,15 +141,31 @@ class _LinedDropdownState extends State<LinedDropdown4> {
                         selectVal =
                             _controller.filteredCountries.value[index]['name'];
                       });
-                      _controller.filteredStates.value =
-                          _controller.filteredCountries.value[index]['states'];
+                      
+
+                      // _controller.filteredStates.value = _filterer[0]['states'];
                       Get.back();
                     },
-                    child: Text(
-                      '${_controller.filteredCountries.value[index]['name']}',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.tertiary,
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.network(
+                          "${_controller.filteredCountries.value[index]['logo']}",
+                          width: 32,
+                          height: 32,
+                          fit: BoxFit.contain,
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(
+                          '${_controller.filteredCountries.value[index]['name']}',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   separatorBuilder: (context, index) => const Divider(),

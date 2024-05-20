@@ -26,6 +26,7 @@ typedef void InitCallback(params);
 class VerifyOTP extends StatefulWidget {
   String email;
   String caller;
+  String vtuType;
   final String? voucherCode;
   final Map? bankData;
   final PreferenceManager manager;
@@ -36,6 +37,7 @@ class VerifyOTP extends StatefulWidget {
     required this.manager,
     this.bankData,
     this.voucherCode = "",
+    this.vtuType = "topup",
   }) : super(key: key);
 
   @override
@@ -142,7 +144,31 @@ class _State extends State<VerifyOTP> {
         print("$e");
       }
     } else if (widget.caller == "vtu") {
-      Constants.toast("Waiting for Tolu to continue");
+      // Constants.toast("Waiting for Tolu to continue");
+      _controller.setLoading(true);
+
+      Map _payload = {
+        'otpCode': _otpController.text.trim(),
+        'voucher_code': widget.voucherCode,
+      };
+
+      try {
+        final _response = await APIService().voucherVerifyOTP(
+          accessToken: widget.manager.getAccessToken(),
+          payload: _payload,
+        );
+        _controller.setLoading(false);
+        print('VALIDAT VOUCHER OTP RESPINSE :::  ${_response.body}');
+        if (_response.statusCode >= 200 && _response.statusCode <= 299) {
+          Map<String, dynamic> map = jsonDecode(_response.body);
+          Constants.toast('${map['message']}');
+
+          _purchaseInternationalVTU();
+        }
+      } catch (e) {
+        debugPrint(e.toString());
+        _controller.setLoading(false);
+      }
     } else {
       _controller.setLoading(true);
 
@@ -243,6 +269,42 @@ class _State extends State<VerifyOTP> {
     }
   }
 
+  _purchaseInternationalVTU() async {
+    _controller.setLoading(true);
+    try {
+      final _response = await APIService().processDepositVoucher(
+          accessToken: widget.manager.getAccessToken(),
+          voucherCode: "${widget.voucherCode}",
+          payload: _controller.internationalTopupPayload.value,
+          type: widget.vtuType);
+
+      print("PROCESS VOUCHER RESPONSE ::: ${_response.body}");
+      _controller.setLoading(false);
+
+      if (_response.statusCode >= 200 && _response.statusCode <= 299) {
+        Map<String, dynamic> map = jsonDecode(_response.body);
+        Constants.toast(
+            '${map['message'] ?? map['response_description'] ?? map['status']}');
+
+        if ('${map['status']}'.toLowerCase().contains('delivered') ||
+            '${map['data']['status']}'.toLowerCase().contains('delivered')) {
+          Get.to(
+            SuccessPage(
+              isVoucher: false,
+              manager: widget.manager,
+              message:
+                  'You have successfully purchased ${_controller.internationalTopupPayload.value['serviceID']} worth of ${_controller.internationalTopupPayload.value['amount']} for ${_controller.internationalTopupPayload.value['phone']}',
+            ),
+            transition: Transition.cupertino,
+          );
+        }
+      }
+    } catch (e) {
+      _controller.setLoading(false);
+      debugPrint("$e");
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -286,9 +348,8 @@ class _State extends State<VerifyOTP> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 12),
               width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+              child: ListView(
+                shrinkWrap: true,
                 children: [
                   const SizedBox(
                     height: 36,
@@ -358,13 +419,14 @@ class _State extends State<VerifyOTP> {
                                 return null;
                               }
                             },
+
                             pinTheme: PinTheme(
                               shape: PinCodeFieldShape.box,
                               borderWidth: 1.25,
                               fieldOuterPadding:
                                   const EdgeInsets.symmetric(horizontal: 0.0),
                               fieldHeight: 60,
-                              fieldWidth: 44,
+                              fieldWidth: 49,
                               activeFillColor:
                                   Theme.of(context).colorScheme.tertiary,
                               activeColor:
@@ -379,15 +441,15 @@ class _State extends State<VerifyOTP> {
                             controller: _otpController,
                             keyboardType: TextInputType.number,
                             boxShadows: null,
-
                             onCompleted: (v) {
                               setState(() {
                                 _shouldContinue = true;
                               });
                               debugPrint("Completed");
+                              _verifyOtp();
                             },
                             onChanged: (value) {
-                              if (value.length < 4) {
+                              if (value.length < 6) {
                                 setState(() {
                                   _shouldContinue = false;
                                 });
@@ -404,7 +466,7 @@ class _State extends State<VerifyOTP> {
                           ),
                         ),
                         const SizedBox(
-                          height: 36,
+                          height: 48,
                         ),
                         SizedBox(
                           width: double.infinity,
@@ -435,7 +497,8 @@ class _State extends State<VerifyOTP> {
                                   //     ?
                                   TextButton(
                                     onPressed: () {
-                                      if (widget.caller == "voucher") {
+                                      if (widget.caller == "voucher" ||
+                                          widget.caller == "vtu") {
                                         // Voucher Resend Here
                                         _generateOTP();
                                       } else {

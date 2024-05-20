@@ -16,6 +16,7 @@ class CustonPhoneInputWithSheet extends StatefulWidget {
   final String hintText;
   final String errorText;
   final String helperText;
+  final String caller;
   var validator;
 
   CustonPhoneInputWithSheet({
@@ -28,6 +29,7 @@ class CustonPhoneInputWithSheet extends StatefulWidget {
     this.hintText = "",
     this.helperText = "",
     this.errorText = "",
+    required this.caller,
   }) : super(key: key);
 
   @override
@@ -62,9 +64,17 @@ class _CustonPhoneInputWithSheetState extends State<CustonPhoneInputWithSheet> {
           .toList();
 
       print("FILTERED LIST  ::: ${_filtered}");
-      _controller.filteredVTUCountries.value = _filtered;
+      if (widget.caller == "data") {
+        _controller.filteredVTUDataCountries.value = _filtered;
+      } else if (widget.caller == "topup") {
+        _controller.filteredVTUCountries.value = _filtered;
+      }
     } else {
-      _controller.filteredVTUCountries.value = widget.items;
+      if (widget.caller == "data") {
+        _controller.filteredVTUDataCountries.value = widget.items;
+      } else if (widget.caller == "topup") {
+        _controller.filteredVTUCountries.value = widget.items;
+      }
     }
   }
 
@@ -145,15 +155,25 @@ class _CustonPhoneInputWithSheetState extends State<CustonPhoneInputWithSheet> {
                   itemBuilder: (context, index) => TextButton(
                     onPressed: () {
                       widget.onSelected(
-                        _controller.filteredVTUCountries.value[index],
+                        widget.caller == "topup"
+                            ? _controller.filteredVTUCountries.value[index]
+                            : _controller.filteredVTUDataCountries.value[index],
                       );
                       setState(() {
-                        selectVal = _controller
-                            .filteredVTUCountries.value[index]['name'];
-                        _countryCode = "+${_controller
-                            .filteredVTUCountries.value[index]['prefix']}";
-                        _countryFlag = _controller
-                            .filteredVTUCountries.value[index]['flag'];
+                        selectVal = widget.caller == "topup"
+                            ? _controller.filteredVTUCountries.value[index]
+                                ['name']
+                            : _controller.filteredVTUDataCountries.value[index]
+                                ['name'];
+
+                        _countryCode =
+                            "+${widget.caller == "topup" ? _controller.filteredVTUCountries.value[index]['prefix'] : _controller.filteredVTUDataCountries.value[index]['prefix']}";
+
+                        _countryFlag = widget.caller == "topup"
+                            ? _controller.filteredVTUCountries.value[index]
+                                ['flag']
+                            : _controller.filteredVTUDataCountries.value[index]
+                                ['flag'];
                       });
                       // _controller.filteredStates.value =
                       //     _controller.filteredCountries.value[index]['states'];
@@ -165,7 +185,7 @@ class _CustonPhoneInputWithSheetState extends State<CustonPhoneInputWithSheet> {
                       children: [
                         const SizedBox(width: 4.0),
                         Image.network(
-                          '${_controller.filteredVTUCountries.value[index]['flag']}',
+                          '${widget.caller == "topup" ? _controller.filteredVTUCountries.value[index]['flag'] : _controller.filteredVTUDataCountries.value[index]['flag']}',
                           width: 24,
                           height: 24,
                           fit: BoxFit.cover,
@@ -173,12 +193,12 @@ class _CustonPhoneInputWithSheetState extends State<CustonPhoneInputWithSheet> {
                         const SizedBox(width: 8.0),
                         TextBody2(
                           text:
-                              '${_controller.filteredVTUCountries.value[index]['prefix']}',
+                              '${widget.caller == "topup" ? _controller.filteredVTUCountries.value[index]['prefix'] : _controller.filteredVTUDataCountries.value[index]['prefix']}',
                           color: Theme.of(context).colorScheme.tertiary,
                         ),
                         const SizedBox(width: 16.0),
                         Text(
-                          '${_controller.filteredVTUCountries.value[index]['name']}',
+                          '${widget.caller == "topup" ? _controller.filteredVTUCountries.value[index]['name'] : _controller.filteredVTUDataCountries.value[index]['name']}',
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.tertiary,
                           ),
@@ -187,7 +207,9 @@ class _CustonPhoneInputWithSheetState extends State<CustonPhoneInputWithSheet> {
                     ),
                   ),
                   separatorBuilder: (context, index) => const Divider(),
-                  itemCount: _controller.filteredVTUCountries.value.length,
+                  itemCount: widget.caller == "topup"
+                      ? _controller.filteredVTUCountries.value.length
+                      : _controller.filteredVTUDataCountries.value.length,
                 ),
               ),
             ),

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http/http.dart';
@@ -369,6 +368,21 @@ class APIService {
     );
   }
 
+  Future<http.Response> getUserUnusedVouchers({
+    required String accessToken,
+    required int page,
+    required int limit,
+  }) async {
+    return await http.get(
+      Uri.parse(
+          '${Constants.baseURL}/vouchers/user/unused/all?page=$page&limit=$limit'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+    );
+  }
+
   Future<http.Response> fetchVoucherCharge({
     required String accessToken,
     required var payload,
@@ -407,6 +421,37 @@ class APIService {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
       },
+    );
+  }
+
+  Future<http.Response> voucherVerifyOTP({
+    required String accessToken,
+    required Map payload,
+  }) async {
+    return await client.post(
+      Uri.parse('${Constants.baseURL}/vouchers/otp/validate'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+      body: jsonEncode(payload),
+    );
+  }
+
+  Future<http.Response> processDepositVoucher({
+    required String accessToken,
+    required String voucherCode,
+    required Map payload,
+    required String type,
+  }) async {
+    return await client.post(
+      Uri.parse(
+          '${Constants.baseURL}/vouchers/process/deposit/$voucherCode?type=$type'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+      body: jsonEncode(payload),
     );
   }
 }
