@@ -61,7 +61,9 @@ class _ElectricityFormState extends State<ElectricityForm> {
     });
   }
 
-  _sendRequest() async {
+  _sendRequest({
+    required String email,
+  }) async {
     FocusManager.instance.primaryFocus?.unfocus();
     var filteredAmt = _amountController.text.replaceAll("₦", "");
     try {
@@ -89,7 +91,12 @@ class _ElectricityFormState extends State<ElectricityForm> {
 
       if (_response.statusCode >= 200 && _response.statusCode <= 299) {
         Map<String, dynamic> map = jsonDecode(_response.body);
-        Get.bottomSheet(_confirmBottomSheetContent(data: map['customerData']));
+        Get.bottomSheet(
+          _confirmBottomSheetContent(
+            data: map['customerData'],
+            email: map['data']['email'],
+          ),
+        );
       }
 
       //
@@ -286,6 +293,52 @@ class _ElectricityFormState extends State<ElectricityForm> {
     );
   }
 
+  _generateOTP({
+    required String email,
+  }) async {
+    try {
+      _controller.setLoading(true);
+      final _response = await APIService().voucherGenerateOTP(
+        accessToken: widget.manager.getAccessToken(),
+        voucherCode: _inputController.text.trim(),
+      );
+      _controller.setLoading(false);
+      print("SEND OTP RESPONSE HERE ${_response.body}");
+      if (_response.statusCode >= 200 && _response.statusCode <= 299) {
+        Map<String, dynamic> map = jsonDecode(_response.body);
+        Constants.toast(map['message']);
+
+        print("AMT CONTroLLeR VALUE ::: ${_amountController.text}");
+
+        Map _payload = {
+          "serviceID":
+              "${_controller.selectedAirtimeNetwork.value['vtpass_code']}",
+          "phone": int.parse(_phoneController.text.trim()),
+          "email": "${widget.manager.getUser()['email_address']}",
+          "amount": int.parse(_amountController.text.replaceAll(regExp, '')),
+        };
+
+        _controller.internationalTopupPayload.value = _payload;
+
+        Get.back();
+        Get.to(
+          VerifyOTP(
+            email: email,
+            caller: 'vtu',
+            manager: widget.manager,
+            bankData: null,
+            voucherCode: _inputController.text.trim(),
+            vtuType: "topup",
+          ),
+          transition: Transition.cupertino,
+        );
+      }
+    } catch (e) {
+      _controller.setLoading(false);
+      print("$e");
+    }
+  }
+
   Container get _bottomSheetContent => Container(
         padding: const EdgeInsets.all(10.0),
         height: MediaQuery.of(context).size.height * 0.70,
@@ -411,7 +464,11 @@ class _ElectricityFormState extends State<ElectricityForm> {
         ),
       );
 
-  Container _confirmBottomSheetContent({required var data}) => Container(
+  Container _confirmBottomSheetContent({
+    required var data,
+    required String email,
+  }) =>
+      Container(
         padding: const EdgeInsets.all(10.0),
         height: MediaQuery.of(context).size.height * 0.70,
         decoration: BoxDecoration(
@@ -494,15 +551,18 @@ class _ElectricityFormState extends State<ElectricityForm> {
                     fontSize: 15,
                     bgColor: Theme.of(context).colorScheme.primaryContainer,
                     onPressed: () {
-                      Get.to(
-                        PayNow(
-                          title: 'Electricity Bill',
-                          manager: widget.manager,
-                          payload: _payload,
-                          customerData: data,
-                        ),
-                        transition: Transition.cupertino,
+                      _generateOTP(
+                        email: email,
                       );
+                      // Get.to(
+                      //   PayNow(
+                      //     title: 'Electricity Bill',
+                      //     manager: widget.manager,
+                      //     payload: _payload,
+                      //     customerData: data,
+                      //   ),
+                      //   transition: Transition.cupertino,
+                      // );
                     },
                   ),
                 ),
@@ -528,52 +588,6 @@ class _ElectricityFormState extends State<ElectricityForm> {
         ),
       ],
     );
-  }
-
-  _generateOTP({
-    required String email,
-  }) async {
-    try {
-      _controller.setLoading(true);
-      final _response = await APIService().voucherGenerateOTP(
-        accessToken: widget.manager.getAccessToken(),
-        voucherCode: _inputController.text.trim(),
-      );
-      _controller.setLoading(false);
-      print("SEND OTP RESPONSE HERE ${_response.body}");
-      if (_response.statusCode >= 200 && _response.statusCode <= 299) {
-        Map<String, dynamic> map = jsonDecode(_response.body);
-        Constants.toast(map['message']);
-
-        print("AMT CONTroLLeR VALUE ::: ${_amountController.text}");
-
-        Map _payload = {
-          "serviceID":
-              "${_controller.selectedAirtimeNetwork.value['vtpass_code']}",
-          "phone": int.parse(_phoneController.text.trim()),
-          "email": "${widget.manager.getUser()['email_address']}",
-          "amount": int.parse(_amountController.text.replaceAll(regExp, '')),
-        };
-
-        _controller.internationalTopupPayload.value = _payload;
-
-        Get.back();
-        Get.to(
-          VerifyOTP(
-            email: email,
-            caller: 'vtu',
-            manager: widget.manager,
-            bankData: null,
-            voucherCode: _inputController.text.trim(),
-            vtuType: "topup",
-          ),
-          transition: Transition.cupertino,
-        );
-      }
-    } catch (e) {
-      _controller.setLoading(false);
-      print("$e");
-    }
   }
 
   _validate() async {
@@ -610,8 +624,9 @@ class _ElectricityFormState extends State<ElectricityForm> {
         //     status: 'error',
         //   );
         // } else {
-        // Now generate otp here
-        _generateOTP(email: map['data']['email']);
+        // Now validate customer info here
+        _sendRequest(email: map['data']['email']);
+        // _generateOTP(email: map['data']['email']);
         // }
       }
     } catch (e) {

@@ -1,6 +1,7 @@
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,11 +9,13 @@ class BankCard2 extends StatefulWidget {
   var data;
   int index;
   var list;
+  final bool isChecked;
   BankCard2({
     Key? key,
     required this.data,
     required this.list,
     required this.index,
+    this.isChecked = false,
   }) : super(key: key);
 
   @override
@@ -62,49 +65,78 @@ class _BankCard2State extends State<BankCard2> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.only(
-          top: 8.0,
-          left: 8.0,
-          bottom: 8.0,
-          right: 0.0,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CachedNetworkImage(
-              imageUrl: '${widget.data['logo']}',
-              width: 72,
-            ),
-            const SizedBox(width: 3.0),
-            Expanded(
-              child: Column(
+    return SizedBox(
+      width: double.infinity,
+      child: Card(
+        child: Container(
+          padding: const EdgeInsets.only(
+            top: 8.0,
+            left: 8.0,
+            bottom: 8.0,
+            right: 0.0,
+          ),
+          decoration: widget.isChecked
+              ? BoxDecoration(
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.secondary,
+                    width: 0.5,
+                  ),
+                  borderRadius: BorderRadius.circular(5.0),
+                )
+              : null,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  TextMedium(
-                    text: '${widget.data['account_name']}',
-                    align: TextAlign.center,
-                    color: Theme.of(context).colorScheme.tertiary,
+                  CachedNetworkImage(
+                    imageUrl: '${widget.data['logo']}',
+                    width: 48,
                   ),
+                  const SizedBox(height: 2.0),
                   TextBody2(
-                    text: '${_obscurer(widget.data['account_number'])}',
+                    text: '${widget.data['name']}',
                     color: Theme.of(context).colorScheme.tertiary,
                     align: TextAlign.center,
-                  )
+                  ),
                 ],
               ),
-            ),
-            const SizedBox(width: 3.0),
-            Radio(
-              activeColor: Theme.of(context).colorScheme.tertiary,
-              value: widget.data,
-              groupValue: widget.list,
-              onChanged: null,
-            ),
-          ],
+              const SizedBox(width: 3.0),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TextMedium(
+                      text: '${widget.data['account_name']}',
+                      align: TextAlign.center,
+                      color: Theme.of(context).colorScheme.tertiary,
+                    ),
+                    TextBody2(
+                      text: '${_obscurer(widget.data['account_number'])}',
+                      color: Theme.of(context).colorScheme.tertiary,
+                      align: TextAlign.center,
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(width: 3.0),
+              widget.isChecked
+                  ? CupertinoCheckbox(
+                      value: true,
+                      onChanged: (val) {},
+                    )
+                  : Radio(
+                      activeColor: Theme.of(context).colorScheme.tertiary,
+                      value: widget.data,
+                      groupValue: widget.list,
+                      onChanged: null,
+                    ),
+            ],
+          ),
         ),
       ),
     );

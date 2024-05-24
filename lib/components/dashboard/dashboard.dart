@@ -147,6 +147,12 @@ class _DashboardState extends State<Dashboard> {
         Map<String, dynamic> data = jsonDecode(_bankAccountsResponse.body);
         print("MY BANK ACCOUNTS  ::: ${data['data']}");
         _controller.userBankAccounts.value = data['data'];
+        data['data']?.forEach((elem) {
+          if (elem['is_default']) {
+            // This is the default bank here
+            _controller.userDefaultBank.value = elem;
+          }
+        });
       }
 
       final _topupResponse = await APIService().getVTUCountries(type: '');

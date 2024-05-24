@@ -9,6 +9,7 @@ import 'package:afrikunet/screens/bank/add_bank.dart';
 import 'package:afrikunet/screens/bills/billpay.dart';
 import 'package:afrikunet/screens/getstarted/getstarted.dart';
 import 'package:afrikunet/screens/profile/profile.dart';
+import 'package:afrikunet/screens/vouchers/get_paid.dart';
 import 'package:afrikunet/screens/vouchers/my_vouchers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -73,9 +74,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
         ),
         DrawerModel(
           icon: 'assets/images/share_ios.svg',
-          title: 'Share Experience',
+          title: 'Get Paid',
           isAction: false,
-          widget: const SizedBox(),
+          widget: GetPaid(
+            manager: widget.manager,
+          ),
         ),
         DrawerModel(
           icon: 'assets/images/feedback.svg',
@@ -242,13 +245,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                   if (i == 0) {
                                     Get.back();
                                     _controller.selectedIndex.value = 3;
-                                  } else if (i == 1) {
-                                    Get.back();
-                                    Get.to(
-                                      drawerList[i].widget,
-                                      transition: Transition.cupertino,
-                                    );
-                                  } else if (i == 2) {
+                                  } else if (i == 1 ||
+                                      i == 2 ||
+                                      i == 4 ||
+                                      i == 5) {
                                     Get.back();
                                     Get.to(
                                       drawerList[i].widget,
@@ -257,12 +257,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                   } else if (i == 3) {
                                     Get.back();
                                     _controller.selectedIndex.value = 1;
-                                  } else if (i == 4) {
-                                    Get.back();
-                                    Get.to(
-                                      drawerList[i].widget,
-                                      transition: Transition.cupertino,
-                                    );
                                   }
                                 },
                               );

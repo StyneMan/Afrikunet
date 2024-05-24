@@ -300,11 +300,11 @@ class APIService {
     required String accessToken,
     required String userId,
   }) async {
-    return await http.get(
-      Uri.parse('${Constants.baseURL}/bank/user/id=$userId/accounts'),
+    return await client.get(
+      Uri.parse('${Constants.baseURL}/bank/user/$userId/accounts'),
       headers: {
         "Content-type": "application/json",
-        "Authorization": "Bearer " + accessToken,
+        // "Authorization": "Bearer " + accessToken,
       },
     );
   }
@@ -447,6 +447,20 @@ class APIService {
     return await client.post(
       Uri.parse(
           '${Constants.baseURL}/vouchers/process/deposit/$voucherCode?type=$type'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+      body: jsonEncode(payload),
+    );
+  }
+
+  Future<http.Response> generatePayLink({
+    required String accessToken,
+    required Map payload,
+  }) async {
+    return await client.post(
+      Uri.parse('${Constants.baseURL}/vouchers/redeem-link/generate'),
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,

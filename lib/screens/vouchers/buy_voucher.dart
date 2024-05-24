@@ -379,8 +379,9 @@ class _BuyVoucherState extends State<BuyVoucher> {
                           _response.statusCode <= 299) {
                         Map<String, dynamic> map = jsonDecode(_response.body);
                         print("DATA CHECK :::: ${map}");
+                        int amt = int.parse("${map['final_value']}");
                         setState(() {
-                          _redeemableAmount = "${map['final_value']}";
+                          _redeemableAmount = "$amt";
                         });
                       }
                     } catch (e) {

@@ -56,6 +56,7 @@ class StateController extends GetxController {
   var userUnusedVouchers = [].obs;
   var userHistory = [].obs;
   var banks = [].obs;
+  var userDefaultBank = {}.obs;
   var bankCountries = [].obs;
   var selectedContact = {}.obs;
   var filteredStates = [].obs;
@@ -198,6 +199,12 @@ class StateController extends GetxController {
         Map<String, dynamic> data = jsonDecode(value.body);
         print("MY BANK ACCOUNTS  ::: ${data['data']}");
         userBankAccounts.value = data['data'];
+        data['data']?.forEach((elem) {
+          if (elem['is_default']) {
+            // This is the default bank here
+            userDefaultBank.value = elem;
+          }
+        });
       }).catchError((onError) {
         debugPrint("STATE GET BANK ACCOUNTS ERROR >>> $onError");
         if (onError.toString().contains("rk is unreachable")) {

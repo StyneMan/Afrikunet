@@ -57,20 +57,50 @@ class BankCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Padding(
+      child: Container(
         padding: const EdgeInsets.only(
           top: 8.0,
           left: 8.0,
           bottom: 8.0,
           right: 0.0,
         ),
+        decoration: data['is_default']
+            ? BoxDecoration(
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              )
+            : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CachedNetworkImage(
-              imageUrl: '${data['logo']}',
-              width: 72,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CachedNetworkImage(
+                  imageUrl: '${data['logo']}',
+                  width: 48,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TextBody2(
+                      text: '${data['name']} ',
+                      color: Theme.of(context).colorScheme.tertiary,
+                      align: TextAlign.center,
+                    ),
+                    TextBody2(
+                      text: ' ${data['country']}'.toUpperCase(),
+                      color: Theme.of(context).colorScheme.tertiary,
+                      align: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ],
             ),
             const SizedBox(width: 3.0),
             Expanded(
@@ -83,11 +113,11 @@ class BankCard extends StatelessWidget {
                     align: TextAlign.center,
                     color: Theme.of(context).colorScheme.tertiary,
                   ),
-                  TextBody2(
+                  TextBody1(
                     text: '${_obscurer(data['account_number'])}',
                     color: Theme.of(context).colorScheme.tertiary,
                     align: TextAlign.center,
-                  )
+                  ),
                 ],
               ),
             ),

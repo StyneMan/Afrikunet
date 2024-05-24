@@ -342,6 +342,7 @@ class _AddBankFormState extends State<AddBankForm> {
         "name": _selectedBank['name'],
         "code": _selectedBank['code'],
         "country": _selectedCountry['code'],
+        "iso3": _selectedCountry['iso3'],
         "logo": _selectedBank['logo'],
         "user_id": _controller.userData.value['email_address'],
         "account_name": _customerName,

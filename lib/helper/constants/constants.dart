@@ -33,7 +33,8 @@ class Constants {
   static const Color shimmerHighlightColor = Colors.white;
 
   static const baseURL =
-      "http://192.168.43.41:3050/bkapi"; // "https://afrikunet-api-orcin.vercel.app/bkapi"; //
+      "http://192.168.43.41:3050/bkapi"; // "https://afrikunet-api-orcin.vercel.app/bkapi";
+  //
 
   static const baseURL2 =
       "http://192.168.43.41"; // "https://afrikunet-api-orcin.vercel.app"; //

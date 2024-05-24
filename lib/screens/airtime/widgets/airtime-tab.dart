@@ -279,32 +279,34 @@ class _AirtimeTabState extends State<AirtimeTab> {
                 _variationCodes.isNotEmpty
                     ? DropDownButton(
                         onPressed: () {
-                          Get.bottomSheet(NetworkBottomSheet(
-                            flag: _providerFlag,
-                            items: _variationCodes,
-                            onSelected: (value) {
-                              print("AIR VALUE ::: ${value} ");
-                              setState(() {
-                                _selectedVariation = value;
-                                _dynamicPlaceholder = value['name']
-                                        .toString()
-                                        .toLowerCase()
-                                        .contains('enter')
-                                    ? value['name']
-                                    : "";
+                          Get.bottomSheet(
+                            NetworkBottomSheet(
+                              flag: _providerFlag,
+                              items: _variationCodes,
+                              onSelected: (value) {
+                                print("AIR VALUE ::: ${value} ");
+                                setState(() {
+                                  _selectedVariation = value;
+                                  _dynamicPlaceholder = value['name']
+                                          .toString()
+                                          .toLowerCase()
+                                          .contains('enter')
+                                      ? value['name']
+                                      : "";
 
-                                _isAmountFixed = value['fixedPrice']
-                                            .toString()
-                                            .toLowerCase() ==
-                                        "no"
-                                    ? false
-                                    : true;
+                                  _isAmountFixed = value['fixedPrice']
+                                              .toString()
+                                              .toLowerCase() ==
+                                          "no"
+                                      ? false
+                                      : true;
 
-                                _amountController.text =
-                                    value['variation_amount'] ?? "";
-                              });
-                            },
-                          ));
+                                  _amountController.text =
+                                      value['variation_amount'] ?? "";
+                                });
+                              },
+                            ),
+                          );
                         },
                         title: _selectedVariation != null
                             ? "${_selectedVariation['name'] ?? ""} - ${_selectedVariation['variation_amount'] ?? ""}"
