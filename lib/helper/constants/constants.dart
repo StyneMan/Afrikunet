@@ -32,12 +32,11 @@ class Constants {
   static const Color shimmerBaseColor = Color.fromARGB(255, 203, 203, 203);
   static const Color shimmerHighlightColor = Colors.white;
 
-  static const baseURL = "https://afrikunet-api-orcin.vercel.app/bkapi";
-  // "http://192.168.43.41:3050/bkapi"; //
-  //
+  static const baseURL =
+      "http://192.168.43.41:3050/bkapi"; // "https://afrikunet-api-orcin.vercel.app/bkapi";
 
-  static const baseURL2 = "https://afrikunet-api-orcin.vercel.app";
-  // "http://192.168.43.41"; //  //
+  static const baseURL2 =
+      "http://192.168.43.41"; //  "https://afrikunet-api-orcin.vercel.app";
 
   static String pstk = "pk_test_40f544aec0415695c9fae0ba0819ee5bebcb6a5e";
 

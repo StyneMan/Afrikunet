@@ -57,16 +57,17 @@ class PaymentController extends GetxController {
                   manager: Get.arguments['manager'],
                   selectedDataPlanName: Get.arguments['selectedDataPlanName'],
                 );
-              } else if (usecase == "buy-voucher") {
-                print("INITIATE BUY VOUCHER HERE :::");
-
-                _initiateBuyVoucher(
-                  payload: payload,
-                  accessToken: Get.arguments['accessToken'],
-                  manager: Get.arguments['manager'],
-                  customerRef: Get.arguments['customerRef'],
-                );
               }
+              // else if (usecase == "buy-voucher") {
+              //   print("INITIATE BUY VOUCHER HERE :::");
+
+              //   _initiateBuyVoucher(
+              //     payload: payload,
+              //     accessToken: Get.arguments['accessToken'],
+              //     manager: Get.arguments['manager'],
+              //     customerRef: Get.arguments['customerRef'],
+              //   );
+              // }
             }
 
             if (request.url

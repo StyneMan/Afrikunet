@@ -16,14 +16,14 @@ import 'package:afrikunet/helper/state/state_manager.dart';
 import 'package:afrikunet/screens/auth/otp/verifyotp.dart';
 import 'package:afrikunet/screens/vouchers/buy_voucher.dart';
 import 'package:afrikunet/screens/vouchers/widgets/redeem_actions.dart';
-import 'package:afrikunet/screens/vouchers/widgets/sheets/my_vouchers_sheet.dart';
+// import 'package:afrikunet/screens/vouchers/widgets/sheets/my_vouchers_sheet.dart';
 import 'package:afrikunet/screens/vouchers/widgets/sheets/redeemable_africa_bottom_sheet.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'amount_section.dart';
+// import 'amount_section.dart';
 import 'networks_bottom_sheet.dart';
 
 class AirtimeTab extends StatefulWidget {
@@ -51,7 +51,7 @@ class _AirtimeTabState extends State<AirtimeTab> {
   bool _isOpenInput = false;
   var _selectedCountry, _selectedVariation;
   bool _isLoadingProviders = true;
-  bool _showNaija = true, _isAmountFixed = false;
+  bool _isAmountFixed = false;
   var _networkProviders = [];
   var _variationCodes = [];
   String _providerFlag = "", _dynamicPlaceholder = "", _dynamicAmount = '';
@@ -92,7 +92,6 @@ class _AirtimeTabState extends State<AirtimeTab> {
       _selectedVariation = null;
       _dynamicPlaceholder = "";
       _dynamicAmount = "";
-      _showNaija = val['prefix'] == '234' ? true : false;
     });
 
     // Now load operators for this country
@@ -172,18 +171,21 @@ class _AirtimeTabState extends State<AirtimeTab> {
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
                 const SizedBox(height: 4.0),
-                _showNaija
-                    ? SizedBox(
+                _isLoadingProviders
+                    ? GridView.count(
+                        crossAxisCount: 4,
+                        shrinkWrap: true,
+                        children: [
+                          for (var i = 0; i < 4; i++) const CircularShimmer()
+                        ],
+                      )
+                    : SizedBox(
                         height: 100,
                         child: GridView.count(
                           crossAxisCount: 4,
                           shrinkWrap: true,
                           children: [
-                            for (var i = 0;
-                                i <
-                                    _controller
-                                        .airtimeData.value['networks'].length;
-                                i++)
+                            for (var i = 0; i < _networkProviders.length; i++)
                               Container(
                                 height: 75,
                                 decoration: BoxDecoration(
@@ -198,75 +200,26 @@ class _AirtimeTabState extends State<AirtimeTab> {
                                 ),
                                 child: TextButton(
                                   onPressed: () {
-                                    setState(() => _current = i);
-                                    _controller.selectedAirtimeNetwork.value =
-                                        _controller
-                                            .airtimeData.value['networks'][i];
-
-                                    print(
-                                      "NAIJA NETWORK SELECT ${_controller.airtimeData.value['networks'][i]}",
+                                    setState(() {
+                                      _current = i;
+                                      _providerFlag = _networkProviders[i]
+                                          ['operator_image'];
+                                    });
+                                    _getVariationCode(
+                                      operatorID:
+                                          "${_networkProviders[i]['operator_id']}",
+                                      productTypeID:
+                                          "${_selectedCountry['content'][0]['product_type_id']}",
                                     );
                                   },
                                   child: Image.network(
-                                    "${_controller.airtimeData.value['networks'][i]['icon']}",
+                                    "${_networkProviders[i]['operator_image']}",
                                   ),
                                 ),
                               ),
                           ],
                         ),
-                      )
-                    : _isLoadingProviders
-                        ? GridView.count(
-                            crossAxisCount: 4,
-                            shrinkWrap: true,
-                            children: [
-                              for (var i = 0; i < 4; i++)
-                                const CircularShimmer()
-                            ],
-                          )
-                        : SizedBox(
-                            height: 100,
-                            child: GridView.count(
-                              crossAxisCount: 4,
-                              shrinkWrap: true,
-                              children: [
-                                for (var i = 0;
-                                    i < _networkProviders.length;
-                                    i++)
-                                  Container(
-                                    height: 75,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 1.0,
-                                        color: _current == i
-                                            ? Theme.of(context)
-                                                .colorScheme
-                                                .secondary
-                                            : Colors.transparent,
-                                      ),
-                                    ),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _current = i;
-                                          _providerFlag = _networkProviders[i]
-                                              ['operator_image'];
-                                        });
-                                        _getVariationCode(
-                                          operatorID:
-                                              "${_networkProviders[i]['operator_id']}",
-                                          productTypeID:
-                                              "${_selectedCountry['content'][0]['product_type_id']}",
-                                        );
-                                      },
-                                      child: Image.network(
-                                        "${_networkProviders[i]['operator_image']}",
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
+                      ),
                 _variationCodes.isNotEmpty
                     ? TextSmall(
                         text: "Packages",
@@ -284,7 +237,7 @@ class _AirtimeTabState extends State<AirtimeTab> {
                               flag: _providerFlag,
                               items: _variationCodes,
                               onSelected: (value) {
-                                print("AIR VALUE ::: ${value} ");
+                                print("AIR VALUE ::: $value ");
                                 setState(() {
                                   _selectedVariation = value;
                                   _dynamicPlaceholder = value['name']
@@ -334,12 +287,6 @@ class _AirtimeTabState extends State<AirtimeTab> {
                         ],
                       ),
                 const SizedBox(height: 4.0),
-                // NAIJA CASE
-                _showNaija
-                    ? AmountSection(
-                        controller: _amountController,
-                      )
-                    : const SizedBox(),
                 _selectedVariation == null
                     ? const SizedBox()
                     : RoundedInputMoney(
@@ -449,61 +396,33 @@ class _AirtimeTabState extends State<AirtimeTab> {
         Constants.toast(map['message']);
 
         print("AMT CONTroLLeR VALUE ::: ${_amountController.text}");
+        var _payload = {
+          "serviceID": "foreign-airtime",
+          "billersCode": _phoneController.text.trim(),
+          "variation_code": _selectedVariation['variation_code'],
+          "phone": _phoneController.text.trim(),
+          "operator_id": _networkProviders[_current]['operator_id'],
+          "country_code": _selectedCountry['country_code'],
+          "product_type_id": _selectedCountry['content'][0]['product_type_id'],
+          "email": widget.manager.getUser()['email_address'],
+          "amount": double.parse(_amountController.text.replaceAll(regExp, '')),
+        };
 
-        if (_showNaija) {
-          Map _payload = {
-            "serviceID":
-                "${_controller.selectedAirtimeNetwork.value['vtpass_code']}",
-            "phone": int.parse(_phoneController.text.trim()),
-            "email": "${widget.manager.getUser()['email_address']}",
-            "amount": int.parse(_amountController.text.replaceAll(regExp, '')),
-          };
+        print("SNJS PAYLOAD ::: $_payload");
 
-          _controller.internationalTopupPayload.value = _payload;
+        _controller.internationalTopupPayload.value = _payload;
 
-          Get.back();
-          Get.to(
-            VerifyOTP(
-              email: email,
-              caller: 'vtu',
-              manager: widget.manager,
-              bankData: null,
-              voucherCode: _inputController.text.trim(),
-              vtuType: "topup",
-            ),
-            transition: Transition.cupertino,
-          );
-        } else {
-          var _payload = {
-            "serviceID": "foreign-airtime",
-            "billersCode": _phoneController.text.trim(),
-            "variation_code": _selectedVariation['variation_code'],
-            "phone": _phoneController.text.trim(),
-            "operator_id": _networkProviders[_current]['operator_id'],
-            "country_code": _selectedCountry['country_code'],
-            "product_type_id": _selectedCountry['content'][0]
-                ['product_type_id'],
-            "email": widget.manager.getUser()['email_address'],
-            "amount":
-                double.parse(_amountController.text.replaceAll(regExp, '')),
-          };
-
-          print("SNJS PAYLOAD ::: ${_payload}");
-
-          _controller.internationalTopupPayload.value = _payload;
-
-          Get.back();
-          Get.to(
-            VerifyOTP(
-              email: email,
-              caller: 'vtu',
-              manager: widget.manager,
-              bankData: null,
-              voucherCode: _inputController.text.trim(),
-            ),
-            transition: Transition.cupertino,
-          );
-        }
+        Get.back();
+        Get.to(
+          VerifyOTP(
+            email: email,
+            caller: 'vtu',
+            manager: widget.manager,
+            bankData: null,
+            voucherCode: _inputController.text.trim(),
+          ),
+          transition: Transition.cupertino,
+        );
       }
     } catch (e) {
       _controller.setLoading(false);
@@ -535,6 +454,20 @@ class _AirtimeTabState extends State<AirtimeTab> {
         _showErrorDialog(status: 'invalid', message: map['message']);
       } else {
         // Check if amount matches voucher amount before generating OTP
+        // Charging in naira
+        final _exchangeRate = _selectedVariation['variation_rate'];
+        final _chargedAmount = _selectedVariation['charged_amount'];
+        final _fixedPrice = _selectedVariation['fixedPrice'];
+        final _variationAmount = _selectedVariation['variation_amount'];
+
+        if (_chargedAmount != null) {
+          // Use the fixed amount here
+          var _amount =
+              double.parse(_amountController.text.replaceAll(regExp, ''));
+          var _currencyToNaira = _amount * _exchangeRate;
+          print("AMOUNT HERE :: ::: ::: $_currencyToNaira");
+          // Now compare with the voucher redeemable amount
+        }
 
         // if (double.parse("${map['data']['amount']}") !=
         //     double.parse(_amountController.text.replaceAll(regExp, ''))) {
@@ -652,7 +585,7 @@ class _AirtimeTabState extends State<AirtimeTab> {
                           final item = _controller.userVouchers.value[index];
                           return TextButton(
                             onPressed: () {
-                              print('VOUCHER DATA HERE :::  ${item}');
+                              print('VOUCHER DATA HERE :::  $item');
                               setState(() {
                                 _inputController.text = item['code'];
                               });

@@ -46,11 +46,15 @@ class _HomePageState extends State<HomePage> {
 
   _getTimeZone() {
     try {
-      utcTime = DateTime.parse(widget.manager.getUser()['last_login']);
+      utcTime = DateTime.parse(widget.manager.getUser()['last_login'] ??
+          _controller.userData.value['last_login'] ??
+          "");
       _lastTime = DateFormat.yMMMMd('en_US').add_jm().format(utcTime.toLocal());
 
       debugPrint("LAST LOGIN MY TIMEZONE :: $_lastTime");
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -219,7 +223,7 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${getGreeting()}, ${widget.manager.getUser()['first_name'] == null ? "" : widget.manager.getUser()['first_name'].toString().capitalize}",
+                              "${getGreeting()}, ${widget.manager.getUser()['first_name'] == null ? _controller.userData.value['first_name'] ?? "" : widget.manager.getUser()['first_name'].toString().capitalize}",
                               textScaleFactor: 0.92,
                               style: const TextStyle(
                                 fontSize: 18,
@@ -232,7 +236,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             const SizedBox(height: 4.0),
                             Text(
-                              "Last login ${_lastTime == null ? "" : _lastTime}",
+                              "Last login ${_lastTime ?? ""}",
                               textScaleFactor: 0.86,
                               style: const TextStyle(
                                 fontSize: 11,
