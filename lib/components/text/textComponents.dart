@@ -15,7 +15,7 @@ class TextLarge extends StatelessWidget {
     this.softWrap,
   });
 
-  final fontFamily = "OpenSans";
+  final fontFamily = "Lato";
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +23,12 @@ class TextLarge extends StatelessWidget {
       text!,
       softWrap: softWrap,
       textAlign: align,
-      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            color: color,
-            fontFamily: fontFamily,
-            fontWeight: fontWeight,
-          ),
+      style: TextStyle(
+        color: color,
+        fontSize: 21,
+        fontFamily: fontFamily,
+        fontWeight: fontWeight,
+      ),
     );
   }
 }

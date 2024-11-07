@@ -5,6 +5,7 @@ import 'package:afrikunet/components/dialog/custom_dialog.dart';
 import 'package:afrikunet/components/dialog/info_dialog.dart';
 import 'package:afrikunet/components/text/textComponents.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,7 +16,7 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class Constants {
-  static const Color primaryColor = Color(0xFF015AB1);
+  static const Color primaryColor = Color(0xFF0C0C0C);
   static const Color accentColor = Color(0xFF4B9EF2);
   static const Color secondaryColor = Color(0xFF06396A);
 
@@ -32,17 +33,16 @@ class Constants {
   static const Color shimmerBaseColor = Color.fromARGB(255, 203, 203, 203);
   static const Color shimmerHighlightColor = Colors.white;
 
-  static const baseURL =
-      "http://192.168.43.41:3050/bkapi"; // "https://afrikunet-api-orcin.vercel.app/bkapi";
-
-  static const baseURL2 =
-      "http://192.168.43.41"; //  "https://afrikunet-api-orcin.vercel.app";
+  static const baseURL = "http://192.168.139.247:3050/api/v2";
+// "https://afrikunet-api-orcin.vercel.app/bkapi"; //
+  static const baseURL2 = "http://192.168.139.247";
+  //  "https://afrikunet-api-orcin.vercel.app"
 
   static String pstk = "pk_test_40f544aec0415695c9fae0ba0819ee5bebcb6a5e";
 
   static String formatMoney(int amt) {
     MoneyFormatter fmf = MoneyFormatter(
-      amount: double.parse("${amt}.00"),
+      amount: double.parse("$amt.00"),
       settings: MoneyFormatterSettings(
         symbol: 'NGN',
         thousandSeparator: ',',
@@ -79,7 +79,9 @@ class Constants {
       flag += String.fromCharCode(baseOffset + countryCode.codeUnitAt(i));
       // flag += String.fromCharCode(countryCode.codeUnitAt(i) + baseOffset);
     }
-    print("FLAG HERE ::: $flag");
+    if (kDebugMode) {
+      print("FLAG HERE ::: $flag");
+    }
     return flag.replaceAll(RegExp(r'[A-Z]'), '');
   }
 
@@ -116,7 +118,7 @@ class Constants {
   }
 
   static nairaSign(context) {
-    Locale locale = Localizations.localeOf(context);
+    // Locale locale = Localizations.localeOf(context);
     var format =
         NumberFormat.simpleCurrency(locale: Platform.localeName, name: 'NGN');
     return format;

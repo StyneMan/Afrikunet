@@ -331,9 +331,9 @@ class APIService {
   }
 
   // VOUCHERS
-  Future<http.Response> buyVoucher(String accessToken, var payload) async {
+  Future<http.Response> initiateVoucher(String accessToken, var payload) async {
     return await client.post(
-      Uri.parse('${Constants.baseURL}/vouchers/purchase'),
+      Uri.parse('${Constants.baseURL}/vouchers/initiate'),
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,

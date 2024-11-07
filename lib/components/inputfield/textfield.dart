@@ -61,7 +61,7 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 24.0,
-          vertical: 12.0,
+          vertical: 10.0,
         ),
         border: OutlineInputBorder(
           borderSide:
@@ -87,21 +87,8 @@ class CustomTextField extends StatelessWidget {
           ),
           gapPadding: 4.0,
         ),
-        // errorBorder: errorText.isEmpty
-        //     ? null
-        //     : OutlineInputBorder(
-        //         borderSide: const BorderSide(
-        //           color: Constants.strokeColor,
-        //           width: 1.0,
-        //         ),
-        //         borderRadius: BorderRadius.all(
-        //           Radius.circular(borderRadius),
-        //         ),
-        //         gapPadding: 4.0,
-        //       ),
         filled: false,
         hintText: placeholder ?? hintText,
-        helperText: helperText,
         focusColor: Constants.strokeColor,
         errorText: errorText.isEmpty ? null : errorText,
         hintStyle: const TextStyle(

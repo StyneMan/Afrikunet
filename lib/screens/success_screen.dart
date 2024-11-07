@@ -33,8 +33,9 @@ class SuccessPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/success_bg.png"),
-            fit: BoxFit.cover,
+            image: AssetImage("assets/images/giftcard_bg.png"),
+            fit: BoxFit.contain,
+            repeat: ImageRepeat.repeat,
           ),
         ),
         child: Column(

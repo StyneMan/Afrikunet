@@ -271,7 +271,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     onPressed: () {
                       if (_isChecked || _isChecked2) {
                         var _customerRef =
-                            "Afrikunet_${DateTime.now().millisecondsSinceEpoch}_${widget.manager.getUser()['first_name']}_pay";
+                            "Afrikunet_${DateTime.now().millisecondsSinceEpoch}&${widget.manager.getUser()['email_address']}";
                         // Send Request for payment and trigger payment form
                         var _payload = {
                           "full_name":
@@ -286,6 +286,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                           "webhook_url":
                               "https://afrikunet-api-orcin.vercel.app/bkapi/vouchers/webhook",
                         };
+
+                        print("INSPECT PAYLOAD ::: ${_payload}");
 
                         var _credentials = jsonEncode(_payload);
 

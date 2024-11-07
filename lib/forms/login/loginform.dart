@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'dart:convert';
 
 import 'package:afrikunet/components/buttons/primary.dart';
@@ -37,6 +39,7 @@ class _LoginFormState extends State<LoginForm> {
 
   final socket = SocketManager().socket;
 
+  // ignore: unused_field
   bool _isNumberOk = false,
       _isLowercaseOk = false,
       _isCapitalOk = false,
@@ -104,7 +107,7 @@ class _LoginFormState extends State<LoginForm> {
     return Form(
       key: _formKey,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
@@ -114,16 +117,9 @@ class _LoginFormState extends State<LoginForm> {
               const SizedBox(
                 height: 16.0,
               ),
-              TextBody1(
-                text: "Email",
-                color: Theme.of(context).colorScheme.tertiary,
-              ),
-              const SizedBox(
-                height: 4.0,
-              ),
               CustomTextField(
                 onChanged: (val) {},
-                placeholder: "Enter email address",
+                placeholder: "Email",
                 controller: _emailController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -138,14 +134,7 @@ class _LoginFormState extends State<LoginForm> {
                 inputType: TextInputType.emailAddress,
               ),
               const SizedBox(
-                height: 16.0,
-              ),
-              TextBody1(
-                text: "Password",
-                color: Theme.of(context).colorScheme.tertiary,
-              ),
-              const SizedBox(
-                height: 4.0,
+                height: 10.0,
               ),
               PasswordField(
                 validator: (value) {
@@ -201,9 +190,6 @@ class _LoginFormState extends State<LoginForm> {
                   }
                 },
               ),
-              const SizedBox(
-                height: 6.0,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -218,7 +204,7 @@ class _LoginFormState extends State<LoginForm> {
                     child: TextBody1(
                       text: "Forgot password?",
                       color: Constants.primaryColor,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
@@ -226,17 +212,18 @@ class _LoginFormState extends State<LoginForm> {
             ],
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.15,
+            height: MediaQuery.of(context).size.height * 0.10,
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                width: double.infinity,
+                width: MediaQuery.of(context).size.width * 0.75,
                 child: PrimaryButton(
                   buttonText: "Login",
                   foreColor: Colors.white,
+                  fontSize: 16,
                   bgColor: Theme.of(context).colorScheme.primaryContainer,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -262,7 +249,7 @@ class _LoginFormState extends State<LoginForm> {
                     },
                     child: TextSmall(
                       text: "Create Account ",
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       color: Constants.primaryColor,
                     ),
                   ),

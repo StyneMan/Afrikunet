@@ -69,65 +69,74 @@ class _BuyVoucherState extends State<BuyVoucher> {
         ),
         centerTitle: false,
       ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(
-          vertical: 16.0,
-        ),
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: _amountSection(context),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/giftcard_bg.png'),
+            fit: BoxFit.contain,
+            repeat: ImageRepeat.repeat,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {
-                    _showChooser();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10.0,
-                      horizontal: 2.0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(
-                          CupertinoIcons.add,
-                          size: 16,
-                          color: Theme.of(context).colorScheme.tertiary,
-                        ),
-                        TextBody2(
-                          text: "Qty",
-                          color: Theme.of(context).colorScheme.tertiary,
-                        ),
-                      ],
+        ),
+        child: ListView(
+          padding: const EdgeInsets.symmetric(
+            vertical: 16.0,
+          ),
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: _amountSection(context),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      _showChooser();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10.0,
+                        horizontal: 2.0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            CupertinoIcons.add,
+                            size: 16,
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
+                          TextBody2(
+                            text: "Qty",
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 16.0),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 16.0,
-              bottom: 16.0,
-              right: 16.0,
+            const SizedBox(height: 16.0),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 16.0,
+                bottom: 16.0,
+                right: 16.0,
+              ),
+              child: VoucherType(
+                currentAmount: _amountController.text,
+                manager: widget.manager,
+                finalValue: _redeemableAmount,
+                hasFetchedCharge: _hasFetchedCharge,
+              ),
             ),
-            child: VoucherType(
-              currentAmount: _amountController.text,
-              manager: widget.manager,
-              finalValue: _redeemableAmount,
-              hasFetchedCharge: _hasFetchedCharge,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

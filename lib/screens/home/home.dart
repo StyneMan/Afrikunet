@@ -183,8 +183,9 @@ class _HomePageState extends State<HomePage> {
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primary,
           image: const DecorationImage(
-            image: AssetImage("assets/images/home_watermark.png"),
-            fit: BoxFit.fill,
+            image: AssetImage('assets/images/giftcard_bg.png'),
+            fit: BoxFit.contain,
+            repeat: ImageRepeat.repeat,
           ),
         ),
         height: 175,
@@ -336,6 +337,13 @@ class _HomePageState extends State<HomePage> {
       );
 
   Widget _body(context) => Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/giftcard_bg.png'),
+            fit: BoxFit.contain,
+            repeat: ImageRepeat.repeat,
+          ),
+        ),
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

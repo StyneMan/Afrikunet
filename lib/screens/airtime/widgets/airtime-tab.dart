@@ -48,7 +48,7 @@ class _AirtimeTabState extends State<AirtimeTab> {
   final _phoneController = TextEditingController();
   final _amountController = TextEditingController();
   final _controller = Get.find<StateController>();
-  bool _isOpenInput = false;
+  bool _isOpenInput = false, _isNigeria = true;
   var _selectedCountry, _selectedVariation;
   bool _isLoadingProviders = true;
   bool _isAmountFixed = false;
@@ -59,6 +59,25 @@ class _AirtimeTabState extends State<AirtimeTab> {
 
   // Replace all non-numeric characters with an empty string
   // String numericData = data.replaceAll(regExp, '');
+
+  _init() async {
+    try {
+      final _resp = await APIService().getCountryOperators(
+        countryCode: "NG",
+        productTypeID: "1",
+      );
+      debugPrint("COUNTRY OPERATORS DATA ::: ${_resp.body}");
+      if (_resp.statusCode >= 200 && _resp.statusCode <= 299) {
+        Map<String, dynamic> map = jsonDecode(_resp.body);
+        setState(() {
+          _isLoadingProviders = false;
+          _networkProviders = map['content'];
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   @override
   void initState() {
@@ -71,6 +90,7 @@ class _AirtimeTabState extends State<AirtimeTab> {
       _controller.selectedAirtimeNetwork.value =
           _controller.airtimeData.value['networks'][0];
     }
+    _init();
   }
 
   _onClicked(bool value) {
@@ -479,7 +499,7 @@ class _AirtimeTabState extends State<AirtimeTab> {
         //   );
         // } else {
         // Now generate otp here
-        _generateOTP(email: map['data']['email']);
+        // _generateOTP(email: map['data']['email']);
         // }
       }
     } catch (e) {

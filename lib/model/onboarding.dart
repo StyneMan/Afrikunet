@@ -13,17 +13,18 @@ class OnboardingSlide {
 List<OnboardingSlide> onboardingSlides = [
   OnboardingSlide(
     image: "assets/images/slid1.png",
-    title: "Discover Great Ways",
-    desc: "To share love with friends, family and loved once",
+    title: "Discover Great Deals",
+    desc: "Explore the use voucher for l store discount, coupons, gift & share",
   ),
   OnboardingSlide(
     image: "assets/images/slid2.png",
-    title: "A Gift Of Vouchers",
-    desc: "Will always put smiles in a friends face",
+    title: "Utility",
+    desc: "International Airtime & Data, Cable Tv subscription",
   ),
   OnboardingSlide(
     image: "assets/images/slid3.png",
-    title: "It's Just A Click",
-    desc: "Redeem vouchers hassle-free using your smartphone",
+    title: "Bill Payments",
+    desc:
+        "A high value Event Ticketing engine await you for your music concert, professional meetings and more",
   ),
 ];

@@ -34,6 +34,7 @@ class _SignupFormState extends State<SignupForm> {
   final _lnameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _retypePasswordController = TextEditingController();
   final _phoneController = TextEditingController();
 
   String _isoCode = "+234", _countryCode = "NG";
@@ -104,109 +105,14 @@ class _SignupFormState extends State<SignupForm> {
       key: _formKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          TextBody1(
-            text: "Full Name",
-            fontWeight: FontWeight.w400,
-            color: Theme.of(context).colorScheme.tertiary,
-          ),
-          const SizedBox(
-            height: 4.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: CustomTextField(
-                  hintText: "",
-                  placeholder: "First name",
-                  onChanged: (val) {},
-                  controller: _fnameController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email or phone';
-                    }
-                    return null;
-                  },
-                  inputType: TextInputType.name,
-                  capitalization: TextCapitalization.words,
-                ),
-              ),
-              const SizedBox(width: 2.0),
-              Expanded(
-                child: CustomTextField(
-                  hintText: "",
-                  placeholder: "Last name",
-                  onChanged: (val) {},
-                  controller: _lnameController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email or phone';
-                    }
-                    return null;
-                  },
-                  inputType: TextInputType.name,
-                  capitalization: TextCapitalization.words,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 16.0,
-          ),
-          TextBody1(
-            text: "Phone Number",
-            color: Theme.of(context).colorScheme.tertiary,
-          ),
-          const SizedBox(
-            height: 4.0,
-          ),
-          CustomTextField(
-            inputType: TextInputType.number,
-            placeholder: "Enter phone number",
-            onChanged: (val) {},
-            controller: _phoneController,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your phone number';
-              }
-              return null;
-            },
-            prefix: CountryCodePicker(
-              alignLeft: true,
-              onChanged: (val) {
-                setState(() {
-                  _countryCode = "${val.code}";
-                  _isoCode = "${val.dialCode}";
-                });
-                print("SELECTED CODE ::: ${val.code}");
-                print("SELECTED DIAL CODE ::: ${val.dialCode}");
-              },
-              padding: const EdgeInsets.all(0.0),
-              initialSelection: 'NG',
-              favorite: const ['+234', 'NG'],
-              showCountryOnly: true,
-              showFlag: true,
-              showDropDownButton: false,
-              hideMainText: true,
-              showOnlyCountryWhenClosed: false,
-            ),
-          ),
-          const SizedBox(
-            height: 16.0,
-          ),
-          TextBody1(
-            text: "Email",
-            color: Theme.of(context).colorScheme.tertiary,
-          ),
           const SizedBox(
             height: 4.0,
           ),
           CustomTextField(
             hintText: "",
-            placeholder: "Enter email address",
+            placeholder: "Email",
             onChanged: (val) {},
             controller: _emailController,
             validator: (value) {
@@ -223,13 +129,6 @@ class _SignupFormState extends State<SignupForm> {
           ),
           const SizedBox(
             height: 16.0,
-          ),
-          TextBody1(
-            text: "Password",
-            color: Theme.of(context).colorScheme.tertiary,
-          ),
-          const SizedBox(
-            height: 4.0,
           ),
           PasswordField(
             validator: (value) {
@@ -248,6 +147,71 @@ class _SignupFormState extends State<SignupForm> {
               return null;
             },
             controller: _passwordController,
+            onChanged: (value) {
+              if (value.contains(RegExp(r'[0-9]'))) {
+                setState(() {
+                  _isNumberOk = true;
+                });
+              } else {
+                setState(() {
+                  _isNumberOk = false;
+                });
+              }
+
+              if (value.contains(RegExp(r'[A-Z]'))) {
+                setState(() {
+                  _isCapitalOk = true;
+                });
+              } else {
+                setState(() {
+                  _isCapitalOk = false;
+                });
+              }
+
+              if (value.contains(RegExp(r'[a-z]'))) {
+                setState(() {
+                  _isLowercaseOk = true;
+                });
+              } else {
+                setState(() {
+                  _isLowercaseOk = false;
+                });
+              }
+
+              if (value.contains(RegExp(r'[!@#$%^&*(),.?"_:;{}|<>/+=-]'))) {
+                setState(() {
+                  _isSpecialCharOk = true;
+                });
+              } else {
+                setState(() {
+                  _isSpecialCharOk = false;
+                });
+              }
+            },
+          ),
+          const SizedBox(
+            height: 16.0,
+          ),
+          PasswordField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please type password';
+              }
+              if (value.toString().length < 8) {
+                return "Password must be at least 8 characters!";
+              }
+              if (_passwordController.text != value) {
+                return "Password does not match";
+              }
+              if (!_isNumberOk ||
+                  !_isCapitalOk ||
+                  !_isLowercaseOk ||
+                  !_isSpecialCharOk) {
+                return 'Weak password. See hint below';
+              }
+              return null;
+            },
+            controller: _retypePasswordController,
             onChanged: (value) {
               if (value.contains(RegExp(r'[0-9]'))) {
                 setState(() {
@@ -353,7 +317,22 @@ class _SignupFormState extends State<SignupForm> {
             ),
           ),
           const SizedBox(
-            height: 12.0,
+            height: 48.0,
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.75,
+            child: PrimaryButton(
+              buttonText: 'Create',
+              foreColor: Colors.white,
+              bgColor: Theme.of(context).colorScheme.primaryContainer,
+              onPressed: _isChecked
+                  ? () {
+                      if (_formKey.currentState!.validate()) {
+                        _register();
+                      }
+                    }
+                  : null,
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -374,17 +353,17 @@ class _SignupFormState extends State<SignupForm> {
                   child: RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
-                      text: "By continuing you accept our standard ",
+                      text: "By continuing you accept our standard terms and ",
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.tertiary,
                         fontSize: 12,
                       ),
                       children: [
                         TextSpan(
-                          text: "terms and conditions",
+                          text: "conditions",
                           style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            color: Constants.accentColor,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap =
@@ -394,8 +373,8 @@ class _SignupFormState extends State<SignupForm> {
                         TextSpan(
                           text: "privacy policy",
                           style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            color: Constants.accentColor,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap =
@@ -411,21 +390,6 @@ class _SignupFormState extends State<SignupForm> {
           const SizedBox(
             height: 16.0,
           ),
-          SizedBox(
-            width: double.infinity,
-            child: PrimaryButton(
-              buttonText: 'Create',
-              foreColor: Colors.white,
-              bgColor: Theme.of(context).colorScheme.primaryContainer,
-              onPressed: _isChecked
-                  ? () {
-                      if (_formKey.currentState!.validate()) {
-                        _register();
-                      }
-                    }
-                  : null,
-            ),
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -440,7 +404,7 @@ class _SignupFormState extends State<SignupForm> {
                 },
                 child: TextSmall(
                   text: "Log In ",
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                   color: Constants.primaryColor,
                 ),
               ),

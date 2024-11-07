@@ -22,56 +22,48 @@ class _OnboardingState extends State<Onboarding> {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/bg.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: PageView.builder(
-                  onPageChanged: (value) {
-                    _appController.onboardingIndex.value = value;
-                    _pageController.animateToPage(
-                      _appController.onboardingIndex.value,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                    );
-                  },
-                  controller: _pageController,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: onboardingSlides.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onHorizontalDragUpdate: (details) {
-                        print("DETAILS ::: ${details.globalPosition.dx}");
-                        if (_appController.onboardingIndex.value == 2) {
-                          if (details.globalPosition.dx > 75) {
-                            print("DELETE LEFT HERE :::");
-                            Get.offAll(
-                              GetStarted(),
-                              transition: Transition.cupertino,
-                            );
-                          }
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: PageView.builder(
+                onPageChanged: (value) {
+                  _appController.onboardingIndex.value = value;
+                  _pageController.animateToPage(
+                    _appController.onboardingIndex.value,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeIn,
+                  );
+                },
+                controller: _pageController,
+                scrollDirection: Axis.horizontal,
+                itemCount: onboardingSlides.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onHorizontalDragUpdate: (details) {
+                      print("DETAILS ::: ${details.globalPosition.dx}");
+                      if (_appController.onboardingIndex.value == 2) {
+                        if (details.globalPosition.dx > 75) {
+                          print("DELETE LEFT HERE :::");
+                          Get.offAll(
+                            GetStarted(),
+                            transition: Transition.cupertino,
+                          );
                         }
-                      },
-                      child: OnbaoardingItem(item: onboardingSlides[index]),
-                    );
-                  },
-                ),
+                      }
+                    },
+                    child: OnbaoardingItem(item: onboardingSlides[index]),
+                  );
+                },
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: onboardingSlides.asMap().entries.map((entry) {
                       return GestureDetector(
@@ -83,12 +75,12 @@ class _OnboardingState extends State<Onboarding> {
                         child: Container(
                           width:
                               _appController.onboardingIndex.value == entry.key
-                                  ? 48.0
-                                  : 12.0,
-                          height: 10.0,
+                                  ? 36.0
+                                  : 10.0,
+                          height: 8.0,
                           margin: const EdgeInsets.symmetric(
                             vertical: 8.0,
-                            horizontal: 4.0,
+                            horizontal: 3.0,
                           ),
                           decoration: BoxDecoration(
                             color:
@@ -108,10 +100,12 @@ class _OnboardingState extends State<Onboarding> {
                       );
                     }).toList(),
                   ),
-                  const SizedBox(
-                    height: 4.0,
-                  ),
-                  TextButton(
+                ),
+                const SizedBox(
+                  width: 10.0,
+                ),
+                Expanded(
+                  child: TextButton(
                     onPressed: () {
                       Get.offAll(
                         GetStarted(),
@@ -123,13 +117,16 @@ class _OnboardingState extends State<Onboarding> {
                       color: Constants.primaryColor,
                     ),
                   ),
-                  const SizedBox(
-                    height: 24.0,
-                  ),
-                ],
-              ),
-            ],
-          ),
+                ),
+                const SizedBox(
+                  height: 24.0,
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 16.0,
+            ),
+          ],
         ),
       ),
     );

@@ -48,7 +48,14 @@ class MyVouchersPage extends StatelessWidget {
         centerTitle: false,
       ),
       body: SafeArea(
-        child: Padding(
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/giftcard_bg.png'),
+              fit: BoxFit.contain,
+              repeat: ImageRepeat.repeat,
+            ),
+          ),
           padding: const EdgeInsets.all(8.0),
           child: FutureBuilder<http.Response>(
             future: APIService().getUserVouchers(
@@ -80,7 +87,7 @@ class MyVouchersPage extends StatelessWidget {
               print('my voucher response ;; ${data!.body}');
               Map<String, dynamic> _map = jsonDecode(data.body);
 
-              if (_map['vouchers'].isEmpty) {
+              if (_map['vouchers']?.isEmpty) {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

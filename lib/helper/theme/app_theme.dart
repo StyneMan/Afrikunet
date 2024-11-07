@@ -11,9 +11,9 @@ ThemeData appTheme = ThemeData(
     ),
     backgroundColor: Constants.secondaryColor,
   ),
-  textTheme: const TextTheme(
-    bodyText2: TextStyle(),
-  ),
+  // textTheme: const TextTheme(
+  //   bodyMedium: TextStyle(),
+  // ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(elevation: 0.0),
   ),

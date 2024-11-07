@@ -29,6 +29,15 @@ class PaymentController extends GetxController {
           onPageStarted: (String url) {
             // Set loading here
             _controller.setLoading(true);
+            // Initiatw Transaction Here
+            if (Get.arguments['usecase'] == "buy-voucher") {
+              _initiateVoucher(
+                payload: Get.arguments['payload'],
+                accessToken: Get.arguments['accessToken'],
+                manager: Get.arguments['manager'],
+                customerRef: Get.arguments['customerRef'],
+              );
+            }
           },
           onPageFinished: (String url) {
             // Get.back();
@@ -47,6 +56,7 @@ class PaymentController extends GetxController {
               final usecase = Get.arguments['usecase'];
               final payload = Get.arguments['payload'];
               final customerData = Get.arguments['customerData'];
+              final prefManager = Get.arguments['manager'];
 
               if (usecase == "vtu") {
                 _initiatePurchase(
@@ -57,17 +67,17 @@ class PaymentController extends GetxController {
                   manager: Get.arguments['manager'],
                   selectedDataPlanName: Get.arguments['selectedDataPlanName'],
                 );
+              } else if (usecase == "buy-voucher") {
+                // Get.back();
+                Get.offAll(
+                  SuccessPage(
+                    isVoucher: true,
+                    manager: Get.arguments['manager'],
+                    message: 'You have successfully purchased a new voucher',
+                  ),
+                  transition: Transition.cupertino,
+                );
               }
-              // else if (usecase == "buy-voucher") {
-              //   print("INITIATE BUY VOUCHER HERE :::");
-
-              //   _initiateBuyVoucher(
-              //     payload: payload,
-              //     accessToken: Get.arguments['accessToken'],
-              //     manager: Get.arguments['manager'],
-              //     customerRef: Get.arguments['customerRef'],
-              //   );
-              // }
             }
 
             if (request.url
@@ -275,7 +285,7 @@ class PaymentController extends GetxController {
     }
   }
 
-  void _initiateBuyVoucher({
+  void _initiateVoucher({
     required var payload,
     required var accessToken,
     required var manager,
@@ -299,14 +309,9 @@ class PaymentController extends GetxController {
 
       print("BUY VOUCHER PAYLOAD ::: $_payload");
 
-      final _resp = await APIService().buyVoucher(accessToken, _payload);
+      final _resp = await APIService().initiateVoucher(accessToken, _payload);
       print("BUY VOUCHER RESPONSE ::: ${_resp.body}");
       // _controller.setLoading(false);
-      Get.back();
-      Get.to(
-        SuccessPage(manager: manager),
-        transition: Transition.cupertino,
-      );
     } catch (e) {
       debugPrint(e.toString());
       // _controller.setLoading(false);

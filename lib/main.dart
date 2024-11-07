@@ -191,7 +191,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       // Bank saved
       socket.on(
         "bank-added",
-        (data) => debugPrint("DATA FROM  >> $data"),
+        (data) => debugPrint("DATA FROM BANK  >> $data"),
+      );
+
+      // Bank saved
+      socket.on(
+        "buy-voucher",
+        (data) => debugPrint("DATA FROM VOUCHER PURCHASE >> $data"),
       );
     } catch (e) {
       debugPrint(e.toString());

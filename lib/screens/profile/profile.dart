@@ -169,64 +169,85 @@ class _ProfilePageState extends State<ProfilePage> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              color: Constants.secondaryColor,
-              padding: const EdgeInsets.only(bottom: 10.0),
-              child: const SizedBox(
-                height: 8.0,
-              ),
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/giftcard_bg.png'),
+              fit: BoxFit.contain,
+              repeat: ImageRepeat.repeat,
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 14.0,
-                  horizontal: 10.0,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                color: Constants.secondaryColor,
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: const SizedBox(
+                  height: 8.0,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Stack(
-                        children: [
-                          ClipOval(
-                            child: Container(
-                              color: Constants.primaryColor.withOpacity(0.5),
-                              child: _isImagePicked
-                                  ? Image.file(
-                                      File(_croppedFile),
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              SvgPicture.asset(
-                                        "assets/images/account.svg",
-                                        fit: BoxFit.cover,
-                                        color: Constants.primaryColor,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.32,
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.32,
-                                      ),
-                                      fit: BoxFit.cover,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.32,
-                                      height:
-                                          MediaQuery.of(context).size.width *
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 14.0,
+                    horizontal: 10.0,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Stack(
+                          children: [
+                            ClipOval(
+                              child: Container(
+                                color: Constants.primaryColor.withOpacity(0.5),
+                                child: _isImagePicked
+                                    ? Image.file(
+                                        File(_croppedFile),
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                SvgPicture.asset(
+                                          "assets/images/account.svg",
+                                          fit: BoxFit.cover,
+                                          color: Constants.primaryColor,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
                                               0.32,
-                                    )
-                                  : CachedNetworkImage(
-                                      imageUrl:
-                                          "${_controller.userData.value['photo'] ?? widget.manager.getUser()['photo']}",
-                                      errorWidget: (context, url, error) =>
-                                          SvgPicture.asset(
-                                        "assets/images/personal_icon.svg",
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.32,
+                                        ),
                                         fit: BoxFit.cover,
-                                        color: Constants.primaryColor,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.32,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.32,
+                                      )
+                                    : CachedNetworkImage(
+                                        imageUrl:
+                                            "${_controller.userData.value['photo'] ?? widget.manager.getUser()['photo']}",
+                                        errorWidget: (context, url, error) =>
+                                            SvgPicture.asset(
+                                          "assets/images/personal_icon.svg",
+                                          fit: BoxFit.cover,
+                                          color: Constants.primaryColor,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.36,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.36,
+                                        ),
+                                        fit: BoxFit.cover,
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.36,
@@ -234,215 +255,213 @@ class _ProfilePageState extends State<ProfilePage> {
                                             MediaQuery.of(context).size.width *
                                                 0.36,
                                       ),
-                                      fit: BoxFit.cover,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.36,
-                                      height:
-                                          MediaQuery.of(context).size.width *
-                                              0.36,
-                                    ),
+                              ),
                             ),
-                          ),
-                          Positioned(
-                            bottom: 6,
-                            right: -10,
-                            child: TextButton(
-                              onPressed: () {
-                                Get.bottomSheet(
-                                  Container(
-                                    height: 150,
-                                    color: Colors.white,
-                                    child: ImgPicker(
-                                      onCropped: _onImageSelected,
+                            Positioned(
+                              bottom: 6,
+                              right: -10,
+                              child: TextButton(
+                                onPressed: () {
+                                  Get.bottomSheet(
+                                    Container(
+                                      height: 150,
+                                      color: Colors.white,
+                                      child: ImgPicker(
+                                        onCropped: _onImageSelected,
+                                      ),
                                     ),
+                                  );
+                                },
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(36.0),
                                   ),
-                                );
-                              },
-                              style: TextButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(36.0),
                                 ),
-                              ),
-                              child: CircleAvatar(
-                                backgroundColor: Constants.primaryColor,
-                                child: SvgPicture.asset(
-                                  "assets/images/edit_pen.svg",
+                                child: CircleAvatar(
+                                  backgroundColor: Constants.primaryColor,
+                                  child: SvgPicture.asset(
+                                    "assets/images/edit_pen.svg",
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 6.0,
-                    ),
-                    Center(
-                      child: TextLarge(
-                        text:
-                            "${widget.manager.getUser()['first_name']} ${widget.manager.getUser()['last_name']}"
-                                .capitalize,
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).colorScheme.tertiary,
+                      const SizedBox(
+                        height: 6.0,
                       ),
-                    ),
-                    Column(
-                      children: [
-                        Chip(
-                          backgroundColor:
-                              Constants.primaryColor.withOpacity(0.3),
-                          label: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: TextBody1(
-                              text:
-                                  '${widget.manager.getUser()['email_address']}',
-                              color: Constants.primaryColor,
+                      Center(
+                        child: TextLarge(
+                          text:
+                              "${widget.manager.getUser()['first_name']} ${widget.manager.getUser()['last_name']}"
+                                  .capitalize,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          Chip(
+                            backgroundColor:
+                                Constants.primaryColor.withOpacity(0.3),
+                            label: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: TextBody1(
+                                text:
+                                    '${widget.manager.getUser()['email_address']}',
+                                color: Constants.primaryColor,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 32.0,
-                        ),
-                        _items.isNotEmpty
-                            ? ListView.separated(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return TextButton(
-                                    onPressed: () {
-                                      if (_items[index]['component'] != null) {
-                                        Get.to(
-                                          _items[index]['component'],
-                                          transition: Transition.cupertino,
-                                        );
-                                      }
+                          const SizedBox(
+                            height: 32.0,
+                          ),
+                          _items.isNotEmpty
+                              ? ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return TextButton(
+                                      onPressed: () {
+                                        if (_items[index]['component'] !=
+                                            null) {
+                                          Get.to(
+                                            _items[index]['component'],
+                                            transition: Transition.cupertino,
+                                          );
+                                        }
 
-                                      if (_items[index]['link'] != null) {
-                                        _launchInBrowser(_items[index]['link']);
-                                      }
+                                        if (_items[index]['link'] != null) {
+                                          _launchInBrowser(
+                                              _items[index]['link']);
+                                        }
 
-                                      if (_items[index]['link'] != null &&
-                                          _items[index]['component'] != null) {
-                                        _showDeleteDialog();
-                                      }
-                                    },
-                                    child: Row(
+                                        if (_items[index]['link'] != null &&
+                                            _items[index]['component'] !=
+                                                null) {
+                                          _showDeleteDialog();
+                                        }
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              _items[index]['icon'],
+                                              const SizedBox(
+                                                width: 18.0,
+                                              ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  TextMedium(
+                                                    text:
+                                                        "${_items[index]['title']}",
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .tertiary,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                  TextBody2(
+                                                    text:
+                                                        "${_items[index]['description']}",
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .tertiary,
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          Icon(
+                                            Icons.chevron_right,
+                                            size: 21,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return const Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          CrossAxisAlignment.stretch,
                                       children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            _items[index]['icon'],
-                                            const SizedBox(
-                                              width: 18.0,
-                                            ),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                TextMedium(
-                                                  text:
-                                                      "${_items[index]['title']}",
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .tertiary,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                                TextBody2(
-                                                  text:
-                                                      "${_items[index]['description']}",
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .tertiary,
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                        SizedBox(
+                                          height: 2.0,
                                         ),
-                                        Icon(
-                                          Icons.chevron_right,
-                                          size: 21,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary,
+                                        Divider(),
+                                        SizedBox(
+                                          height: 2.0,
                                         ),
                                       ],
-                                    ),
-                                  );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return const Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      SizedBox(
-                                        height: 2.0,
-                                      ),
-                                      Divider(),
-                                      SizedBox(
-                                        height: 2.0,
-                                      ),
-                                    ],
-                                  );
-                                },
-                                itemCount: _items.length,
-                              )
-                            : const SizedBox(),
-                        const Divider(),
-                        const SizedBox(
-                          height: 2.0,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            _showDialog();
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    CupertinoIcons.square_arrow_left,
-                                    color: Colors.red,
-                                    size: 21,
-                                  ),
-                                  const SizedBox(
-                                    width: 16.0,
-                                  ),
-                                  TextMedium(
-                                    text: "Logout",
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ],
-                              ),
-                              const Icon(
-                                Icons.chevron_right,
-                                size: 21,
-                              ),
-                            ],
+                                    );
+                                  },
+                                  itemCount: _items.length,
+                                )
+                              : const SizedBox(),
+                          const Divider(),
+                          const SizedBox(
+                            height: 2.0,
                           ),
-                        )
-                      ],
-                    )
-                  ],
+                          TextButton(
+                            onPressed: () {
+                              _showDialog();
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      CupertinoIcons.square_arrow_left,
+                                      color: Colors.red,
+                                      size: 21,
+                                    ),
+                                    const SizedBox(
+                                      width: 16.0,
+                                    ),
+                                    TextMedium(
+                                      text: "Logout",
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ],
+                                ),
+                                const Icon(
+                                  Icons.chevron_right,
+                                  size: 21,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

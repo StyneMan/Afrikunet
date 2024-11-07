@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.1.0+3
+version: 3.0.0+4
 
 
 environment:
@@ -39,10 +39,10 @@ dependencies:
   auto_size_text_field: ^2.2.3
   avatars: ^3.0.2
 
-  cached_network_image: ^3.2.0
+  cached_network_image: ^3.3.1
   carousel_slider: ^4.2.1
   connectivity_plus: ^2.1.0
-  country_code_picker: ^2.0.2
+  country_code_picker: ^3.0.0
   country_flags: ^2.2.0
   cupertino_icons: ^1.0.2
   currency_text_input_formatter: ^2.1.7
@@ -74,7 +74,7 @@ dependencies:
 
   image_cropper: ^3.0.1
   image_picker: ^0.8.4
-  intl: ^0.18.0
+  intl: ^0.19.0
 
   loading_overlay_pro: ^2.1.1
 
@@ -86,7 +86,7 @@ dependencies:
   path_provider: ^2.0.15
   persistent_bottom_nav_bar: ^4.0.2
   pdf: ^3.10.7
-  pin_code_fields: ^7.4.0
+  pin_code_fields: ^8.0.1
   printing: ^5.11.0
 
   qr_flutter: ^4.1.0
@@ -138,6 +138,14 @@ flutter:
     - assets/images/
 
   fonts:
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato-Regular.ttf
+        - asset: assets/fonts/Lato-Bold.ttf
+        - asset: assets/fonts/Lato-Black.ttf
+        - asset: assets/fonts/Lato-Light.ttf
+        - asset: assets/fonts/Lato-Thin.ttf
+
     - family: OpenSans
       fonts:
         - asset: assets/fonts/OpenSans-Regular.ttf

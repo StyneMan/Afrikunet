@@ -28,7 +28,7 @@ class SecondaryButton extends StatelessWidget {
         foregroundColor: foreColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(8.0),
+            Radius.circular(12.0),
           ),
         ),
         side: BorderSide(
